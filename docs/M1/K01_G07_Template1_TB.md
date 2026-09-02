@@ -15,7 +15,7 @@ Dipersiapkan oleh:
 | Informasi | Keterangan |
 | --- | --- |
 | Kelas | K01 |
-| Kelompok | G07  |
+| Kelompok | 7  |
 
 | NIM | Nama |
 |---|---|
@@ -34,7 +34,7 @@ Dipersiapkan oleh:
 ## 1.1 Latar Belakang Masalah
 Setiap hari, masyarakat Indonesia berhadapan dengan berbagai persoalan yang berkaitan erat dengan hukum tanpa menyadari dan menyikapinya secara langsung. Berbagai kasus tersebut meliputi PHK sepihak, penipuan daring, dan berbagai perselisihan lainnya. Banyak dari masyarakat ragu untuk bertindak dan membiarkan masalah tersebut begitu saja karena informasi yang tidak mudah dijangkau dan rendahnya literasi hukum di tengah masyarakat. Akar permasalahannya bukan sekadar pada bahasa hukum yang kaku dan penuh istilah teknis, melainkan juga pada manajemen informasi hukum itu sendiri. Hukum-hukum itu tersebar dalam berbagai perundang-undangan, artikel, dokumen resmi, hingga sumber eksternal yang tidak terbuka untuk diakses oleh masyarakat awam. Masyarakat justru kehilangan arah bahkan sebelum memahami kasusnya secara utuh, karena mereka dituntut untuk mengetahui kondisi/skenario spesifik mengenai kasus mereka. Sehingga, terdapat kesenjangan yang nyata antara ketersediaan informasi hukum dan kemampuan masyarakat untuk memanfaatkannya.
 
-Realita tersebut dibuktikan dalam laporan penelitian yang dilakukan oleh HiiL (The Hague Institute for Innovation of Law). Dari 2.400 responden ditemukan bahwa 71 persen dari masyarakat yang mengalami masalah hukum memilih untuk diam dan tidak melakukan tindakan untuk menyelesaikannya. Kondisi tersebut didorong oleh beberapa faktor, yaitu sulitnya memperoleh informasi dan nasihat hukum, ketidaktahuan ke mana harus mencari bantuan, kebingungan mengenai langkah prosedural yang harus diambil, serta rendahnya kesadaran hukum secara umum. Bukti lain yang mendukung adalah publikasi oleh Badan Pembinaan Ideologi Pancasila (BPIP) yang menyoroti rendahnya literasi hukum yang berakibat pada ketimpangan akses keadilan. Kondisi ini diperburuk dengan minimnya jumlah profesional dalam bidang hukum, dengan perkiraan hanya satu pengacara untuk setiap penduduk (1:4.325).
+Realita tersebut dibuktikan dalam laporan penelitian yang dilakukan oleh HiiL (The Hague Institute for Innovation of Law). Dari 2.400 responden ditemukan bahwa 71 persen dari masyarakat yang mengalami masalah hukum memilih untuk diam dan tidak melakukan tindakan untuk menyelesaikannya. Kondisi tersebut didorong oleh beberapa faktor, yaitu sulitnya memperoleh informasi dan nasihat hukum, ketidaktahuan ke mana harus mencari bantuan, kebingungan mengenai langkah prosedural yang harus diambil, serta rendahnya kesadaran hukum secara umum. Bukti lain yang mendukung adalah publikasi oleh Badan Pembinaan Ideologi Pancasila (BPIP) yang menyoroti rendahnya literasi hukum yang berakibat pada ketimpangan akses keadilan. Kondisi ini diperburuk dengan minimnya jumlah profesional dalam bidang hukum, dengan perkiraan hanya satu pengacara untuk setiap 4.325 penduduk (1:4.325).
 
 Ketimpangan inilah yang ingin diselesaikan oleh SDG (*Sustainable Development Goals*) yang ke-16 mengenai Perdamaian, Keadilan, dan Kelembagaan yang Tangguh. Secara lebih spesifik, Target 16.3 menjunjung tinggi akses keadilan yang sama bagi semua dan Target 16.10 menuntut akses publik terhadap informasi dan melindungi kebebasan mendasar. Terpenuhinya kedua target ini mustahil terjadi jika regulasi secara teknis tersedia, namun tidak terjangkau oleh masyarakat awam. Menata ulang dan menyederhanakan informasi hukum agar lebih mudah dipahami masyarakat awam merupakan langkah krusial untuk memenuhi komitmen SDG tersebut. Diperlukan sebuah solusi berbasis perangkat lunak yang mampu menjembatani kesenjangan informasi dengan menerjemahkan kompleksitas hukum menjadi panduan agar keadilan tidak lagi menjadi hak eksklusif, melainkan bisa dijangkau oleh semua kalangan.
 
@@ -53,7 +53,7 @@ Berdasarkan analisis kondisi ini, terlihat ada kekosongan pada ketersediaan laya
 
 ## 2.1 Deskripsi Perangkat Lunak
 
-**Paham Hukum** adalah platform literasi dan bantuan hukum yang ditujukan untuk masyarakat umum. Platform ini menyusun informasi hukum berdasarkan **kelompok kasus nyata**, bukan berdasarkan arsip artikel atau nomor peraturan. Dari sisi pengguna, sistem ini berperan sebagai penuntun. Seseorang yang sedang menghadapi masalah hukum, misalnya di-PHK secara sepihak atau menerima barang yang tidak sesuai, cukup memilih situasi yang paling dekat dengan kondisinya. Setelah itu, sistem menampilkan satu **halaman rangkuman kasus** yang berisi inti permasalahan, hak yang dimiliki pengguna, langkah-langkah yang perlu ditempuh, daftar dokumen yang harus disiapkan, serta templat surat yang bisa diunduh. Pengguna tidak perlu memahami istilah hukum untuk mulai menggunakan sistem. Sistemlah yang menerjemahkan situasi sehari-hari ke dalam kerangka hukum yang bisa ditindaklanjuti.
+**PahamHukum** adalah platform literasi dan bantuan hukum yang ditujukan untuk masyarakat umum. Platform ini menyusun informasi hukum berdasarkan **kelompok kasus nyata**, bukan berdasarkan arsip artikel atau nomor peraturan. Dari sisi pengguna, sistem ini berperan sebagai penuntun. Seseorang yang sedang menghadapi masalah hukum, misalnya di-PHK secara sepihak atau menerima barang yang tidak sesuai, cukup memilih situasi yang paling dekat dengan kondisinya. Setelah itu, sistem menampilkan satu **halaman rangkuman kasus** yang berisi inti permasalahan, hak yang dimiliki pengguna, langkah-langkah yang perlu ditempuh, daftar dokumen yang harus disiapkan, serta templat surat yang bisa diunduh. Pengguna tidak perlu memahami istilah hukum untuk mulai menggunakan sistem. Sistemlah yang menerjemahkan situasi sehari-hari ke dalam kerangka hukum yang bisa ditindaklanjuti.
 
 Selain pengguna awam, sistem ini juga melayani **kurator konten** yang bertugas menyusun taksonomi bidang hukum dan kelompok kasus, menulis rangkuman, serta mengelola artikel dan templat dokumen agar isi platform tetap akurat dan tertata.
 
@@ -144,39 +144,56 @@ Selain pengguna awam, sistem ini juga melayani **kurator konten** yang bertugas 
 | US-05 | Pencari Informasi | Mengunduh templat surat, seperti somasi atau surat pengaduan | Tidak perlu menyusun dokumen resmi dari awal |
 | US-06 | Pencari Informasi | Mencari kasus atau istilah tertentu melalui kolom pencarian | Langsung menuju informasi yang dibutuhkan tanpa harus menelusuri seluruh kategori |
 | US-07 | Pencari Informasi | Membaca artikel pendukung serta tautan ke sumber peraturan resmi | Dapat memverifikasi dasar hukum dari informasi yang dibacanya |
-| US-08 | Pencari Informasi | Melihat rujukan ke lembaga bantuan hukum dan *disclaimer* di setiap halaman | Mengetahui batas informasi yang diberikan dan ke mana harus melanjutkan untuk kasus yang spesifik |
-| US-09 | Kurator Konten | Mengelola struktur bidang hukum dan kelompok kasus | Informasi tetap tertata dan mudah ditelusuri pengguna awam |
+| US-08 | Pencari Informasi | Melihat rujukan ke lembaga bantuan hukum dan disclaimer di setiap halaman | Mengetahui batas informasi yang diberikan dan ke mana harus melanjutkan untuk kasus spesifik |
+| US-09 | Kurator Konten | Mengelola struktur (taksonomi) bidang hukum dan kelompok kasus | Informasi tetap tertata dan mudah ditelusuri pengguna awam |
 | US-10 | Kurator Konten | Menyusun dan menyunting halaman rangkuman kasus melalui panel pengelolaan | Konten dapat diperbarui mengikuti perubahan peraturan tanpa mengubah kode program |
 | US-11 | Kurator Konten | Mengunggah dan memperbarui berkas templat dokumen | Pengguna selalu memperoleh templat versi terbaru |
-| US-12 | Kurator Konten | Mengajukan konten untuk ditinjau sebelum dipublikasikan | Konten yang tayang telah melalui proses pemeriksaan |
-| US-13 | Administrator Sistem | Meninjau konten yang diajukan kurator serta memberi persetujuan atau catatan revisi | Informasi hukum yang sampai ke masyarakat tetap akurat |
-| US-14 | Administrator Sistem | Mengelola akun kurator beserta hak aksesnya | Hanya pihak berwenang yang dapat mengubah isi platform |
+| US-12 | Kurator Konten | Mengajukan konten (mengubah status dari *Draft* menjadi *Diajukan*) untuk ditinjau Administrator | Konten yang tayang ke publik sudah melalui proses pemeriksaan |
+| US-13 | Kurator Konten | Melihat status pengajuan konten miliknya (*Draft* / Diajukan / Disetujui / *Perlu Revisi*) beserta catatan revisi jika ada | Mengetahui progres pengajuan dan apa yang perlu diperbaiki |
+| US-14 | Administrator Sistem | Melihat daftar konten berstatus Diajukan yang menunggu peninjauan | Dapat memprioritaskan peninjauan dan memastikan tidak ada yang terlewat |
+| US-15 | Administrator Sistem | Meninjau isi konten yang diajukan Kurator satu per satu, lalu memberi keputusan Setujui atau Kembalikan dengan catatan revisi | Informasi hukum yang sampai ke masyarakat tetap akurat sebelum dipublikasikan |
+| US-16 | Administrator Sistem | Mengelola akun Kurator beserta hak aksesnya | Hanya pihak berwenang yang dapat mengubah isi platform |
 
-## 3.3 Deskripsi Aktivitas <masih instruksi awal setelah revisi TB1>
-Buatlah daftar seluruh aktivitas yang terdapat dalam sistem solusi, lengkap dengan ID dan penjelasan. Telusuri hubungan aktivitas tersebut dengan *user story* yang sudah dituliskan sebelumnya. Bisa dibuat dalam bentuk tabel.
+## 3.3 Deskripsi Aktivitas
+
 | ID | Aktivitas | Penjelasan | ID User Story |
 | :--- | :--- | :--- | :--- |
-| A01 | *Melakukan Pemesanan* | *Pelanggan memulai proses dengan memesan produk.* | *US-01* |
-| A02 | *Memproses Pesanan* | *Sistem memproses dan menyiapkan detail sesuai dengan pesanan.* | *US-02*|
-| ... | ... | ... | ... |
+| A01 | Menjelajahi Daftar Bidang Hukum | Pengguna membuka platform dan melihat daftar bidang hukum yang disajikan dalam bahasa sederhana. | US-01 |
+| A02 | Memilih Bidang Hukum | Pengguna memilih salah satu bidang hukum untuk melihat kelompok kasus di bawahnya. | US-01 |
+| A03 | Memilih Kelompok Kasus | Pengguna memilih kelompok kasus yang paling sesuai dengan situasi yang dialaminya. | US-01 |
+| A04 | Mencari Kasus atau Istilah | Pengguna memasukkan kata kunci pada kolom pencarian untuk langsung menuju kasus yang dibutuhkan. | US-06 |
+| A05 | Menampilkan Halaman Rangkuman Kasus | Sistem menyusun dan menampilkan satu halaman berisi inti masalah, hak, langkah, dokumen, templat, artikel, dan disclaimer. | US-02 |
+| A06 | Membaca Inti Masalah dan Hak | Pengguna membaca bagian rangkuman yang menjelaskan inti persoalan serta hak yang dimilikinya. | US-02 |
+| A07 | Melihat Langkah Penyelesaian | Pengguna melihat urutan langkah konkret yang perlu ditempuh untuk menyelesaikan kasusnya. | US-03 |
+| A08 | Melihat Daftar Periksa Dokumen | Pengguna melihat daftar dokumen yang perlu disiapkan sebelum menempuh proses formal. | US-04 |
+| A09 | Mengunduh Templat Surat | Pengguna mengunduh berkas templat surat, misalnya somasi atau surat pengaduan. | US-05 |
+| A10 | Membaca Artikel Pendukung | Pengguna membaca artikel serta tautan ke sumber peraturan resmi untuk memverifikasi dasar hukum. | US-07 |
+| A11 | Melihat Rujukan dan Disclaimer | Pengguna melihat rujukan ke lembaga bantuan hukum beserta disclaimer batasan informasi pada halaman. | US-08 |
+| A12 | Mengelola Struktur Konten | Kurator menyusun dan mengelola taksonomi bidang hukum serta kelompok kasus. | US-09 |
+| A13 | Menyusun/Menyunting Rangkuman Kasus | Kurator menulis atau menyunting halaman rangkuman kasus melalui panel pengelolaan. | US-10 |
+| A14 | Mengunggah/Memperbarui Templat Dokumen | Kurator mengunggah atau memperbarui berkas templat dokumen agar pengguna memperoleh versi terbaru. | US-11 |
+| A15 | Mengajukan Konten untuk Ditinjau | Kurator mengubah status konten dari Draft menjadi Diajukan agar masuk antrean peninjauan Administrator. | US-12 |
+| A16 | Melihat Status Pengajuan Konten | Kurator melihat status konten miliknya (*Draft*/*Diajukan*/*Disetujui*/*Perlu Revisi*) beserta catatan revisi jika ada. | US-13 |
+| A17 | Melihat Antrean Konten Diajukan | Administrator melihat daftar konten berstatus Diajukan yang menunggu peninjauan. | US-14 |
+| A18 | Meninjau dan Memutuskan Konten | Administrator memeriksa isi konten satu per satu lalu memberi keputusan Setujui atau *Kembalikan dengan catatan revisi*. | US-15 |
+| A19 | Mengelola Akun Kurator | Administrator mengelola akun Kurator beserta hak aksesnya. | US-16 |
 
 ## 3.4 Model Proses Bisnis
 Diagram berikut menggambarkan alur proses bisnis utama sistem, yaitu saat seorang pencari informasi menelusuri kasus yang dialaminya sampai memperoleh langkah tindak lanjut dan templat dokumen. Di balik itu, terdapat juga jalur penyediaan konten oleh kurator dan administrator.
 
-**Alur utama (naratif):**
-
-1. Pengguna membuka platform dan disambut dengan daftar bidang hukum dalam bahasa yang sederhana.
-2. Pengguna memilih bidang hukum, lalu sistem menampilkan kelompok kasus di bawahnya. Sebagai alternatif, pengguna juga dapat langsung menggunakan pencarian.
-3. Pengguna memilih kelompok kasus yang paling dekat dengan kondisinya.
-4. Sistem menampilkan halaman rangkuman kasus yang berisi inti masalah, hak pengguna, langkah-langkah, daftar dokumen, templat, artikel terkait, dan *disclaimer*.
-5. Pengguna membaca rangkuman, kemudian dapat mengunduh templat dokumen, membaca artikel pendukung, atau menelusuri kasus lain.
-6. Untuk kasus yang bersifat spesifik atau mendesak, sistem mengarahkan pengguna ke lembaga bantuan hukum.
-
-**Alur penyediaan konten (di balik layar):** Kurator menyusun atau memperbarui rangkuman kasus, lalu mengajukannya untuk ditinjau. Administrator sistem memeriksa keakuratan konten dan memberi persetujuan atau catatan revisi. Konten yang disetujui kemudian dipublikasikan dan masuk ke dalam alur utama yang sudah dijelaskan di atas.
-
-Berdasarkan alur di atas, diagram dibagi ke dalam tiga *swimlane*, yaitu **Pencari Informasi**, **Sistem**, dan **Kurator & Administrator Sistem**.
-
- <diagram blm dibuat>
+<p align="center">
+<img alt="Activity Diagram Penyediaan Konten untuk Kurator dan Administrator" src="./assets/diagram/kurator.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 1. Activity Diagram Penyediaan Konten untuk Kurator dan Administrator</i>
+</p>
+<br>
+<p align="center">
+<img alt="Activity Diagram untuk Pencari Informasi" src="./assets/diagram/pencari_informasi.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Activity Diagram untuk Pencari Informasi</i>
+</p>
 
  # Referensi
 - *Justice Needs in Indonesia 2014: Problems, Processes and Fairness* - The Hague Institute for Innovation of Law (2014): https://www.hiil.org/wp-content/uploads/2018/09/Justice-needs-in-Indonesia.pdf
