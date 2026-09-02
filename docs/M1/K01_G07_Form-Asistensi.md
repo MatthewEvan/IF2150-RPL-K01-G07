@@ -7,7 +7,7 @@
 | **Hari** | Selasa |
 | **Tanggal** | 1 September 2026 |
 | **Kelas** | K01 |
-| **Nomor Kelompok** | G07  |
+| **Nomor Kelompok** | 7  |
 | **Nama Kelompok** | #PenjagaNilai  |
 | **Nama Perangkat Lunak** | PahamHukum  |
 | **Dokumen** | K01_G07_Template1_TB.md  |
