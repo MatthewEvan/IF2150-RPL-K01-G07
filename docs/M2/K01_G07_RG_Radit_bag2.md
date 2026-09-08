@@ -1,0 +1,278 @@
+<h1>
+IF2150 REKAYASA PERANGKAT LUNAK
+<br>
+TUGAS 2
+<br>
+REQUIREMENT GATHERING
+</h1>
+<br>
+
+## PahamHukum
+
+### Untuk: Mikhael Andrian Yonatan
+
+Dipersiapkan oleh:
+
+| Informasi | Keterangan |
+| --- | --- |
+| Kelas | K01 |
+| Kelompok | 7 |
+
+| NIM | Nama |
+| --- | --- |
+| 13525007 | Rivan Cahyadi |
+| 13525019 | Raditya Wibian Sastaka |
+| 13525064 | Matthew Evan Kurniawan |
+| 13525100 | Wesley Lianto |
+| 13525109 | Christopherus Michael Jafeth Tobing |
+
+---
+
+## Daftar Perubahan
+
+| Revisi | Deskripsi |
+| :--- | :--- |
+| A | Penambahan aktivitas A20 (Autentikasi Pengelola) dan US-17. Pada Tugas 1, keharusan untuk masuk (login) bagi Kurator dan Administrator belum dituliskan secara eksplisit, padahal fitur US-12 hingga US-16 sangat bergantung pada sesi yang terautentikasi. |
+| B | Penyesuaian penamaan kelompok kasus. Saat ini, setiap kasus diwajibkan menggunakan bahasa keluhan sehari-hari sebagai judul utama, bukan sekadar nama bidang hukumnya. Hal ini bertujuan untuk menjawab Asumsi A-03 pada Tugas 1, di mana pengguna awam lebih mudah mengenali masalah mereka melalui kalimat yang relevan dengan keseharian. |
+| C | Penambahan kolom Pola EARS pada tabel 2.4 dan 2.5 guna memudahkan pembaca dalam menelusuri bentuk penulisan kebutuhan. Kolom ini murni bersifat sebagai alat bantu baca dan tidak mengubah substansi dari kebutuhan itu sendiri. |
+| D | Penggabungan dan penyederhanaan Kebutuhan Fungsional dari 50 poin menjadi 45 poin. Aturan mengenai visibilitas konten publik disatukan pada KF02, sementara pemblokiran akses yang tidak berwenang disatukan pada KF44. Fitur saran pencarian otomatis, penanganan halaman rangkuman kosong, dan riwayat mode baca dihapus karena telah tercakup pada poin lain. Poin KNF15 terkait penguncian akun setelah kegagalan login beruntun ditiadakan dari target lingkup semester ini. |
+| E | Penyesuaian mekanisme pada R21. Sebelumnya, sistem diminta untuk memeriksa isi berkas template secara otomatis guna mencari pernyataan "kerangka awal". Mengingat pemeriksaan isi file PDF dan DOCX dinilai kurang efisien dibandingkan manfaatnya, sistem kini cukup menampilkan pernyataan tersebut di halaman unduhan. |
+| F | Penambahan bagian "hal yang perlu dipertimbangkan" pada kerangka rangkuman kasus (R51). Bagian ini akan memberikan estimasi waktu proses, perkiraan biaya, dan saran kapan pengguna sebaiknya mulai mencari pendamping hukum profesional. Pada Tugas 1, kerangka rangkuman hanya menjelaskan langkah-langkah tanpa memberikan gambaran pertimbangan ini kepada pengguna. |
+| G | Penambahan US-18 dan R52 yang bertujuan mencantumkan nama Kurator penulis serta tanggal peninjauan pada konten yang diterbitkan. Selain sebagai bentuk apresiasi terhadap kontribusi Kurator, hal ini penting agar setiap tulisan hukum memiliki penanggung jawab yang jelas. |
+| H | Penambahan R53 dan R54 untuk menunjang kenyamanan kerja pengelola (kemudian diturunkan menjadi KNF bertipe Ergonomi). Penambahan ini merespons harapan Kurator dan Administrator agar proses penulisan dan peninjauan konten dapat dilakukan dalam satu tampilan layar tanpa perlu berpindah-pindah halaman. |
+
+<br>
+<br>
+
+# BAB 1: Deskripsi Umum
+
+## 1.1 Deskripsi Umum Sistem
+
+PahamHukum hadir sebagai aplikasi berbasis web yang menjembatani masyarakat awam dengan informasi hukum. Selama ini, informasi hukum kerap disajikan menggunakan bahasa yang kaku dan lebih berfokus pada kalangan profesional. Oleh karena itu, batasan sistem ini perlu dipertegas sejak awal: aplikasi ini berfungsi memberikan wawasan, panduan langkah penyelesaian, serta draf awal dokumen hukum. Sistem tidak menangani perkara secara langsung, tidak mewakili pengguna secara legal, dan tidak dirancang untuk menggantikan peran advokat atau Lembaga Bantuan Hukum (LBH). Batasan ini dijaga dengan ketat mengingat tim pengembang bukanlah lembaga bantuan hukum yang berizin.
+
+**Ekspektasi Pencari Informasi:** Pengguna mengharapkan kemudahan dalam memahami istilah hukum yang rumit. Mereka ingin mengetahui apakah persoalan yang mereka hadapi memiliki solusi yang lazim, langkah pertama apa yang harus diambil, serta persiapan apa saja yang diperlukan. Sebelum seseorang mengirimkan somasi atau melapor ke instansi terkait, mereka perlu mengetahui estimasi waktu, dokumen yang wajib disiapkan, dan pada titik mana mereka sebaiknya mencari pendampingan profesional.
+
+**Ekspektasi Kurator Konten:** Kurator membutuhkan kemudahan untuk menuangkan hasil riset mereka ke dalam sistem melalui satu formulir yang terstruktur, tanpa harus terhambat oleh antarmuka yang membingungkan. Selain itu, mereka juga membutuhkan apresiasi atas karya yang dibuat. Oleh karena itu, nama penulis akan dicantumkan pada konten yang diterbitkan agar setiap tulisan hukum memiliki akuntabilitas yang jelas.
+
+**Ekspektasi Administrator Sistem:** Administrator memerlukan antarmuka yang efisien untuk memverifikasi kelayakan konten. Mereka ingin dapat membaca isi tulisan sekaligus memberikan keputusan (setujui/kembalikan) pada layar yang sama. Administrator juga perlu mengelola akun serta struktur situs dengan mudah tanpa harus menyentuh kode program.
+
+Alur kerja aplikasi ini berjalan melalui dua jalur utama yang akan bertemu pada satu titik. Di sisi publik, Pencari Informasi dapat membuka halaman utama, mencari bidang hukum atau mengetikkan kata kunci masalah, lalu memilih kasus yang paling relevan. Nama kasus disajikan dalam bahasa sehari-hari, misalnya "saya diberhentikan tanpa surat", alih-alih menggunakan nama pasal. Setelah itu, sistem akan menampilkan satu halaman komprehensif yang berisi: inti masalah, hak pengguna, langkah penyelesaian, hal yang perlu dipertimbangkan, daftar periksa dokumen, templat surat untuk diunduh, artikel referensi, dan disklaimer. Seluruh layanan ini dapat diakses secara gratis, tanpa perlu mendaftar, dan tanpa mengumpulkan data pribadi.
+
+Di sisi pengelola, Kurator akan masuk ke panel untuk menyusun rangkuman kasus, mengunggah templat, dan mengajukan draf konten. Status tulisan akan berubah dari *Draft* menjadi *Diajukan* dan masuk ke dalam antrean. Selanjutnya, Administrator akan memeriksa ketepatan referensi hukum dalam antrean tersebut dan memberikan keputusan. Jika disetujui, konten akan langsung diterbitkan beserta nama penulis dan tanggal peninjauan. Jika dikembalikan, statusnya berubah menjadi *Perlu Revisi* beserta catatan perbaikan untuk Kurator. Hasil dari kedua jalur inilah yang akhirnya tayang sebagai halaman rangkuman kasus yang dapat dibaca oleh publik.
+
+Pengembangan sistem ini juga sejalan dengan tujuan pembangunan yang lebih besar. Pada skala global, aplikasi ini mendukung Tujuan Pembangunan Berkelanjutan (SDG) ke-16 mengenai Akses Keadilan dan Informasi (Target 16.3 dan 16.10). Ketersediaan regulasi sering kali kurang bermakna jika masyarakat tidak dapat memahami bahasanya. Secara nasional, inisiatif ini mendukung visi Indonesia Emas 2045 terkait supremasi hukum. Menyederhanakan informasi hukum agar mudah dipahami oleh masyarakat umum adalah langkah mendasar untuk mendukung terwujudnya agenda besar tersebut.
+
+## 1.2 Deskripsi Pengguna Perangkat Lunak
+
+| Aktor | Deskripsi |
+| :--- | :--- |
+| **Pencari Informasi (Masyarakat Awam)** | Masyarakat umum yang sedang menghadapi masalah hukum atau sekadar ingin memahaminya, seperti sengketa ketenagakerjaan atau perselisihan transaksi. Mereka umumnya tidak memiliki latar belakang hukum dan tidak familier dengan istilah teknis maupun nomor peraturan. Pengguna ini sangat membutuhkan kejelasan, bahasa yang sederhana, dan panduan langkah yang praktis. Mereka biasanya mengakses platform melalui perangkat seluler dengan kualitas koneksi yang bervariasi, serta menggunakan sistem secara murni tanpa perlu mendaftar. |
+| **Kurator Konten** | Tim pengelola yang bertugas menyusun kategori hukum, menulis rangkuman kasus, mengunggah materi pendukung, serta menyediakan templat dokumen. Mereka memiliki pemahaman dasar mengenai hukum, ketelitian dalam merujuk undang-undang, serta konsistensi untuk menjaga agar informasi tetap mudah dibaca oleh masyarakat awam. Kurator bekerja melalui panel pengelolaan dan tidak memiliki kewenangan untuk langsung menerbitkan konten ke publik. |
+| **Administrator Sistem** | Pemegang otoritas tertinggi di dalam sistem. Tugas utamanya adalah meninjau dan memastikan akurasi konten dari Kurator sebelum dipublikasikan, serta mengelola akun dan hak akses Kurator. Administrator umumnya memiliki pemahaman hukum yang lebih mendalam dibandingkan Kurator (misalnya praktisi atau mahasiswa tingkat akhir di bidang hukum). Karakteristik utamanya adalah kehati-hatian dalam meloloskan informasi hukum untuk konsumsi publik. |
+
+---
+
+# BAB 2: Deskripsi Kebutuhan Perangkat Lunak
+
+## 2.1 Kebutuhan Pengguna Awal
+
+| ID | Aktor | Kebutuhan / Aktivitas | Tujuan / Nilai |
+| :--- | :--- | :--- | :--- |
+| US-01 | Pencari Informasi | Menelusuri daftar bidang hukum dan kasus menggunakan bahasa sehari-hari yang mudah dipahami. | Memudahkan pengguna menemukan solusi yang relevan tanpa harus mengetahui istilah teknis hukum. |
+| US-02 | Pencari Informasi | Membaca halaman rangkuman kasus yang mencakup inti permasalahan dan hak-hak yang dimiliki. | Membantu pengguna memahami posisi dan hak mereka secara cepat dalam satu halaman. |
+| US-03 | Pencari Informasi | Melihat urutan langkah-langkah penyelesaian kasus secara konkret. | Memberikan panduan jelas mengenai tindakan lanjutan yang harus diambil. |
+| US-04 | Pencari Informasi | Mengakses daftar periksa (checklist) dokumen yang perlu dipersiapkan. | Memastikan pengguna dapat menyiapkan berkas secara lengkap sebelum memasuki proses formal. |
+| US-05 | Pencari Informasi | Mengunduh draf atau templat surat resmi (seperti surat somasi). | Membantu pengguna agar tidak perlu menyusun dokumen hukum resmi dari awal. |
+| US-06 | Pencari Informasi | Melakukan pencarian kasus atau istilah spesifik melalui kolom pencarian. | Mempercepat akses informasi tanpa perlu menelusuri kategori secara manual satu per satu. |
+| US-07 | Pencari Informasi | Membaca artikel pendukung dan mengakses tautan ke sumber undang-undang resmi. | Memungkinkan pengguna untuk memverifikasi kebenaran informasi dan dasar hukum yang dibaca. |
+| US-08 | Pencari Informasi | Melihat referensi kontak Lembaga Bantuan Hukum (LBH) dan disklaimer di setiap halaman. | Menyadarkan pengguna akan batasan sistem dan memberikan petunjuk arah untuk kasus yang membutuhkan penanganan khusus. |
+| US-09 | Kurator Konten | Mengelola taksonomi atau struktur kategori bidang hukum dan kelompok kasus. | Memastikan informasi tetap tertata rapi dan mudah ditelusuri oleh pengguna awam. |
+| US-10 | Kurator Konten | Menyusun dan menyunting halaman rangkuman kasus secara langsung melalui panel. | Memungkinkan pembaruan informasi hukum secara mandiri tanpa harus memodifikasi kode program (*source code*). |
+| US-11 | Kurator Konten | Mengunggah serta memperbarui berkas templat dokumen. | Memastikan pengunjung selalu mendapatkan templat surat dengan versi terbaru. |
+| US-12 | Kurator Konten | Mengajukan draf tulisan (mengubah status *Draft* menjadi *Diajukan*) untuk ditinjau oleh Administrator. | Memastikan seluruh konten yang dipublikasikan telah melewati proses verifikasi dan peninjauan. |
+| US-13 | Kurator Konten | Melihat status pengajuan tulisan (*Draft*, *Diajukan*, *Disetujui*, atau *Perlu Revisi*) beserta catatannya. | Memberikan transparansi progres pekerjaan serta kejelasan mengenai bagian mana yang memerlukan perbaikan. |
+| US-14 | Administrator Sistem | Melihat daftar antrean konten yang menunggu untuk ditinjau. | Membantu menetapkan prioritas pekerjaan dan memastikan tidak ada konten yang terlewat dari proses peninjauan. |
+| US-15 | Administrator Sistem | Meninjau konten yang diajukan serta memberikan keputusan (Setujui atau Kembalikan) disertai catatan revisi. | Memastikan bahwa informasi hukum yang akan diakses publik benar-benar akurat dan dapat dipertanggungjawabkan. |
+| US-16 | Administrator Sistem | Mengelola akun Kurator beserta hak aksesnya di dalam sistem. | Membatasi wewenang sehingga hanya pihak yang berhak yang dapat memodifikasi isi situs web. |
+| US-17 | Kurator Konten, Administrator Sistem | Masuk (login) ke panel pengelolaan menggunakan akun masing-masing. | Memastikan seluruh aktivitas pengelolaan sistem dapat dilacak dan melindungi keamanan panel dari akses pihak luar. |
+| US-18 | Kurator Konten | Mencantumkan nama penulis pada konten yang telah berhasil diterbitkan. | Memberikan apresiasi atas kinerja Kurator sekaligus memperjelas penanggung jawab substansi dari tulisan tersebut. |
+
+## 2.2 Deskripsi Aktivitas
+
+| ID | Aktivitas | Penjelasan | ID User Story |
+| :--- | :--- | :--- | :--- |
+| A01 | Menelusuri Daftar Bidang Hukum | Pengguna mengakses halaman utama dan melihat daftar bidang hukum yang disajikan dalam bahasa yang lugas. | US-01 |
+| A02 | Memilih Bidang Hukum | Pengguna memilih salah satu bidang hukum untuk melihat kelompok kasus yang relevan di dalamnya. | US-01 |
+| A03 | Memilih Kelompok Kasus | Pengguna memilih kasus yang deskripsinya paling mendekati situasi yang sedang mereka alami. | US-01 |
+| A04 | Melakukan Pencarian Kasus | Pengguna memasukkan kata kunci permasalahan pada kolom pencarian untuk diarahkan langsung ke solusi terkait. | US-06 |
+| A05 | Membuka Halaman Rangkuman Kasus | Sistem menampilkan satu halaman utuh yang mencakup inti masalah, hak, langkah solusi, dokumen, templat, artikel, dan disklaimer. | US-02 |
+| A06 | Membaca Inti Masalah dan Hak | Pengguna membaca penjelasan mengenai esensi masalah mereka serta hak-hak yang dijamin oleh hukum. | US-02 |
+| A07 | Memeriksa Langkah Penyelesaian | Pengguna membaca urutan tahapan yang perlu ditempuh untuk menyelesaikan permasalahan hukum tersebut. | US-03 |
+| A08 | Memeriksa Daftar Periksa Dokumen | Pengguna melihat daftar berkas yang wajib disiapkan sebelum mengambil tindakan formal lebih lanjut. | US-04 |
+| A09 | Mengunduh Templat Surat | Pengguna mengunduh draf atau contoh surat resmi (misalnya somasi) untuk mempermudah penyusunan dokumen. | US-05 |
+| A10 | Membaca Artikel Referensi | Pengguna membaca artikel penunjang dan mengeklik tautan menuju sumber undang-undang resmi sebagai proses verifikasi. | US-07 |
+| A11 | Melihat Kontak Bantuan dan Disklaimer | Pengguna meninjau daftar kontak LBH terdekat serta membaca batasan tanggung jawab layanan dari aplikasi. | US-08 |
+| A12 | Mengelola Struktur Kategori | Kurator menambah, mengedit, atau merapikan susunan bidang hukum dan kelompok kasus. | US-09 |
+| A13 | Menyusun dan Menyunting Rangkuman | Kurator menulis atau memperbaiki konten halaman rangkuman kasus melalui formulir di panel pengelolaan. | US-10 |
+| A14 | Mengunggah Berkas Templat | Kurator mengunggah draf surat baru atau mengganti berkas templat lama agar sistem selalu menyajikan versi terkini. | US-11 |
+| A15 | Mengajukan Konten untuk Peninjauan | Kurator mengubah status konten dari *Draft* menjadi *Diajukan* agar masuk ke dalam antrean pemeriksaan Administrator. | US-12 |
+| A16 | Memeriksa Status Konten | Kurator meninjau status persetujuan dari tulisannya serta membaca catatan revisi apabila terdapat perbaikan. | US-13 |
+| A17 | Membuka Antrean Peninjauan | Administrator membuka dan melihat daftar konten yang diajukan oleh Kurator untuk segera diperiksa. | US-14 |
+| A18 | Meninjau dan Memberikan Keputusan | Administrator membaca konten, kemudian memilih untuk menyetujuinya agar terbit atau mengembalikannya kepada Kurator untuk direvisi. | US-15 |
+| A19 | Mengelola Akun Kurator | Administrator membuat, memperbarui informasi, atau menonaktifkan akun yang dimiliki oleh Kurator. | US-16 |
+| A20 | Autentikasi Sistem Pengelola | Kurator atau Administrator masuk (login) menggunakan kredensial mereka, lalu keluar (logout) setelah menyelesaikan pekerjaannya. | US-17 |
+
+## 2.3 Pemetaan Kebutuhan
+
+Keterangan kolom P/L (Perangkat Lunak): "Ya" menandakan bahwa kebutuhan tersebut akan diakomodasi dan diimplementasikan secara langsung oleh sistem aplikasi (diturunkan menjadi Kebutuhan Fungsional/Non-Fungsional). "Tidak" berarti pemenuhan kebutuhan dilakukan melalui kebijakan, kesepakatan operasional, atau proses redaksional di luar sistem.
+
+| ID Kebutuhan | ID Aktivitas | Jenis Kebutuhan | Deskripsi Kebutuhan | P/L |
+| :--- | :--- | :--- | :--- | :--- |
+| R01 | A01 | User | Pengguna dapat melihat seluruh bidang hukum yang tersedia beserta jumlah kelompok kasusnya pada halaman utama. | Ya |
+| R02 | A01 | Business | Cakupan aplikasi dibatasi pada kasus yang paling umum dihadapi masyarakat (misal: ketenagakerjaan, perlindungan konsumen). Bidang hukum di luar itu tidak akan ditampilkan. | Ya |
+| R03 | A01 | System | Halaman utama wajib dirancang agar dapat diakses dengan cepat meskipun perangkat memiliki spesifikasi rendah dan kualitas koneksi lambat. | Ya |
+| R04 | A01, A05 | System | Antarmuka pengguna harus bersifat responsif dan dapat dioperasikan dengan baik di berbagai peramban serta ukuran layar, terutama perangkat seluler. | Ya |
+| R05 | A02 | User | Pengguna dapat memilih satu bidang hukum dan langsung diarahkan untuk melihat daftar kelompok kasus di bawahnya. | Ya |
+| R06 | A02, A03 | Business | Penamaan kelompok kasus harus menggunakan bahasa deskriptif sehari-hari sebagai judul utama, sedangkan istilah teknis hukum ditempatkan sebagai keterangan pendukung. | Ya |
+| R07 | A03 | User | Pengguna dapat memilih sebuah kelompok kasus dan akan diarahkan ke halaman detail rangkuman yang relevan. | Ya |
+| R08 | A04 | User | Pengguna dapat melakukan pencarian menggunakan kata kunci bebas, baik berupa kalimat keseharian maupun istilah hukum formal. | Ya |
+| R09 | A04 | User | Apabila pencarian tidak memberikan hasil, sistem harus memberikan saran bidang hukum alternatif serta rujukan menuju lembaga bantuan hukum. | Ya |
+| R10 | A04 | System | Sistem harus memberikan hasil pencarian dalam waktu singkat agar tidak mengganggu pengalaman pengguna. | Ya |
+| R11 | A05 | User | Pengguna dapat membaca seluruh informasi kasus (dari akar masalah hingga solusi) pada satu halaman memanjang tanpa perlu berpindah tab atau menu. | Ya |
+| R12 | A05 | Business | Halaman rangkuman kasus harus memiliki struktur yang konsisten: inti masalah, hak, langkah penyelesaian, poin pertimbangan, daftar periksa, templat, artikel pendukung, dan disklaimer. | Ya |
+| R13 | A05 | System | Hanya konten yang telah memiliki status Disetujui yang dapat ditampilkan pada antarmuka publik. | Ya |
+| R14 | A06 | User | Pengguna disajikan informasi mengenai inti masalah dan hak-hak yang disusun dengan struktur kalimat pendek serta tata bahasa yang memasyarakat. | Ya |
+| R15 | A06 | Legal | Penulisan poin mengenai hak pengguna wajib disertai dengan tautan referensi peraturan atau undang-undang resmi guna memastikan validitas informasi. | Ya |
+| R16 | A06 | System | Tipografi dan tingkat kontras teks harus mempertimbangkan kemudahan baca (aksesibilitas), termasuk bagi pengguna dengan keterbatasan penglihatan atau pengguna pembaca layar. | Ya |
+| R17 | A07 | User | Pengguna dapat melihat urutan langkah penyelesaian secara bernomor, mencakup instruksi teknis, persyaratan dokumen, serta tenggat waktu jika berlaku. | Ya |
+| R18 | A08 | User | Pengguna dapat memberikan tanda centang pada daftar periksa (checklist) seiring dengan kelengkapan dokumen yang telah mereka siapkan. | Ya |
+| R19 | A08 | Legal | Interaksi pada daftar periksa tidak boleh disimpan ke dalam basis data server demi menjaga keamanan dan privasi pengguna. | Ya |
+| R20 | A09 | User | Pengguna dapat mengunduh berkas templat dokumen versi terkini secara langsung tanpa harus melakukan pendaftaran akun. | Ya |
+| R21 | A09 | Legal | Sistem wajib menampilkan disklaimer yang menegaskan bahwa templat dokumen yang disediakan hanya berupa kerangka awal, bukan dokumen hukum yang final. | Ya |
+| R22 | A10 | User | Pengguna dapat mengakses artikel pendukung dan menelusuri tautan menuju situs web resmi peraturan atau perundang-undangan terkait. | Ya |
+| R23 | A10 | Legal | Seluruh substansi artikel wajib disusun secara mandiri bersumber dari referensi terbuka. Segala bentuk penyalinan langsung (plagiarisme) dari platform hukum komersial lainnya dilarang secara redaksional. | Tidak |
+| R24 | A11 | Legal | Setiap halaman pada antarmuka publik harus menampilkan disklaimer bahwa sistem ini hanya menyediakan informasi umum dan tidak bertindak sebagai penasihat hukum. | Ya |
+| R25 | A11 | User | Pengguna dapat mengakses direktori lembaga bantuan hukum (LBH) terdekat beserta informasi area pelayanannya. | Ya |
+| R26 | A11 | Business | Untuk kasus yang bersifat darurat atau terkait kekerasan, sistem harus segera mengarahkan pengguna kepada lembaga yang berwajib, karena berada di luar batas penanganan aplikasi ini. | Ya |
+| R27 | A12 | User | Kurator memiliki akses untuk menambahkan, menyunting, serta menghapus nama bidang hukum maupun kelompok kasus. | Ya |
+| R28 | A12 | Business | Sistem harus mencegah penghapusan bidang hukum atau kelompok kasus yang di dalamnya masih terdapat konten artikel berstatus publik (Disetujui). | Ya |
+| R29 | A13 | User | Kurator dapat menyusun dan mengelola isi halaman kasus melalui formulir yang strukturnya menyesuaikan secara otomatis dengan struktur baku R12. | Ya |
+| R30 | A13 | Business | Konten yang baru saja dibuat akan otomatis memiliki status *Draft* dan tidak akan ditayangkan untuk publik. | Ya |
+| R31 | A13 | System | Setelah sebuah konten disetujui, perubahan tersebut harus segera dipublikasikan tanpa memerlukan proses penerapan (deployment) ulang sistem. | Ya |
+| R32 | A14 | User | Kurator dapat mengunggah atau memperbarui dokumen templat pendukung pada sebuah kelompok kasus. | Ya |
+| R33 | A14 | System | Sistem wajib membatasi tipe berkas unggahan hanya pada format PDF atau DOCX dengan ukuran maksimal 5 MB untuk mencegah penyalahgunaan ruang penyimpanan. | Ya |
+| R34 | A14 | System | Proses penggantian atau pembaruan berkas templat harus bersifat bersih (atomik); jika terjadi kegagalan saat mengunggah, tidak boleh ada berkas korup yang tersimpan. | Ya |
+| R35 | A15 | User | Kurator dapat memproses pengajuan tulisannya agar segera masuk ke tahapan peninjauan oleh Administrator. | Ya |
+| R36 | A15 | Business | Sistem tidak mengizinkan pengajuan konten apabila masih terdapat bagian wajib di formulir yang dibiarkan kosong oleh Kurator. | Ya |
+| R37 | A16 | User | Kurator dapat memantau status setiap tulisannya (*Draft*, *Diajukan*, *Disetujui*, atau *Perlu Revisi*) secara transparan. | Ya |
+| R38 | A17 | User | Administrator dapat memantau antrean seluruh konten berstatus *Diajukan*, diurutkan berdasarkan waktu pengajuan terlama beserta nama pengunggahnya. | Ya |
+| R39 | A18 | User | Administrator berhak memberikan keputusan untuk menyetujui penayangan konten atau mengembalikannya kepada Kurator dengan melampirkan catatan revisi. | Ya |
+| R40 | A18 | Business | Apabila Administrator memutuskan untuk mengembalikan tulisan, pengisian catatan revisi bersifat wajib dan tidak boleh kosong. | Ya |
+| R41 | A18 | Business | Sistem membatasi wewenang sehingga Kurator tidak dapat menyetujui konten hasil tulisannya sendiri; persetujuan final mutlak berada pada Administrator. | Ya |
+| R42 | A18 | System | Seluruh perubahan status pada sebuah konten akan dicatat oleh sistem sebagai riwayat permanen yang memuat informasi pelaku serta waktu kejadian. | Ya |
+| R43 | A19 | User | Administrator memiliki kendali penuh untuk mendaftarkan, memperbarui detail, atau menonaktifkan akun para Kurator. | Ya |
+| R44 | A19 | Business | Aplikasi tidak menyediakan halaman pendaftaran akun mandiri untuk publik. Seluruh akun Kurator hanya dapat didaftarkan melalui panel Administrator. | Ya |
+| R45 | A20 | User | Administrator dan Kurator dapat melakukan proses masuk (login) menggunakan surel serta kata sandi, lalu keluar (logout) dari sesi pengelolaan dengan aman. | Ya |
+| R46 | A20 | System | Sistem dilarang menyimpan kata sandi pengguna dalam bentuk teks yang dapat dibaca. Kata sandi wajib dilindungi menggunakan metode hashing tingkat tinggi. | Ya |
+| R47 | A20 | System | Setiap upaya akses menuju halaman pengelola tanpa adanya sesi login yang sah akan dicegah secara otomatis oleh sistem. | Ya |
+| R48 | A20 | System | Demi menjaga keamanan, sistem akan secara otomatis mengakhiri sesi pengguna (logout) jika tidak terdapat aktivitas dalam kurun waktu tertentu. | Ya |
+| R49 | A13, A18 | Business | Validasi substansi konten tidak menggunakan sistem tersendiri, melainkan bergantung pada mekanisme tinjauan manual oleh Administrator serta pencocokan ke sumber undang-undang resmi. | Tidak |
+| R50 | A01, A05 | Business | Segala elemen antarmuka, pesan sistem, serta substansi konten harus senantiasa disajikan menggunakan Bahasa Indonesia yang baik, sopan, dan formal. | Ya |
+| R51 | A05, A07 | User | Pengguna diberikan informasi realitas, seperti estimasi waktu, biaya, serta rekomendasi batasan tindakan mandiri sebelum memutuskan untuk maju ke tahap hukum. | Ya |
+| R52 | A05, A13 | User | Nama Kurator serta tanggal ketika Administrator melakukan peninjauan akan dicantumkan secara jelas pada konten yang telah terbit. | Ya |
+| R53 | A13 | System | Antarmuka pembuatan konten harus dirancang agar Kurator dapat mengisi seluruh kelengkapan kasus tanpa harus berpindah antarhalaman. | Ya |
+| R54 | A18 | System | Antarmuka peninjauan harus memungkinkan Administrator untuk meninjau tulisan sekaligus menetapkan persetujuan pada satu tampilan layar yang sama. | Ya |
+
+## 2.4 Kebutuhan Fungsional (KF)
+
+Kebutuhan fungsional menjabarkan perilaku yang dapat diamati dari sistem, yaitu bagaimana sistem harus merespons ketika terjadi suatu pemicu atau kondisi tertentu. Pada dokumen ini, seluruh butir ditulis mengikuti kaidah EARS (*Easy Approach to Requirements Syntax*) untuk menjaga profesionalisme penyusunan dokumen.
+
+| Pola EARS | Bentuk kalimat |
+| :--- | :--- |
+| *Ubiquitous* | Sistem harus [respons]. |
+| *Event-driven* | Ketika [kejadian pemicu], sistem harus [respons]. |
+| *State-driven* | Selama [kondisi tertentu], sistem harus [respons]. |
+| *Unwanted behaviour* | Jika [terjadi kondisi atau kesalahan yang tidak diinginkan], maka sistem harus [respons]. |
+| *Optional feature* | Apabila [tersedia data atau fitur tambahan], sistem harus [respons]. |
+
+| ID KF | ID Kebutuhan | Pola EARS | Penjelasan |
+| :--- | :--- | :--- | :--- |
+| KF01 | R01 | Ubiquitous | Sistem harus menampilkan daftar dari seluruh bidang hukum yang aktif beserta kalkulasi jumlah kelompok kasus di beranda utama. |
+| KF02 | R02, R13 | State-driven | Selama sebuah konten masih berstatus selain Disetujui, atau kategori hukumnya sedang dinonaktifkan, sistem harus menyembunyikan konten tersebut dari antarmuka publik dan mesin pencarian internal. |
+| KF03 | R05 | Event-driven | Ketika Pencari Informasi mengeklik salah satu bidang hukum, sistem harus merespons dengan menampilkan himpunan kelompok kasus yang relevan pada bidang tersebut. |
+| KF04 | R06 | Ubiquitous | Sistem harus menonjolkan judul kasus menggunakan bahasa keluhan sehari-hari yang umum digunakan, sementara istilah resmi hukum disajikan sebagai keterangan pelengkap. |
+| KF05 | R07 | Event-driven | Ketika Pencari Informasi memilih spesifik suatu kelompok kasus, sistem harus mengarahkan dan membuka halaman detail rangkuman untuk kasus terkait. |
+| KF06 | R08 | Event-driven | Ketika Pencari Informasi mengirimkan kata kunci pencarian, sistem harus memeriksa kecocokan pada judul kasus, kalimat gejala, isi rangkuman, maupun istilah hukum formal, lalu menampilkan hasil yang relevan. |
+| KF07 | R09 | Unwanted behaviour | Jika masukan kata kunci pencarian tidak menghasilkan kecocokan data sama sekali, maka sistem harus menampilkan pesan pemberitahuan yang sopan bahwa kasus belum tersedia, dilengkapi rujukan bidang hukum alternatif dan tautan lembaga bantuan hukum. |
+| KF08 | R11, R12 | Ubiquitous | Sistem harus merangkai halaman rangkuman kasus secara sekuensial ke dalam satu tampilan berurutan, meliputi: inti masalah, hak, langkah penyelesaian, poin pertimbangan, daftar periksa dokumen, templat, artikel pendukung, dan disklaimer. |
+| KF09 | R51 | Ubiquitous | Sistem harus menampilkan segmen "hal yang perlu dipertimbangkan" yang menguraikan perkiraan waktu pengerjaan, estimasi biaya, dan pedoman rekomendasi pendampingan profesional. |
+| KF10 | R52 | Ubiquitous | Sistem harus mencantumkan nama Kurator penulis dan rekam waktu peninjauan oleh Administrator pada setiap rangkuman kasus yang dirilis ke antarmuka publik. |
+| KF11 | R14 | Ubiquitous | Sistem harus meletakkan deskripsi inti permasalahan beserta rincian hak-hak pengguna pada penempatan paling atas di halaman rangkuman. |
+| KF12 | R15 | Ubiquitous | Sistem harus melampirkan referensi nama peraturan, nomor pasal, beserta tautan rujukan resmi untuk mendukung klaim pada setiap butir hak pengguna. |
+| KF13 | R15 | Unwanted behaviour | Jika Kurator mencoba menyimpan sebuah butir hak pengguna tanpa mencantumkan rujukan undang-undang, maka sistem harus menggagalkan penyimpanan dan menginstruksikan pengguna untuk mengisi kolom referensi tersebut. |
+| KF14 | R17 | Ubiquitous | Sistem harus menyajikan langkah penyelesaian dalam format penomoran berurutan yang dilengkapi dengan deskripsi tujuan instruksi teknis serta persyaratan dokumen pada tiap tahap. |
+| KF15 | R17 | Optional feature | Apabila pada tahap penyelesaian terdapat indikasi tenggat waktu administratif, sistem harus memberikan visual penanda batas waktu pada instruksi terkait. |
+| KF16 | R18 | Event-driven | Ketika Pencari Informasi mencentang komponen pada daftar periksa, sistem harus menyesuaikan indikator grafis komponen tersebut dan mengakumulasi jumlah progres dokumen yang telah disiapkan. |
+| KF17 | R19 | Ubiquitous | Sistem harus mengatur kebijakan bahwa retensi status kotak centang dokumen tersebut hanya disimpan secara sementara (local session) pada peramban klien, serta memberikan informasi edukasi bahwa seluruh data centang akan menghilang apabila halaman dimuat ulang. |
+| KF18 | R20 | Optional feature | Apabila pada suatu kasus telah disediakan berkas templat draf dokumen, sistem harus menyajikan tombol unduh yang disertai informasi ukuran data dan tanggal pembaruan file terakhir. |
+| KF19 | R20 | Event-driven | Ketika Pencari Informasi menekan tombol pengunduhan templat, sistem harus mentransmisikan berkas terkompilasi dalam iterasi pembaruan terkini tanpa memerlukan proses registrasi. |
+| KF20 | R21 | Event-driven | Ketika Pencari Informasi melakukan gulir antarmuka menuju bagian berkas templat, sistem harus memunculkan disklaimer yang menegaskan bahwa templat sekadar berfungsi sebagai kerangka dasar awal hukum, tepat di atas tombol unduh. |
+| KF21 | R22 | Ubiquitous | Sistem harus mengakomodasi deretan daftar artikel dukungan serta memfasilitasi tautan menuju sumber portal hukum resmi pada bagian akhir struktur rangkuman. |
+| KF22 | R24 | Ubiquitous | Sistem harus konsisten menampilkan disklaimer pelepasan tanggung jawab profesi pada setiap *footer* antarmuka publik. |
+| KF23 | R25 | Ubiquitous | Sistem harus dapat menyajikan informasi direktori Lembaga Bantuan Hukum (LBH) terdekat berbasis lokasi pelayanannya. |
+| KF24 | R26 | Event-driven | Ketika Pencari Informasi membuka kelompok kasus yang direklasifikasikan sebagai situasi ancaman darurat, sistem harus menginterupsi layar secara prioritas untuk memberikan maklumat pelaporan terhadap pihak kepolisian atau unit perlindungan khusus. |
+| KF25 | R27 | Event-driven | Ketika Kurator mengeksekusi perintah penyimpanan bidang hukum baru, sistem harus mendata masukan tersebut lalu memperbarui antarmuka pengelolaan tabel taksonomi milik Kurator. |
+| KF26 | R28 | Unwanted behaviour | Jika Kurator memerintahkan instruksi hapus pada struktur kategori yang masih membawahi turunan artikel publik berstatus aktif, maka sistem harus memblokir perintah tersebut serta menampilkan peringatan jumlah hierarki file terikat yang menghalangi eksekusi. |
+| KF27 | R29 | Ubiquitous | Sistem harus melengkapi area pengetikan untuk Kurator melalui formulir elektronik dinamis di mana tata urutannya selaras dan representatif secara proporsional dengan susunan standar KF08. |
+| KF28 | R30 | Event-driven | Ketika Kurator membuat suatu draf naskah tulisan terbaru, sistem harus secara langsung menginisialisasi parameter status awal sebagai *Draft*. |
+| KF29 | R31 | Event-driven | Ketika Administrator menyetujui naskah tulisan, sistem harus seketika merefleksikan perubahan status dari basis data agar tayang di antarmuka publik, tanpa diwajibkan untuk mereplikasi arsitektur server aplikasi ulang. |
+| KF30 | R32 | Event-driven | Ketika Kurator melampirkan berkas templat ke suatu kelompok, sistem wajib untuk menyimpan masukan serta memperbarui log cap waktu versi sebagai templat termutakhir. |
+| KF31 | R33 | Unwanted behaviour | Jika berkas templat masukan melanggar batasan format sistem (selain PDF/DOCX) atau melebihi limit ukuran data (5 MB), maka sistem harus menolak permohonan unggah sambil menampilkan umpan balik informasi panduan teknis yang benar. |
+| KF32 | R35 | Event-driven | Ketika formulir naskah diajukan oleh Kurator, sistem wajib bertindak memanipulasi parameter naskah dari *Draft* ke *Diajukan* serta meneruskannya secara antrean bagi hak akses Administrator. |
+| KF33 | R36 | Unwanted behaviour | Jika Kurator mengirimkan permintaan persetujuan naskah sementara terdapat isian atribut wajib yang tidak lengkap, maka sistem harus mencegah tahapan persetujuan serta menyoroti poin atribut mana saja yang luput. |
+| KF34 | R37 | Ubiquitous | Sistem harus menginventarisasi rangkuman tulisan per Kurator sebagai dasbor kontrol status pengajuan (*Draft*, *Diajukan*, *Disetujui*, ataupun *Perlu Revisi*). |
+| KF35 | R37 | Optional feature | Apabila naskah ditetapkan oleh Administrator sebagai Perlu Revisi, sistem harus mewariskan pesan umpan balik atau tanggapan perbaikan pada menu penyuntingan Kurator bersangkutan. |
+| KF36 | R38 | Ubiquitous | Sistem harus merancang daftar kerja Administrator yang memilah antrean artikel *Diajukan* diurutkan menurut kaidah waktu antrean yang paling mendesak serta pengidentifikasian inisiator pembuat konten. |
+| KF37 | R39 | Event-driven | Ketika keputusan Setuju dialokasikan oleh Administrator, sistem harus mengeksekusi parameter tulisan sebagai "Disetujui". |
+| KF38 | R39 | Event-driven | Ketika keputusan Penolakan (Kembalikan) dialokasikan, sistem harus meregresi kembali parameter sebagai "Perlu Revisi" sekaligus menautkan pengiriman notifikasi/memo revisi dari panel Administrator ke Kurator. |
+| KF39 | R40 | Unwanted behaviour | Jika Administrator merilis putusan mengembalikan naskah tetapi membiarkan kolom alasan revisi tetap kosong, maka sistem harus membekukan rilis status tersebut dan mengharuskan pemenuhan keterangan penjelasan penolakan. |
+| KF40 | R41 | Unwanted behaviour | Jika sebuah sesi login dari jenis akun Kurator mensimulasikan permintaan penayangan naskahnya sendiri, maka sistem harus mengabaikan pemanggilan hak otorisasi penayangan konten sepenuhnya. |
+| KF41 | R42 | Event-driven | Ketika terjadi eskalasi maupun regresi atas transisi status sebuah konten, sistem harus mendaftarkan aktivitas log jejak mutasi historis lengkap yang memuat nama pemrakarsa, jam tayang, beserta statusnya. |
+| KF42 | R43 | Event-driven | Ketika hak Administrator melakukan penonaktifan identitas Kurator, sistem harus memutuskan sambungan instan apabila individu terkait masih login dan memblokir rekoneksi login ke depannya. |
+| KF43 | R44 | Ubiquitous | Sistem harus mendesain pembentukan otorisasi (pendaftaran) akun khusus di dalam infrastruktur akses panel Administrator, melarang adanya modul *Sign Up* pada antarmuka publik umum. |
+| KF44 | R45 | Event-driven | Ketika pengguna (Administrator/Kurator) menyajikan kombinasi pasangan kata sandi beserta validasi email tepercaya, sistem harus memberikan saluran akses dan menavigasikan alur login langsung ke antarmuka kerja berdasar jenis perannya. |
+| KF45 | R45 | Unwanted behaviour | Jika penyajian input data kredensial tidak sesuai atau gagal verifikasi, maka sistem harus membentengi akses dengan menyampaikan informasi galat umum guna menghalangi indikator kelemahan kata sandi dan proteksi akun surel. |
+| KF46 | R47 | Unwanted behaviour | Jika entitas klien melakukan upaya kunjungan URI spesifik tanpa token sesi pengelolaan tervalidasi, maka sistem otomatis mendeteksi lalu mengalihkan (redirect) rute jaringan kepada menu utama antarmuka log masuk atau menerbitkan halaman peringatan akses ditolak. |
+| KF47 | R50 | Ubiquitous | Sistem harus menerapkan standarisasi tata bahasa yang sopan, formal, dan komunikatif di dalam konfigurasi Bahasa Indonesia untuk pelabelan tombol, pesan pemberitahuan kesalahan, serta isi layanan konten antarmuka. |
+
+## 2.5 Kebutuhan Non-Fungsional (KNF)
+
+Kebutuhan Non-Fungsional memaparkan spesifikasi aspek pengujian kuantitatif dalam mendefinisikan kualitas standar pelayanan, performa, dan aspek perlindungan.
+
+| ID KNF | ID Kebutuhan | Parameter | Pola EARS | Deskripsi Kebutuhan |
+| :--- | :--- | :--- | :--- | :--- |
+| KNF01 | R03 | Response time | Event-driven | Ketika pengguna membuka halaman beranda pada spesifikasi jaringan sekelas koneksi 1 Mbps, sistem harus menuntaskan penyajian render visual blok inti layar selambat-lambatnya 3 detik waktu paruh eksekusi. |
+| KNF02 | R03 | Memory | Ubiquitous | Sistem harus melakukan pengaturan transfer kompresi *payload* awal terhadap setiap pemuatan permintaan antarmuka web, menjamin efisiensi alokasi hingga tidak menembus beban konsumsi kuota sebesar 500 KB di tahap pramuat non-singgahan (tanpa *cache*). |
+| KNF03 | R04 | Portability | Ubiquitous | Sistem harus mampu melayani akses tata letak dan utilitas antarmuka tanpa degradasi malfungsi bila diramban dari klien perangkat peramban *mainstream* seperti Chrome, Firefox, Edge, maupun Safari versi rilis dua tahun terkini; dan fleksibel merespons ukuran kanvas layar (*viewport*) terkecil mulai lebar bentang 360 piksel. |
+| KNF04 | R10 | Response time | Event-driven | Ketika entitas klien melepaskan permintaan layanan pencarian (sekalipun ukuran matriks data kasus telah menembus 500 entri), sistem harus mampu meringkas performa proses algoritma pengembalian hasil dalam ambang batas toleransi kelambatan maksimal tidak melebihi 2 detik. |
+| KNF05 | R13, R31 | Availability | Ubiquitous | Sistem harus merancang ketersediaan koneksi infrastruktur *(Uptime)* agar mampu melayani akses publik pada reliabilitas minimum sebesar 99 persen setiap bulannya, terkecuali adanya jadwal teknis jeda pemeliharaan sistem yang sudah diinformasikan melalui maklumat. |
+| KNF06 | R16 | Ergonomy | Ubiquitous | Sistem harus menerapkan proporsi warna antarmuka rasio perbandingan tipografi *(contrast ratio)* sebesar setidaknya 4,5:1 terhadap *background* pendampingnya, diikuti ketetapan ukuran pemetaan dasar pengetikan *(font size)* paling minimal skala 16 piksel agar kompatibel terhadap prasyarat aksesibilitas WCAG 2.1 ekuivalensi level AA. |
+| KNF07 | R16 | Ergonomy | Ubiquitous | Sistem harus memfasilitasi fungsionalitas manuver aplikasi sepenuhnya kepada pengguna disabilitas dengan memfasilitasi pengendali masukan (*input*) melalui interaksi papan tik (keyboard-only navigation), yang dipertegas perwujudan garis pinggir penanda navigasi visual manakala elemen antarmuka saling difokuskan (focused state). |
+| KNF08 | R19 | Security | Ubiquitous | Sistem wajib memberlakukan restriksi keamanan privasi pada klien berupa isolasi penuh interaksi di daftar periksa (*checklist*) serta rekam tapak kasus secara anonim. Ekstraksi data-data pribadi ini mutlak harus tertahan (*sandboxed*) dalam instrumen perangkat, serta tidak diinjeksikan masuk ke basis data *server*. |
+| KNF09 | R31 | Maintainability | Event-driven | Ketika konfirmasi operasional perubahan tulisan dieksekusi Administrator, proses asimilasi konfigurasi terhadap tampilan layar tayang harus terlaksana secara mulus maksimal selama tenggat penyelarasan waktu 60 detik tanpa penumpangan teknis untuk re-*deploy* paket dari *source code*. |
+| KNF10 | R34 | Reliability | Unwanted behaviour | Jika terdapat insiden transmisi jaringan korup maupun putus sesaat Kurator tengah mengunggah berkas templat pembaruan dokumen, maka prosedur transaksional cadangan sistem harus merancang mekanisme pemulihan seketika (rollback) ke eksistensi templat versi lampau, sehingga menghindarkan kemungkinan penyediaan paket fail biner yang korup bagi pengguna umum. |
+| KNF11 | R42 | Reliability | Ubiquitous | Sistem harus membentengi integritas dokumentasi daftar riwayat mutasi (*Approval Log*) secara terisolasi permanen. Otoritas teknis maupun fungsi kelola Administrator sama sekali tidak diberdayakan untuk bisa mengakses manipulasi pemusnahan histori kronologi dari pencatatan log sistem bersangkutan. |
+| KNF12 | R46 | Security | Ubiquitous | Sistem harus mewajibkan prosedur validasi keamanan dengan tidak mencatat formulasi kata sandi identitas pengguna secara mentah (plain-text). Konversi *hash string* algoritma bcrypt yang dilengkapi minimal indeks *cost factor* komputasi setara 12 adalah standar wajib keamanan penyimpanan di *server* penyimpanan pusat. |
+| KNF13 | R47 | Security | Ubiquitous | Sistem harus mentransmisikan selubung akses portabilitas pada lalu lintas jaringan pengelola menggunakan standar sekuritas yang aman (TLS/HTTPS). Segala porsi akses yang diprakarsai melalui portal HTTP lawas harus dikenakan perlakuan dialihkan secara tegas (*enforced auto-redirect*) ke versi jalur tertutup bersandi HTTPS. |
+| KNF14 | R53 | Ergonomy | Ubiquitous | Sistem harus mengakumulasikan pemusatan kerangka modul penyuntingan penulisan informasi kasus menjadi satu bentang bidang *single-page form* yang dinamis; hal ini meniadakan kerepotan navigasi lompat tab pada Kurator dan mereduksi risiko kelalaian konsentrasi pengumpulan isi naskah. |
+| KNF15 | R54 | Ergonomy | Event-driven | Ketika porsi verifikasi konten diselenggarakan pada bilik kerja Administrator, sistem harus merepresentasikan kanvas pembacaan ulasan yang dipadukan pada porsi kontrol bilah tombol persetujuan interaktif ("Setujui" dan "Kembalikan") tanpa menempatkan Administrator dalam skema pengujian berlapis tab navigasi. |
+| KNF16 | R48 | Security | State-driven | Selama identitas klien masuk mendiamkan sistem dari porsi kegiatan instruksi interaksi apa pun *(idle time)* dengan kalkulasi berurut hingga genap kurun waktu 30 menit lamanya, sistem harus memutus sambungan otentikasi identitas yang sah itu lalu menetapkan perintah verifikasi log masuk baru (*re-authentication*) untuk sesi selanjutnya. |
+
+<br>
+
+# Referensi
+
+- *Justice Needs in Indonesia 2014: Problems, Processes and Fairness* - The Hague Institute for Innovation of Law (2014): https://www.hiil.org/wp-content/uploads/2018/09/Justice-needs-in-Indonesia.pdf
+- *Analisis Ketimpangan Keadilan di Indonesia: Potret Buram Akses Keadilan bagi Masyarakat Marginal* - Pancasila: Jurnal Keindonesiaan (2025): https://ejurnalpancasila.bpip.go.id/index.php/PJK/article/view/728
+- Mavin, A., Wilkinson, P., Harwood, A., & Novak, M. (2009). *Easy Approach to Requirements Syntax (EARS)*. IEEE International Requirements Engineering Conference: https://ieeexplore.ieee.org/document/5328509
+- Web Content Accessibility Guidelines (WCAG) 2.1 - W3C: https://www.w3.org/TR/WCAG21/
