@@ -23,6 +23,7 @@
 
 ### Daftar Isi
 * [Milestone 1](#milestone-1)
+* [Milestone 2](#milestone-2)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -47,11 +48,31 @@
 | 02-09-2026 | Wesley Lianto dan Christopherus Michael Jafeth Tobing | Menyusun bagian 3.3 Deskripsi Aktivitas  | 2 | Done | Bagian baru muncul setelah revisi, sehingga memerlukan waktu untuk memetakan setiap kebutuhan berdasarkan *user story* yang ada |
 | 02-09-2026 | Rivan Cahyadi dan Raditya Wibian Sastaka | Finalisasi diagram untuk subbab 3.4 Model Proses Bisnis | 2 | Done | - |
 
-
 **Catatan/Evaluasi Milestone 1:**
 * Pembagian tugas sudah dilakukan per subbab dan setiap anggota memiliki tanggung jawabnya masing-masing
 * Kendala yang dialami adalah *time management* kami sebagai kelompok untuk mengerjakan lebih awal dari tenggat waktu yang seharusnya sehingga tidak terburu-buru
 
+### Milestone 2
+**Periode:** 6 September 2026 - 9 September 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 06-08-2026 | Matthew Evan Kurniawan | Mengecek perubahan yang ada untuk milestone 2 - Requirement Gathering sekaligus membuat list pekerjaan | 0.5 | Done | - | 
+| 07-08-2026 | Matthew Evan Kurniawan, Raditya Wibian Sastaka, Wesley Lianto | Diskusi mengenai isi per bagian dari Requirement Gathering, dari Bab 1 Deskripsi Umum hingga Bab 2.5. Kebutuhan Non Fungsional untuk memahami perbedaan antara masing-masing bagian. | 2 | Done | Sulit untuk membedakan kebutuhan fungsional dan non-fungsional, sehingga membutuhkan waktu |
+| 07-08-2026 | Semua Anggota | Mengecek kembali 2.1 Kebutuhan Pengguna Awal dan 2.2 Deskripsi Aktivitas yang digunakan dari milestone 1 | 2 | Done | - |
+| 08-08-2026 | Rivan Cahyadi, Christopherus Michael Jafeth Tobing | Merumuskan Bagian 2.3 Pemetaan Kebutuhan | 2.5 | On-Going | - |
+| 08-08-2026 | Wesley Lianto, Raditya Wibian Sastaka | Merumuskan Bagian 2.4 Kebutuhan Fungsional | 3 | On-Going | - |
+| 08-08-2026 | Matthew Evan Kurniawan | Merumuskan Bagian 2.5 Kebutuhan Non Fungsional | 2 | On-Going | - |
+| 08-08-2026 | Matthew, Wesley, Rivan, Christopherus | Melakukan asistensi offline dan menerima revisian | 1 | Done | Raditya sakit sehingga tidak menghadiri asistensi |
+| 08-08-2026 | Matthew Evan Kurniawan | Membuat Form Asistensi | 0.5 | Done  | - |
+| 09-08-2026 | Semua Anggota | Melakukan Revisi pada beberapa bagian yang kurang atau terputus logikanya berdasarkan revisi dari asisten | 3 | Done  | - |
+| 09-08-2026 | Matthew Evan Kurniawan | Membuat Logbook khusus milestone 2 | 1 | Done  | - |
+| 09-08-2026 | Raditya Wibian Sastaka | Membuat AI-Usage khusus milestone 2 | 1 | Done  | - |
+| 09-08-2026 | Wesley Lianto, Raditya Wibian Sastaka, Matthew Evan Kurniawan | Mengecek ulang Bab 2 mulai dari bab 2.1 hingga bab 2.5 sekaligus melakukan *paraphrase* | 3 | Done  | - |
+
+**Catatan/Evaluasi Milestone 2:**
+* Kendala yang dialami adalah *time management* kami sebagai kelompok untuk mengerjakan lebih awal dari tenggat waktu yang seharusnya sehingga tidak terburu-buru.
+* Lebih mengambil waktu untuk memahami tiap bagian dari tugas, agar tidak salah ditengah jalan saat membuat bagian tertentu.
 ---
 
 
