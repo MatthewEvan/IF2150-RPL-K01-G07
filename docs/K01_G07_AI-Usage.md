@@ -47,7 +47,6 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | Claude Opus 5 | Untuk membantu meperdalam pemahaman mengenai bagian pemetaan kebutuhan dan memberikan studi kasus(Raditya,Matthew,Wesley) | "Tolong dong jelaskan mengenai pemetaan kebutuhan, terutama pada bagian P/L nya, berarti nanti itu kalau P/L nya ya itu baru kita lanjut ke bagian KF dan NKF?"| Kami menanyakan lagi mengenai bagian yang kami belum paham dan konfirmasinya kepada asisten dosen terakit.|
 | Claude Opus 5 | Untuk membantu memberikan studi kasus pada konsep KNF dan KF serta memvalidasi pemahaman team (Raditya, Matthew, Wesley) | "Tolong dong ini bener ga ya kalau misal dari activity ada P/L ya baru lanjut kan buat KNF dan KF, berarti KF itu lebih kek ngapain kegiatanya dan KNF itu lebih ke teknsinya gitu kan?" |Kami membaca lagi di website seperti medium dan juga resourse luar untuk mevalidasi jawaban dari Ai|
-| | | | | |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
