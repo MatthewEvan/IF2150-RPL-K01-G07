@@ -25,6 +25,7 @@
 * [Milestone 1](#milestone-1)
 * [Milestone 2](#milestone-2)
 * [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -89,6 +90,22 @@
 | 16-09-2026 | Matthew Evan Kurniawan | Melakukan perubahan pada Kebutuhan Fungsional dengan memastikan penggunaan EARS dan parafrase beberapa KF | 2 | Done | - |
 | 16-09-2026 | Matthew Evan Kurniawan | Mengisi Form Asistensi | 0.5 | Done | - |
 | 16-09-2026 | Matthew Evan Kurniawan | Mengisi Logbook dan AI-Usage | 0.5 | Done | - |
+---
+
+### Milestone 4
+**Periode:**  18 September 2026 - 23 September 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 18-09-2026 | Seluruh Anggota | Mengikuti Asistensi Akbar RPL yang dilaksanakan melalui Teams | 1 | Done | - |
+| 20-09-2026 | Matthew Evan Kurniawan | Mengidentifikasi dan Membuat Kelas per Use Case (ternyata baru entity saja) | 3 | Done  | - |
+| 21-09-2026 | Matthew Evan Kurniawan | Membuat revisi pada Identifikasi Kelas untuk memasukkan juga Boundary dan Control sesuai halaman PahamHukum | 3 | Done  | - |
+| 22-09-2026 | Matthew Evan Kurniawan | Melakukan finalisasi pada Identifikasi Kelas sekaligus menanyakan ke asisten | 2 | Done | - |
+| 22-09-2026 | Matthew Evan Kurniawan | Membuat Class Diagram untuk UC01, UC04, dan UC09 | 1 | Done | - |
+| 22-09-2026 | Matthew Evan Kurniawan, Raditya Wibian Sastaka, Rivan Cahyadi | Asistensi mengenai 4.1 Identifikasi Kelas dan 4.2 Class Diagram per Use Case | 1.5 | Done | - |
+| 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan sisa Class Diagram lain | 3 | Done | - |
+| 23-09-2026 | Raditya Wibian Sastaka | Menyelesaikan Class Diagram keseluruhan 4.3 | 2 | Done | - |
+| 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan Bagian 5 Traceability | 0.5 | Done | - |
 
 **Catatan/Evaluasi Milestone 3:**
 
