@@ -104,7 +104,7 @@
 | 22-09-2026 | Matthew Evan Kurniawan | Membuat Class Diagram untuk UC01, UC04, dan UC09 | 1 | Done | - |
 | 22-09-2026 | Matthew Evan Kurniawan, Raditya Wibian Sastaka, Rivan Cahyadi | Asistensi mengenai 4.1 Identifikasi Kelas dan 4.2 Class Diagram per Use Case | 1.5 | Done | - |
 | 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan sisa Class Diagram lain | 3 | Done | - |
-| 23-09-2026 | Raditya Wibian Sastaka | Menyelesaikan Class Diagram keseluruhan 4.3 | 2 | Done | - |
+| 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan Class Diagram keseluruhan 4.3 | 2 | Done | - |
 | 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan Bagian 5 Traceability | 0.5 | Done | - |
 
 **Catatan/Evaluasi Milestone 3:**
