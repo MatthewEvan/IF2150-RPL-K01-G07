@@ -25,6 +25,7 @@
 * [Milestone 1](#milestone-1)
 * [Milestone 2](#milestone-2)
 * [Milestone 3](#milestone-3)
+* [Milestone 4](#milestone-4)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -55,6 +56,13 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | :--- | :--- | :--- | :--- |
 | Claude Opus 4.8 | Membantu pemahaman mengenai konsep use case dan perbedaannya dengan kebutuhan fungsional, serta memberikan satu contoh use case | "Coba jelaskan perbedaan antara use case dan KF (kebutuhan fungsional) dengan memberikan satu contoh use case dari yang sudah dibuat "| Kami memvalidasi contoh use case kepada asisten terkait dan mengecek kesesuaiannya dengan KF yang sudah ada sebagai referensi dalam pembuatan use case lainnya. |
 | Claude Opus 4.8 | Membantu mengecek apakah use case yang dibuat sudah mencakup semua kebutuhan fungsional yang ada | "Tolong cek kembali apakah use case yang kami buat sudah mencakup semua kebutuhan fungsional dan kesesuaiannya" | Kami membaca ulang response dari AI dan melakukan evaluasi ketika ada KF yang seharusnya diletakkan pada use case yang berbeda atau tidak sesuai |
+
+### Milestone 4
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Claude Opus 5.5 | Menjelaskan hubungan antara class komposisi, agregasi, generalisasi, dependensi, dan asosiasi menggunakan contoh kasus dari PahamHukum | Berdasarkan class yang sudah dibuat, coba contohkan masing-masing relasi antar class menggunakan class yang ada | 1. Generalisasi: hubungan secaman anak-induk yaitu kelas turunan yang memiliki atribut tambahan, contohnya Akun turunannya Kurator. 2. .....|
+| Claude Opus 5.5 | Mengecek apakah sebuah class termasuk ke entity, boundary, atau controller beserta penjelasannya | Coba jelaskan class RiwayatStatus itu masuknya ke entity, boundary, atau controller. | Berdasarkan fungsinya, RiwayatStatus mencatat data riwayat dan berfungsi sebagai *entity* ... |
+| Claude Opus 5.5 | Mengecek apakah hubungan antar kelas untuk Class Diagram gabungan sudah lengkap dengan syarat masing-masing kelas hanya ada 1 dalam diagram | [Memberikan Gambar] Cek kembali apakah Class Diagram ini sudah mencakup semua class yang ada dengan hubungannya masing-masing | Ya, diagram tersebut sudah menunjukkan hubungan per kelas dengan lengkap dan hanya terdapat satu box per kelas |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
