@@ -7,23 +7,23 @@ SPESIFIKASI KEBUTUHAN PERANGKAT LUNAK (SKPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## PahamHukum
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
-Dipersiapkan oleh:
+Dipersiapkan oleh: #PenjagaNilai
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | K01 |
+| Kelompok | G07  |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525007 | Rivan Cahyadi |
+| 13525019 | Raditya Wibian Sastaka |
+| 13525064 | Matthew Evan Kurniawan |
+| 13525100 | Wesley Lianto |
+| 13525109 | Christopherus Michael Jafeth Tobing |
 ---
 
 ## Daftar Perubahan
@@ -40,10 +40,10 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan dengan ringkas tujuan dokumen SKPL ini dibuat dan siapa saja yang akan menggunakan dokumen ini.
+Dokumen Spesifikasi Kebutuhan Perangkat Lunak (SKPL) ini disusun untuk menjabarkan spesifikasi fungsional dan non-fungsional dari perangkat lunak PahamHukum. Dokumen ini bertujuan untuk menjadi acuan resmi dan kontrak teknis bagi tim pengembang (developer), penguji (tester), dan pengelola proyek (administrator) dalam membangun sistem. Melalui dokumen ini, seluruh pemangku kepentingan dapat memastikan bahwa produk akhir yang dikembangkan selaras dengan kebutuhan, batasan, dan tujuan yang telah disepakati.
 
 ## 1.2 Lingkup Masalah
-Tuliskan dengan ringkas nama aplikasi dan deskripsi singkatnya. Bagian ini maksimal berisi satu paragraf, dapat diringkas dari BAB 1 *Analisis Permasalahan* pada dokumen *Topic Brainstorming*.
+PahamHukum adalah platform literasi hukum berbasis web yang menjembatani masyarakat awam dengan informasi hukum. Sistem ini menyederhanakan bahasa hukum menjadi panduan praktis berdasarkan kelompok kasus sehari-hari, memberikan wawasan, panduan langkah penyelesaian, serta template dokumen pendukung secara gratis. Platform ini tidak bertindak sebagai penasihat hukum resmi, melainkan sebagai penuntun langkah awal bagi masyarakat sebelum mereka berinteraksi langsung dengan lembaga hukum formal.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
 Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
@@ -58,7 +58,9 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *KNF* | *Singkatan dari Kebutuhan Non-Fungsional.* |
 | *UC* | *Singkatan dari Use Case.* |
 | *EARS* | *Easy Approach to Requirements Syntax, yaitu pola penulisan kebutuhan agar konsisten dan mudah diuji.* |
-| *...* | *...* |
+| *LBH* | *Lembaga Bantuan Hukum, instansi yang memberikan layanan hukum bagi masyarakat.* |
+| *Kurator* | *Pengelola sistem yang bertugas menyusun, menyunting, dan mengajukan konten rangkuman kasus untuk publik.* |
+| *Administrator* | *Pemegang otoritas sistem yang memvalidasi konten kurator dan mengatur manajemen akun.* |
 
 ## 1.4 Aturan Penomoran
 Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
@@ -67,18 +69,23 @@ Tabel 1.4. Aturan Penomoran
 
 | Hal/Bagian | Penomoran | Keterangan |
 | :--- | :--- | :--- |
-| *Kebutuhan Fungsional* | *KFXX* | |
-| *Kebutuhan Non-Fungsional* | *KNFXX* | |
-| *Aktor* | *AXX* | |
-| *Use Case* | *UCXX* | |
-| *Kelas* | *CXX* | |
-| *...* | *...* |
+| *Kebutuhan Fungsional* | *KFXX* | *XX adalah nomor urut dari 01 hingga 43* |
+| *Kebutuhan Non-Fungsional* | *KNFXX* | *XX adalah nomor urut dari 01 hingga 13* |
+| *Aktor* | *AXX* | *XX adalah nomor urut dari 01 hingga 03* |
+| *Use Case* | *UCXX* | *XX adalah nomor urut dari 01 hingga 11* |
+| *Kelas* | *CXX* | *XX adalah nomor urut dari 01 hingga 29* |
 
 ## 1.5 Referensi
-Dokumentasi P/L yang dirujuk oleh dokumen ini. Referensi dapat berupa buku, panduan, ataupun dokumentasi lain yang dipakai dalam pengembangan P/L ini.
+1. *Justice Needs in Indonesia 2014: Problems, Processes and Fairness* - The Hague Institute for Innovation of Law (2014)
+
+2. *Analisis Ketimpangan Keadilan di Indonesia: Potret Buram Akses Keadilan bagi Masyarakat Marginal* - Pancasila: Jurnal Keindonesiaan (2025)
+
+3. Mavin, A., Wilkinson, P., Harwood, A., & Novak, M. (2009). Easy Approach to Requirements Syntax (EARS). IEEE.
+
+4. Web Content Accessibility Guidelines (WCAG) 2.1 - W3Cs
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen SKPL ini secara runut (misalnya: BAB 2 membahas deskripsi umum P/L, BAB 3 membahas kebutuhan fungsional dan non-fungsional, dst).
+Dokumen SKPL ini disusun dengan BAB 1 menguraikan pendahuluan, tujuan, lingkup masalah, serta definisi istilah. BAB 2 memaparkan deskripsi umum perangkat lunak, karakteristik pengguna, batasan, serta lingkungan operasi. BAB 3 mendetailkan Kebutuhan Fungsional (KF) dan Kebutuhan Non-Fungsional (KNF) sistem secara terukur. BAB 4 menjabarkan pemodelan Use Case beserta skenarionya. BAB 5 menjelaskan pemodelan Kelas (Class Diagram) baik per-Use Case maupun keseluruhan. Terakhir, BAB 6 memuat matriks keterlacakan (Traceability) yang memetakan hubungan antara Kelas, Use Case, dan Kebutuhan Fungsional.
 
 ---
 
