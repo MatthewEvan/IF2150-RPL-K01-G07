@@ -92,45 +92,64 @@ Dokumen SKPL ini disusun dengan BAB 1 menguraikan pendahuluan, tujuan, lingkup m
 # BAB 2: Deskripsi Perangkat Lunak
 
 ## 2.1 Deskripsi Umum Sistem
-Bagian ini dapat disalin dari BAB 1.1 *Deskripsi Umum Sistem* pada dokumen *Requirement Gathering*, disesuaikan bila ada perubahan alur bisnis. Lengkapi dengan gambaran proses bisnis dalam bentuk *Activity Diagram* (boleh disalin dan diperbarui dari 3.3 *Model Proses Bisnis* pada dokumen *Topic Brainstorming*).
+PahamHukum adalah aplikasi berbasis web yang menjembatani masyarakat awam dengan informasi hukum. Selama ini, informasi hukum di Indonesia ditulis dengan istilah teknis dan disusun untuk kalangan profesional. Akibatnya, orang yang tidak  memiliki latar belakang hukum sering terhenti karena kebingungan. PahamHukum menyajikan ulang informasi tersebut dalam bahasa sehari-hari, lengkap dengan panduan langkah dan templat surat pendukung. Namun, sistem ini tidak menangani perkara, tidak mewakili pengguna secara hukum, dan tidak menggantikan advokat maupun Lembaga Bantuan Hukum (LBH).
+
+Proses bisnis PahamHukum berjalan dalam dua alur. Alur pertama dijalankan Pencari Informasi. Pengguna membuka beranda, menelusuri bidang hukum atau mengetik kata kunci, lalu memilih kasus yang paling mirip dengan situasinya. Judul kasus ditulis dalam bahasa sehari-hari, misalnya "saya diberhentikan tanpa surat", sedangkan istilah hukum resminya hanya menjadi keterangan pelengkap. Setelah kasus dipilih, sistem menampilkan satu halaman rangkuman berisi inti masalah, hak pengguna, langkah penyelesaian, hal yang perlu dipertimbangkan, daftar periksa dokumen, templat surat, artikel dan sumber hukum, serta rujukan LBH.
+
+Di balik layar, alur kedua dijalankan Kurator dan Administrator. Kurator menyusun rangkuman kasus di panel pengelolaan, melampirkan templat, lalu mengajukannya sehingga status konten berubah dari `Draft` menjadi `Diajukan`. Selanjutnya, Administrator memeriksa ketepatan informasi hukum di dalamnya. Konten yang disetujui langsung tayang bersama nama Kurator dan tanggal peninjauan. Sebaliknya, konten yang dikembalikan berstatus `Perlu Revisi` dan wajib disertai catatan perbaikan. Singkatnya, publik hanya melihat konten yang sudah lolos peninjauan.
+
+Kedua alur tersebut dimodelkan dalam *Activity Diagram* berikut.
 
 <p align="center">
-<img alt="Contoh Activity Diagram" src="./assets/diagram/diagram-act-1.avif" width="70%">
+<img alt="Activity Diagram Penyediaan Konten untuk Kurator dan Administrator" src="./assets/diagram/kurator.png" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Activity Diagram Proses Bisnis</i>
+<i>Gambar 1. Activity Diagram Penyediaan Konten untuk Kurator dan Administrator</i>
+</p>
+<br>
+<p align="center">
+<img alt="Activity Diagram untuk Pencari Informasi" src="./assets/diagram/pencari_informasi.png" width="70%">
+</p>
+<p align="center">
+<i>Gambar 2. Activity Diagram untuk Pencari Informasi</i>
 </p>
 
 ## 2.2 Deskripsi Umum Perangkat Lunak
-Diisi dengan deskripsi umum perangkat lunak untuk mendukung proses bisnis yang telah diuraikan pada sub-bab sebelumnya. Uraian harus menunjukkan lingkup perangkat lunak, mencakup keterkaitan perangkat lunak dengan sistem lain di luar (misalnya *Payment Gateway* atau layanan pihak ketiga lain yang dipakai).
+PahamHukum memiliki dua antarmuka, yaitu halaman publik dan panel pengelolaan. Halaman publik terbuka bagi siapa saja tanpa akun. Di sana, Pencari Informasi dapat menelusuri dan mencari kasus, membaca rangkuman, menandai daftar periksa dokumen, serta mengunduh templat surat. Panel pengelolaan hanya bisa diakses Kurator dan Administrator setelah masuk dengan email dan kata sandi. Kurator memakainya untuk menyusun dan mengajukan konten, sementara Administrator memakainya untuk meninjau konten dan mengelola akun Kurator.
 
-*Contoh narasi:* "*[Nama P/L]* merupakan aplikasi *[deskripsi singkat]* yang berinteraksi dengan *Payment Gateway (dummy)* untuk memproses otorisasi pembayaran. Sistem menerima input dari *Pelanggan* melalui antarmuka aplikasi dan mengirimkan permintaan transaksi ke *Payment Gateway* setiap kali pelanggan melakukan checkout."
+PahamHukum tidak terhubung secara otomatis dengan sistem eksternal. Tidak ada *payment gateway*, layanan tanda tangan digital, ataupun integrasi dengan sistem pengaduan instansi. Keterkaitan dengan pihak luar hanya berupa rujukan dan penyimpanan di sisi pengguna, seperti berikut.
+1. Sumber hukum primer terbuka, seperti JDIH dan peraturan.bpk.go.id, dirujuk Kurator saat menyusun konten dan ditampilkan sebagai tautan pada artikel pendukung. Sistem tidak menarik data dari situs tersebut.
+2. Direktori LBH ditampilkan beserta area layanannya. Untuk kasus yang ditandai darurat, sistem menampilkan rujukan ke kepolisian atau unit perlindungan terkait. Tidak ada data pengguna yang dikirim ke lembaga mana pun.
+3. Penyimpanan lokal peramban (*local storage*) menyimpan status daftar periksa dokumen milik pengguna. Data ini tidak pernah dikirim ke server.
 
 ## 2.3 Pengguna dan Kebutuhan Pengguna Perangkat Lunak
-Tuliskan seluruh jenis pengguna (*role*/aktor) yang terlibat dalam perangkat lunak (P/L), beserta kebutuhannya secara umum. Bagian ini dapat disalin dari 1.2 *Deskripsi Pengguna Perangkat Lunak* (dokumen Requirement Gathering) atau 3.1 *Identifikasi Aktor* (dokumen Use Case), pastikan sudah konsisten dengan aktor final yang dipakai di BAB 4.
 
 | Pengguna | Kebutuhan |
 | :--- | :--- |
-| *Pelanggan* | *Pelanggan harus dapat memesan produk, mengelola keranjang, dan menyelesaikan pembayaran melalui sistem.* |
-| *...* | *...* |
+| Pencari Informasi (Masyarakat Awam) | Menemukan kasus yang sesuai dengan situasinya, baik lewat penelusuran bidang hukum maupun kata kunci sehari-hari. Setelah itu, pengguna dapat membaca rangkuman kasus, menandai daftar periksa dokumen, mengunduh templat surat, dan melihat rujukan sumber hukum serta LBH. Semua fitur ini dipakai tanpa mendaftar akun. |
+| Kurator Konten | Masuk ke panel pengelolaan, menulis atau menyunting rangkuman kasus dalam satu formulir, dan melampirkan templat PDF atau DOCX. Kurator juga mengajukan konten untuk ditinjau, lalu memantau statusnya beserta catatan revisi dari Administrator. Kurator tidak dapat menayangkan kontennya sendiri. |
+| Administrator Sistem | Masuk ke panel pengelolaan dan melihat antrean konten berstatus `Diajukan`, diurutkan dari yang paling lama menunggu. Pada satu layar, Administrator membaca isi konten lalu memilih Setujui atau Kembalikan dengan catatan revisi. Selain itu, Administrator mendaftarkan, memperbarui, dan menonaktifkan akun Kurator. |
 
 ## 2.4 Batasan Perangkat Lunak
-Batasan yang harus dituliskan, di antaranya:
-1. *P/L harus memakai file data/API dari sistem lain (sebutkan, misal Payment Gateway dummy).*
-2. *P/L harus memakai format data yang sama dengan sistem lain.*
-3. *P/L harus berfungsi pada platform tertentu (misal: web browser modern, atau desktop Windows dan Linux).*
-4. *...*
+1. P/L berjalan sebagai aplikasi web pada peramban Chrome, Firefox, Edge, dan Safari versi rilis dua tahun terakhir, dengan lebar layar minimal 360 piksel.
+2. P/L tidak memakai API atau data dari sistem lain. Sumber hukum primer dan direktori LBH hanya ditampilkan sebagai tautan atau informasi statis.
+3. P/L hanya menerima templat berformat PDF atau DOCX dengan ukuran paling besar 5 MB.
+4. P/L tidak menyimpan data pribadi maupun detail kasus Pencari Informasi di server. Status daftar periksa hanya tersimpan di peramban pengguna.
+5. P/L hanya menyediakan informasi umum, bukan nasihat hukum yang mengikat. Oleh karena itu, setiap halaman publik wajib memuat *disclaimer*.
+6. P/L tidak menangani situasi darurat secara langsung dan tidak mengirim dokumen ke instansi mana pun. Pengguna diarahkan ke lembaga yang berwenang, lalu menindaklanjuti sendiri.
+7. P/L tidak menyediakan pendaftaran akun publik. Akun Kurator hanya dibuat oleh Administrator.
+8. Cakupan konten dibatasi pada dua sampai tiga bidang hukum, misalnya ketenagakerjaan dan perlindungan konsumen, dengan antarmuka berbahasa Indonesia.
 
 ## 2.5 Lingkungan Operasi Perangkat Lunak
-Spesifikasi *operating system* atau lingkungan yang dibutuhkan P/L untuk beroperasi. Bagian ini digunakan untuk memastikan pengguna memiliki spesifikasi yang cukup untuk menjalankan P/L. Misalnya mencakup komponen server, client, OS, DBMS, tetapi tidak menutupi kemungkinan komponen lain.
 
 | Komponen | Spesifikasi |
 | :--- | :--- |
-| *Server* | *[contoh: Node.js v20, dijalankan pada layanan cloud]* |
-| *Client* | *[contoh: Web Browser modern (Chrome, Firefox terbaru)]* |
-| *DBMS* | *[contoh: PostgreSQL 15]* |
-| *OS* | *[contoh: Cross-platform (Windows/Linux/MacOS) melalui browser]* |
-| *...* | *...* |
+| Server | Web server pada layanan *cloud hosting* gratis atau berbiaya rendah dengan dukungan HTTPS |
+| Client | Peramban Chrome, Firefox, Edge, atau Safari (versi rilis dua tahun terakhir) di komputer maupun ponsel |
+| DBMS | Basis data relasional (PostgreSQL atau MySQL) untuk data akun, bidang hukum, kelompok kasus, konten, dan riwayat perubahan status |
+| Penyimpanan Berkas | Penyimpanan di sisi server untuk templat PDF dan DOCX |
+| OS | Tidak bergantung pada sistem operasi tertentu selama tersedia peramban yang didukung |
+| Jaringan | Koneksi internet minimal 1 Mbps agar beranda termuat paling lama 3 detik |
 
 ---
 
