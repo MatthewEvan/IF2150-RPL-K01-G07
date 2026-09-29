@@ -197,51 +197,243 @@ Salin ulang daftar aktor final dari BAB 3.1 dokumen *Use Case & Scenario Use Cas
 | A03 | **Administrator Sistem** | Pemegang otoritas tertinggi dalam sistem. Tugas utamanya meninjau akurasi konten dari Kurator sebelum terbit, sekaligus mengelola akun dan hak akses mereka. Pemahaman hukumnya umumnya lebih dalam daripada Kurator dengan tingkat kehati-hatian yang tinggi untuk meloloskan informasi hukum bagi konsumsi publik, contohnya praktisi hukum atau mahasiswa tingkat akhir di bidang hukum. |
 
 ## 4.2 Identifikasi Use Case
-Salin ulang daftar Use Case versi terbaru dari BAB 3.2 dokumen *Class Diagram*, pastikan seluruh ID KF yang dirujuk sudah sesuai dengan tabel pada 3.1.
-
 | ID UC | Nama Use Case | Deskripsi Singkat | Aktor | ID KF |
 | :--- | :--- | :--- | :--- | :--- |
-| *UC01* | *Memesan Produk* | *Pelanggan memilih produk hingga pesanan tersimpan di sistem.* | *Pelanggan* | *KF01, KF02* |
-| *UC02* | *Melihat Keranjang* | *Pelanggan melihat daftar item yang telah dipilih sebelum checkout.* | *Pelanggan* | *KF02* |
-| *UC03* | *Melakukan Pembayaran* | *Pelanggan menyelesaikan pembayaran atas pesanan yang dibuat.* | *Pelanggan* | *KF03, KF04, KF05* |
-| *UC04* | *Memilih Metode Pembayaran* | *Pelanggan memilih metode pembayaran alternatif (kartu atau e-wallet).* | *Pelanggan* | *KF03* |
-| *UC05* | *Melihat Riwayat Pesanan* | *Pelanggan melihat daftar pesanan yang pernah dibuat beserta statusnya.* | *Pelanggan* | *KF06* |
-| *...* | *...* | *...* | *...* | *...* |
+| UC01 | Menelusuri dan Membaca Rangkuman Kasus | Pencari Informasi menelusuri bidang dan kelompok hukum, lalu membuka satu halaman rangkuman kasus yang memuat inti masalah, hak, langkah, pertimbangan, dan referensi. | Pencari Informasi | KF01, KF02, KF03, KF04, KF05, KF08, KF09, KF10, KF11, KF12, KF18, KF19, KF20, KF21, KF42 |
+| UC02 | Mencari Kasus | Pencari Informasi mengetik kata kunci untuk langsung menuju kasus yang dicari tanpa menelusuri seluruh kategori. | Pencari Informasi | KF02, KF06, KF07 |
+| UC03 | Menyiapkan Dokumen dengan *Checklist* | Pencari Informasi menandai dokumen yang sudah disiapkan pada *checklist*, dan progresnya tersimpan di *browser* sehingga tetap terjaga saat halaman dibuka kembali. | Pencari Informasi | KF13, KF14 |
+| UC04 | Mengunduh Templat Dokumen | Pencari Informasi mengunduh templat surat yang tersedia pada sebuah kasus sebagai kerangka awal dokumen. | Pencari Informasi | KF15, KF16, KF17 |
+| UC05 | Masuk ke Panel Pengelolaan | Kurator atau Administrator masuk ke panel pengelolaan menggunakan email dan kata sandinya. | Kurator Konten, Administrator Sistem | KF39, KF40, KF41 |
+| UC06 | Mengelola Konten Rangkuman Kasus | Kurator menulis, menyunting, melampirkan templat, lalu mengajukan konten rangkuman kasus untuk ditinjau. | Kurator Konten | KF22, KF23, KF25, KF26, KF27, KF28, KF35 |
+| UC07 | Memantau Status dan Revisi Konten | Kurator memantau status pengajuan kontennya dan membaca catatan revisi bila ada. | Kurator Konten | KF29, KF30 |
+| UC08 | Meninjau dan Memutuskan Konten | Administrator meninjau konten yang diajukan Kurator, lalu menyetujui atau mengembalikannya disertai catatan. | Administrator Sistem | KF24, KF31, KF32, KF33, KF34, KF36 |
+| UC09 | Mengelola Akun Kurator | Administrator mendaftarkan, memperbarui, atau menonaktifkan akun Kurator beserta hak aksesnya. | Administrator Sistem | KF37, KF38, KF43 |
 
 ## 4.3 Use Case Diagram
-Salin ulang Use Case Diagram dari BAB 3.3 dokumen *Use Case & Scenario Use Case* atau *Class Diagram* (gunakan versi paling akhir/terbaru apabila terdapat perubahan).
+Diagram berikut memuat ketiga aktor (Pencari Informasi, Kurator Konten, dan Administrator Sistem) beserta sembilan use case (UC01 hingga UC09) yang diidentifikasi pada 4.2.
 
+<br>
 <p align="center">
-<img alt="Contoh Use Case Diagram" src="./assets/diagram/contoh-uc-diagram.webp" width="70%">
+<img alt="Use Case Diagram Sistem PahamHukum" src="./assets/diagram/useCaseDiagram.png" width="80%">
 </p>
 <p align="center">
-<i>Gambar 2. Contoh Use Case Diagram</i>
+<i>Gambar 3. Use Case Diagram Sistem PahamHukum</i>
 </p>
+<br>
 
 ## 4.4 Skenario Use Case
 Salin ulang skenario **setiap** use case (skenario normal dan alternatif) dari BAB 3.4 dokumen *Use Case & Scenario Use Case*, sesuaikan dengan daftar UC final pada 4.2. Jika use case melibatkan lebih dari satu aktor manusia yang benar-benar berinteraksi langsung (misalnya *Kasir* yang memverifikasi transaksi setelah *Pelanggan* membayar), tambahkan kolom aksi tersendiri untuk aktor tersebut di samping kolom "Reaksi Perangkat Lunak". Sistem eksternal otomatis seperti *payment gateway* **bukan aktor**, sehingga interaksinya cukup dituliskan sebagai bagian dari "Reaksi Perangkat Lunak", bukan kolom aktor terpisah.
 
 ### 4.4.1 Skenario UC01
 
-**Nama Use Case:** *Memesan Produk*
+**Nama Use Case:** Menelusuri dan Membaca Rangkuman Kasus
 
 **Skenario Normal**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan detail produk dan menambahkannya ke keranjang* |
-| 2 | *Pelanggan menekan tombol checkout* | *Sistem membuat pesanan baru dari isi keranjang dan menampilkan ringkasan pesanan* |
-| ... | *...* | *...* |
+| 1 | Pencari Informasi membuka halaman beranda | Sistem menampilkan seluruh bidang hukum aktif beserta jumlah kelompok kasus pada masing-masing bidang, dan hanya menampilkan konten yang sudah berstatus Disetujui |
+| 2 | Pencari Informasi memilih salah satu bidang hukum | Sistem menampilkan kelompok kasus pada bidang tersebut, dengan judul dalam bahasa sehari-hari dan istilah hukum resmi sebagai keterangan pelengkap |
+| 3 | Pencari Informasi memilih kelompok kasus yang sesuai | Sistem membuka halaman rangkuman kasus yang tersusun berurutan, meliputi inti masalah, hak, langkah penyelesaian, poin pertimbangan, checklist dokumen, templat, artikel pendukung, dan **disclaimer** |
+| 4 | Pencari Informasi membaca bagian hak dan pertimbangan | Sistem menampilkan hak pengguna serta bagian "hal yang perlu dipertimbangkan" yang memuat perkiraan waktu pengerjaan dan saran kapan sebaiknya mencari pendampingan profesional |
+| 5 | Pencari Informasi membaca langkah penyelesaian | Sistem menyajikan langkah secara bernomor dan berurutan, lengkap dengan tujuan tiap langkah dan dokumen yang diperlukan, serta menandai langkah yang memiliki tenggat waktu |
+| 6 | Pencari Informasi menelusuri bagian akhir halaman | Sistem menampilkan artikel pendukung bertaut ke sumber hukum resmi, direktori Lembaga Bantuan Hukum terdekat, nama Kurator dan tanggal peninjauan, serta **disclaimer** pada footer |
 
-**Skenario Alternatif 1: Produk Tidak Tersedia**
+<br>
+
+**Skenario Alternatif 1: Kasus Ditandai Situasi Darurat**
 
 | No | Aksi Aktor | Reaksi Perangkat Lunak |
 | :--- | :--- | :--- |
-| 1 | *Pelanggan memilih produk dari katalog* | *Sistem menampilkan pesan "Produk tidak tersedia" karena stok habis* |
-| 2 | *Pelanggan memilih produk lain* | *Sistem kembali ke langkah 1 skenario normal* |
-| ... | *...* | *...* |
+| 1 | Pencari Informasi memilih kelompok kasus yang ditandai sebagai situasi darurat | Sistem menampilkan peringatan prioritas agar segera melapor ke kepolisian atau unit perlindungan khusus |
+| 2 | Pencari Informasi menutup peringatan dan melanjutkan | Sistem menampilkan halaman rangkuman kasus seperti pada skenario normal |
 
-<sub>*Lanjutkan pola 4.4.x ini untuk setiap ID UC pada 4.2, sampai seluruh use case memiliki skenarionya masing-masing.*<sub>
+### 4.4.2 Skenario UC02
+
+**Nama Use Case:** Mencari Kasus
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pencari Informasi mengetik kata kunci pada kolom pencarian | Sistem mencocokkan kata kunci dengan judul kasus, kalimat gejala, isi rangkuman, dan istilah hukum resmi |
+| 2 | Pencari Informasi mengirim pencarian | Sistem menampilkan daftar kasus yang relevan, terbatas pada konten yang sudah Disetujui |
+| 3 | Pencari Informasi memilih salah satu hasil | Sistem membuka halaman rangkuman kasus terkait |
+
+<br>
+
+**Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pencari Informasi mengirim kata kunci yang tidak cocok dengan kasus mana pun | Sistem menampilkan pesan yang sopan bahwa kasus belum tersedia, disertai saran bidang hukum lain dan tautan lembaga bantuan hukum |
+
+### 4.4.3 Skenario UC03
+
+**Nama Use Case:** Menyiapkan Dokumen dengan *Checklist*
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pencari Informasi membuka bagian *checklist* dokumen pada halaman rangkuman | Sistem menampilkan daftar dokumen yang perlu disiapkan |
+| 2 | Pencari Informasi mencentang dokumen yang sudah disiapkan | Sistem memperbarui tampilan item yang dicentang, menghitung berapa banyak dokumen yang sudah siap, dan menyimpan status centang ke penyimpanan lokal peramban |
+| 3 | Pencari Informasi meninggalkan halaman | Sistem mempertahankan status centang di penyimpanan lokal peramban pengguna tanpa mengirimnya ke server |
+
+<br>
+
+**Skenario Alternatif 1: Pengguna Memuat Ulang atau Membuka Kembali Halaman**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pencari Informasi memuat ulang atau membuka kembali halaman rangkuman yang sama | Sistem memulihkan status *checklist* dan centangnya dari penyimpanan lokal peramban, sehingga progres sebelumnya tetap terjaga |
+
+### 4.4.4 Skenario UC04
+
+**Nama Use Case:** Mengunduh Templat Dokumen
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pencari Informasi mencari bagian templat pada halaman rangkuman | Sistem menampilkan tombol unduh beserta ukuran berkas dan tanggal pembaruan terakhir, serta *disclaimer* bahwa templat hanya kerangka awal tepat di atas tombol |
+| 2 | Pencari Informasi menekan tombol unduh | Sistem mengirimkan berkas templat versi terbaru tanpa meminta pengguna mendaftar |
+
+<br>
+
+**Skenario Alternatif 1: Kasus Belum Memiliki Templat**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pencari Informasi membuka kasus yang belum memiliki berkas templat | Sistem tidak menampilkan tombol unduh dan menyatakan bahwa templat belum tersedia untuk kasus tersebut |
+
+### 4.4.5 Skenario UC05
+
+**Nama Use Case:** Masuk ke Panel Pengelolaan
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator atau Administrator membuka halaman login dan memasukkan email dan kata sandi yang benar | Sistem memberi akses dan mengarahkan pengguna ke antarmuka kerja sesuai perannya |
+
+<br>
+
+**Skenario Alternatif 1: Kredensial Salah**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pengguna memasukkan email atau kata sandi yang keliru | Sistem menolak akses dan menampilkan pesan galat tanpa menyebutkan bagian mana yang salah |
+
+<br>
+
+**Skenario Alternatif 2: Akses Tanpa Sesi yang Sah**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Pengguna mencoba membuka halaman pengelola tanpa sesi login yang sah | Sistem mengalihkannya ke halaman login atau menampilkan halaman akses ditolak |
+
+### 4.4.6 Skenario UC06
+
+**Nama Use Case:** Mengelola Konten Rangkuman Kasus
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator membuka formulir penyusunan konten | Sistem menampilkan formulir dinamis yang urutan isiannya mengikuti susunan baku halaman rangkuman |
+| 2 | Kurator mulai menulis draf baru | Sistem menetapkan status konten sebagai Draft secara otomatis |
+| 3 | Kurator melampirkan berkas templat pada kasus | Sistem menyimpan berkas dan memperbarui riwayat perubahan dokumen sebagai versi paling baru |
+| 4 | Kurator melengkapi seluruh isian wajib lalu mengajukan konten | Sistem mengubah status dari Draft menjadi Diajukan dan memasukkannya ke antrean peninjauan Administrator |
+
+<br>
+
+**Skenario Alternatif 1: Berkas Templat Tidak Valid**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator mengunggah berkas templat selain PDF atau DOCX, atau berukuran melebihi 5 MB | Sistem menolak unggahan dan menampilkan pesan yang menjelaskan format dan ukuran yang benar |
+
+<br>
+
+**Skenario Alternatif 2: Isian Wajib Belum Lengkap**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator mengajukan konten sementara masih ada isian wajib yang kosong | Sistem mencegah pengajuan dan menandai isian mana saja yang belum lengkap |
+
+<br>
+
+**Skenario Alternatif 3: Kurator Mencoba Menayangkan Sendiri**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator mencoba menayangkan langsung kontennya ke publik | Sistem menolak permintaan tersebut, karena penayangan hanya dapat dilakukan melalui persetujuan Administrator |
+
+### 4.4.7 Skenario UC07
+
+**Nama Use Case:** Memantau Status dan Revisi Konten
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator membuka daftar kontennya | Sistem menampilkan seluruh tulisan milik Kurator beserta statusnya, yaitu Draft, Diajukan, Disetujui, atau Perlu Revisi |
+
+<br>
+
+**Skenario Alternatif 1: Konten Berstatus Perlu Revisi**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Kurator membuka konten yang berstatus Perlu Revisi | Sistem menampilkan catatan perbaikan dari Administrator pada menu penyuntingan konten terkait |
+
+### 4.4.8 Skenario UC08
+
+**Nama Use Case:** Meninjau dan Memutuskan Konten
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Administrator membuka antrean peninjauan | Sistem menampilkan daftar konten berstatus Diajukan, diurutkan dari yang paling lama menunggu beserta nama pengunggahnya |
+| 2 | Administrator membuka salah satu konten dan meninjau isinya | Sistem menampilkan isi konten pada layar peninjauan |
+| 3 | Administrator memilih Setujui | Sistem mengubah status menjadi Disetujui, menayangkan konten ke publik, dan mencatat riwayat perubahan status |
+
+<br>
+
+**Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Administrator memilih Kembalikan dan mengisi alasan revisi | Sistem mengubah status menjadi Perlu Revisi, mengirimkan catatan revisi kepada Kurator, dan mencatat riwayat perubahan status |
+
+<br>
+
+**Skenario Alternatif 2: Alasan Revisi Dikosongkan**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Administrator memilih Kembalikan tetapi membiarkan kolom alasan revisi kosong | Sistem menahan perubahan status dan mewajibkan alasan revisi diisi lebih dulu |
+
+### 4.4.9 Skenario UC09
+
+**Nama Use Case:** Mengelola Akun Kurator
+
+**Skenario Normal**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Administrator membuka panel pengelolaan akun dan mendaftarkan akun Kurator baru | Sistem membuat akun tersebut melalui panel Administrator, tanpa membuka pendaftaran mandiri di *interface* publik |
+| 2 | Administrator memperbarui detail akun Kurator | Sistem menyimpan perubahan dan memberlakukannya pada sesi login Kurator berikutnya |
+
+<br>
+
+**Skenario Alternatif 1: Penonaktifan Akun Kurator**
+
+| No | Aksi Aktor | Reaksi Perangkat Lunak |
+| :--- | :--- | :--- |
+| 1 | Administrator menonaktifkan akun seorang Kurator | Sistem segera memutus sesi Kurator tersebut bila sedang login dan mencegahnya login kembali |
 
 ---
 
