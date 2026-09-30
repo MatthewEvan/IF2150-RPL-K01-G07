@@ -57,6 +57,8 @@ Berdasarkan analisis kondisi ini, terlihat ada kekosongan pada ketersediaan laya
 
 Selain pengguna awam, sistem ini juga melayani **kurator konten** yang bertugas menyusun taksonomi bidang hukum dan kelompok kasus, menulis rangkuman, serta mengelola artikel dan templat dokumen agar isi platform tetap akurat dan tertata.
 
+Di atas Kurator, terdapat **administrator sistem** yang memegang kewenangan tertinggi. Administrator meninjau setiap konten yang diajukan Kurator sebelum konten tersebut boleh tayang ke publik, serta mengelola akun Kurator beserta hak aksesnya. Pemisahan peran ini disengaja: karena yang disebarkan adalah informasi hukum, tidak ada satu pun tulisan yang bisa terbit tanpa melewati pemeriksaan pihak kedua. Dengan demikian sistem ini melayani tiga kelompok pengguna, yaitu pencari informasi di sisi publik, serta Kurator dan Administrator di sisi pengelolaan.
+
 **Target platform: aplikasi berbasis web.** Pemilihan ini didasarkan pada beberapa pertimbangan berikut:
 
 1. **Aksesibilitas.** Pengguna sasaran adalah masyarakat umum dari berbagai latar belakang. Aplikasi web bisa diakses langsung melalui browser tanpa perlu instalasi, tanpa memerlukan ruang penyimpanan yang besar, dan tanpa bergantung pada satu sistem operasi tertentu. Hal ini selaras dengan semangat SDG 16.10 tentang akses publik terhadap informasi.
@@ -84,6 +86,7 @@ Selain pengguna awam, sistem ini juga melayani **kurator konten** yang bertugas 
 | A-03 | Pengguna mampu mendeskripsikan situasi yang mereka alami dalam bahasa sehari-hari, sehingga mereka dapat mengenali kelompok kasus yang sesuai jika situasi tersebut disajikan dengan bahasa yang sederhana. |
 | A-04 | Pengguna umum hanya membutuhkan akses baca dan unduh. Tidak diasumsikan bahwa mereka perlu membuat akun untuk memperoleh manfaat utama dari sistem. |
 | A-05 | Kurator konten memiliki pemahaman dasar tentang hukum dan bersedia meninjau isi secara berkala agar tetap relevan dengan peraturan yang berlaku. |
+| A-10 | Administrator sistem memiliki pemahaman hukum yang lebih mendalam daripada Kurator, misalnya praktisi hukum atau mahasiswa tingkat akhir bidang hukum, sehingga layak menjadi pemeriksa terakhir sebelum konten tayang. Diasumsikan pula Administrator bersedia meninjau antrean konten secara berkala agar pengajuan Kurator tidak menumpuk. |
 
 **Asumsi teknis:**
 
@@ -153,30 +156,32 @@ Selain pengguna awam, sistem ini juga melayani **kurator konten** yang bertugas 
 | US-14 | Administrator Sistem | Melihat daftar konten berstatus Diajukan yang menunggu peninjauan | Dapat memprioritaskan peninjauan dan memastikan tidak ada yang terlewat |
 | US-15 | Administrator Sistem | Meninjau isi konten yang diajukan Kurator satu per satu, lalu memberi keputusan Setujui atau Kembalikan dengan catatan revisi | Informasi hukum yang sampai ke masyarakat tetap akurat sebelum dipublikasikan |
 | US-16 | Administrator Sistem | Mengelola akun Kurator beserta hak aksesnya | Hanya pihak berwenang yang dapat mengubah isi platform |
+| US-17 | Kurator Konten, Administrator Sistem | Masuk (*login*) ke panel pengelolaan menggunakan akun masing-masing, lalu keluar (*logout*) setelah menyelesaikan pekerjaannya | Memastikan seluruh aktivitas pengelolaan dapat dilacak dan melindungi panel dari akses pihak luar |
 
 ## 3.3 Deskripsi Aktivitas
 
 | ID | Aktivitas | Penjelasan | ID User Story |
 | :--- | :--- | :--- | :--- |
-| A01 | Menjelajahi Daftar Bidang Hukum | Pengguna membuka platform dan melihat daftar bidang hukum yang disajikan dalam bahasa sederhana. | US-01 |
+| A01 | Menelusuri Daftar Bidang Hukum | Pengguna membuka platform dan melihat daftar bidang hukum yang disajikan dalam bahasa sederhana. | US-01 |
 | A02 | Memilih Bidang Hukum | Pengguna memilih salah satu bidang hukum untuk melihat kelompok kasus di bawahnya. | US-01 |
 | A03 | Memilih Kelompok Kasus | Pengguna memilih kelompok kasus yang paling sesuai dengan situasi yang dialaminya. | US-01 |
-| A04 | Mencari Kasus atau Istilah | Pengguna memasukkan kata kunci pada kolom pencarian untuk langsung menuju kasus yang dibutuhkan. | US-06 |
-| A05 | Menampilkan Halaman Rangkuman Kasus | Sistem menyusun dan menampilkan satu halaman berisi inti masalah, hak, langkah, dokumen, templat, artikel, dan disclaimer. | US-02 |
+| A04 | Melakukan Pencarian Kasus | Pengguna memasukkan kata kunci pada kolom pencarian untuk langsung menuju kasus yang dibutuhkan. | US-06 |
+| A05 | Membuka Halaman Rangkuman Kasus | Pengguna membuka satu halaman rangkuman yang menyajikan inti masalah, hak, langkah penyelesaian, dokumen, templat, artikel, dan *disclaimer* dalam satu tampilan. | US-02 |
 | A06 | Membaca Inti Masalah dan Hak | Pengguna membaca bagian rangkuman yang menjelaskan inti persoalan serta hak yang dimilikinya. | US-02 |
-| A07 | Melihat Langkah Penyelesaian | Pengguna melihat urutan langkah konkret yang perlu ditempuh untuk menyelesaikan kasusnya. | US-03 |
-| A08 | Melihat Daftar Periksa Dokumen | Pengguna melihat daftar dokumen yang perlu disiapkan sebelum menempuh proses formal. | US-04 |
+| A07 | Memeriksa Langkah Penyelesaian | Pengguna melihat urutan langkah konkret yang perlu ditempuh untuk menyelesaikan kasusnya. | US-03 |
+| A08 | Memeriksa Daftar Periksa Dokumen | Pengguna melihat daftar dokumen yang perlu disiapkan sebelum menempuh proses formal. | US-04 |
 | A09 | Mengunduh Templat Surat | Pengguna mengunduh berkas templat surat, misalnya somasi atau surat pengaduan. | US-05 |
-| A10 | Membaca Artikel Pendukung | Pengguna membaca artikel serta tautan ke sumber peraturan resmi untuk memverifikasi dasar hukum. | US-07 |
-| A11 | Melihat Rujukan dan Disclaimer | Pengguna melihat rujukan ke lembaga bantuan hukum beserta disclaimer batasan informasi pada halaman. | US-08 |
-| A12 | Mengelola Struktur Konten | Kurator menyusun dan mengelola taksonomi bidang hukum serta kelompok kasus. | US-09 |
-| A13 | Menyusun/Menyunting Rangkuman Kasus | Kurator menulis atau menyunting halaman rangkuman kasus melalui panel pengelolaan. | US-10 |
-| A14 | Mengunggah/Memperbarui Templat Dokumen | Kurator mengunggah atau memperbarui berkas templat dokumen agar pengguna memperoleh versi terbaru. | US-11 |
-| A15 | Mengajukan Konten untuk Ditinjau | Kurator mengubah status konten dari Draft menjadi Diajukan agar masuk antrean peninjauan Administrator. | US-12 |
-| A16 | Melihat Status Pengajuan Konten | Kurator melihat status konten miliknya (*Draft*/*Diajukan*/*Disetujui*/*Perlu Revisi*) beserta catatan revisi jika ada. | US-13 |
-| A17 | Melihat Antrean Konten Diajukan | Administrator melihat daftar konten berstatus Diajukan yang menunggu peninjauan. | US-14 |
-| A18 | Meninjau dan Memutuskan Konten | Administrator memeriksa isi konten satu per satu lalu memberi keputusan Setujui atau *Kembalikan dengan catatan revisi*. | US-15 |
+| A10 | Membaca Artikel Referensi | Pengguna membaca artikel serta tautan ke sumber peraturan resmi untuk memverifikasi dasar hukum. | US-07 |
+| A11 | Melihat Kontak Bantuan dan *Disclaimer* | Pengguna melihat rujukan ke lembaga bantuan hukum beserta disclaimer batasan informasi pada halaman. | US-08 |
+| A12 | Mengelola Struktur Kategori | Kurator menyusun dan mengelola taksonomi bidang hukum serta kelompok kasus. | US-09 |
+| A13 | Menyusun dan Menyunting Rangkuman | Kurator menulis atau menyunting halaman rangkuman kasus melalui panel pengelolaan. | US-10 |
+| A14 | Mengunggah Berkas Templat | Kurator mengunggah atau memperbarui berkas templat dokumen agar pengguna memperoleh versi terbaru. | US-11 |
+| A15 | Mengajukan Konten untuk Peninjauan | Kurator mengubah status konten dari Draft menjadi Diajukan agar masuk antrean peninjauan Administrator. | US-12 |
+| A16 | Memeriksa Status Konten | Kurator melihat status konten miliknya (*Draft*/*Diajukan*/*Disetujui*/*Perlu Revisi*) beserta catatan revisi jika ada. | US-13 |
+| A17 | Membuka Antrean Peninjauan | Administrator melihat daftar konten berstatus Diajukan yang menunggu peninjauan. | US-14 |
+| A18 | Meninjau dan Memberikan Keputusan | Administrator memeriksa isi konten satu per satu lalu memberi keputusan Setujui atau *Kembalikan dengan catatan revisi*. | US-15 |
 | A19 | Mengelola Akun Kurator | Administrator mengelola akun Kurator beserta hak aksesnya. | US-16 |
+| A20 | Autentikasi Sistem Pengelola | Kurator atau Administrator masuk (*login*) menggunakan kredensial mereka, lalu keluar (*logout*) setelah menyelesaikan pekerjaannya. | US-17 |
 
 ## 3.4 Model Proses Bisnis
 Diagram berikut menggambarkan alur proses bisnis utama sistem, yaitu saat seorang pencari informasi menelusuri kasus yang dialaminya sampai memperoleh langkah tindak lanjut dan templat dokumen. Di balik itu, terdapat juga jalur penyediaan konten oleh kurator dan administrator.
