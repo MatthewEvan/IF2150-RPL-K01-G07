@@ -26,6 +26,7 @@
 * [Milestone 2](#milestone-2)
 * [Milestone 3](#milestone-3)
 * [Milestone 4](#milestone-4)
+* [Milestone 5](#milestone-5)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -107,8 +108,19 @@
 | 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan Class Diagram keseluruhan 4.3 | 2 | Done | - |
 | 23-09-2026 | Matthew Evan Kurniawan | Menyelesaikan Bagian 5 Traceability | 0.5 | Done | - |
 
-**Catatan/Evaluasi Milestone 3:**
-
 ---
+
+### Milestone 5
+**Periode:**  26 September 2026 - 30 September 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 26-09-2026 | Rivan Cahyadi | Mengerjakan Bab 1 dan mengisi kontennya | 2 | Done | - |
+| 28-09-2026 | Raditya Wibian Sastaka | Mengerjakan Bab 2 dan melakukan revisi agar spesifikasi perangkat lunak lebih detail | 2 | Done  | - |
+| 29-09-2026 | Wesley Lianto | Mengerjakan Bagian 3 sambil mengecek kelengkapan KF dan KNF sesuai dengan fitur PahamHukum | 3 | Done  | - |
+| 29-09-2026 | Christopherus Michael Jafeth Tobing | Mengerjakan Bagian 4 mengenai Use Case dan mengecek kelengkapannya | 3 | Done | - |
+| 30-09-2026 | Matthew Evan Kurniawan | Mengecek kembali Bab 5: Class Diagram, melakukan revisi pada metode yang ada, dan mengerjakan Bab 6: Traceability | 2.5 | Done | - |
+| 30-09-2026 | Semua Anggota | Menyamakan visi dan pemahaman terhadap perangkat lunak, sekaligus melakukan pengecekan terakhir dan revisi | 3.5 | Done | - |
+| 30-09-2026 | Matthew Evan Kurniawan | Mengisi Logbook dan AI Usage | 1 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
