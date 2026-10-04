@@ -7,25 +7,25 @@ ARSITEKTUR PERANGKAT LUNAK (APL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
+## PahamHukum
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
 Dipersiapkan oleh:
 
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
-| Nama Kelompok | *\[Nama Kelompok\]*  |
+| Kelas | K01 |
+| Kelompok | 7  |
+| Nama Kelompok | #PenjagaNilai  |
 
-| NIM       | Nama               |
-| --------- | ------------------ |
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| NIM | Nama |
+|---|---|
+| 13525007 | Rivan Cahyadi |
+| 13525019 | Raditya Wibian Sastaka |
+| 13525064 | Matthew Evan Kurniawan |
+| 13525100 | Wesley Lianto |
+| 13525109 | Christopherus Michael Jafeth Tobing |
 
 ---
 
@@ -34,7 +34,30 @@ Dipersiapkan oleh:
 
 # BAB 1: Style/Pattern Arsitektur Acuan
 
-Pada bagian ini, tentukan *architectural style* atau *pattern* yang menjadi acuan untuk aplikasi yang Anda kembangkan. Misalnya *layered architecture*, *client-server*, *repository*, *pipe and filter architecture*, atau MVC (*Model-View-Controller*).
+Dalam perancangan PahamHukum, arsitektur acuan yang dipilih adalah **Model-View-Controller (MVC)**. Pola arsitektur ini memisahkan tanggung jawab sistem ke dalam tiga komponen utama yang saling berkolaborasi:
+
+1. **Model**  
+   Komponen *Model* bertanggung jawab untuk mengelola data domain, logika bisnis (*business logic*), aturan validasi data, serta integritas persistensi data ke basis data. Pada PahamHukum, *Model* merepresentasikan struktur data hukum dan pengelola sistem yang terdiri atas 12 entitas: data hierarki dan konten (`BidangHukum`, `KelompokKasus`, `RangkumanKasus`, `LangkahPenyelesaian`, `Checklist`, `TemplatDokumen`, `Artikel`, `LembagaBantuanHukum`), data otorisasi pengguna (`Akun`, `Kurator`, `Administrator`), serta jejak audit perubahan status (`RiwayatStatus`).
+
+2. **View**  
+   Komponen *View* bertanggung jawab menyajikan antarmuka visual kepada pengguna dan menangkap interaksi masukan. PahamHukum memiliki karakteristik *dual interface*, sehingga *View* terbagi menjadi dua kelompok antarmuka utama:
+   - **Antarmuka Publik:** Berfungsi menampilkan beranda penelusuran bidang hukum, hasil pencarian berbasis kata kunci sehari-hari, serta halaman tunggal rangkuman kasus yang memuat hak, langkah bertahap, daftar periksa (*checklist*) dokumen, dan tombol unduh templat surat.
+   - **Antarmuka Pengelola:** Berfungsi menyediakan halaman masuk (*login*), formulir penyusunan konten bagi Kurator, antrean peninjauan konten bagi Administrator, serta halaman pengelolaan akun Kurator. 
+   Seluruh komponen *View* diturunkan dari kelas-kelas *Boundary* pada pemodelan SKPL.
+
+3. **Controller**  
+   Komponen *Controller* bertindak sebagai pengendali alur interaksi dan perantara antara *View* dan *Model*. *Controller* menerima masukan dan aksi pengguna dari *View*, melakukan validasi awal permintaan, memanggil operasi bisnis yang relevan pada *Model*, serta menentukan data dan *View* yang akan diperbarui atau disajikan kembali kepada pengguna. Pada PahamHukum, *Controller* menangani alur penelusuran, kueri pencarian, pengelolaan sesi masuk dan keluar (*login/logout*), interaksi *checklist*, pengaliran berkas templat, hingga alur peninjauan dan perubahan status konten.
+
+### Alasan Pemilihan Arsitektur MVC:
+
+1. **Keterlacakan Penuh dengan Pemodelan Kelas SKPL (Stereotipe ECB)**  
+   Pada BAB 5 dokumen SKPL (dan perancangan Tugas 4), PahamHukum telah memodelkan 29 kelas ke dalam pola stereotipe *Entity-Control-Boundary* (ECB). Struktur ini memiliki korespondensi langsung (satu-ke-satu) dengan pola MVC:
+   - 8 kelas *Boundary* bersesuaian langsung dengan komponen *View*.
+   - 9 kelas *Control* bersesuaian langsung dengan komponen *Controller*.
+   - 12 kelas *Entity* bersesuaian langsung dengan komponen *Model*.  
+   Penerapan MVC menjamin konsistensi rantai keterlacakan (*traceability*) dari kebutuhan awal, *use case*, hingga implementasi modular tanpa perlu merombak rancangan kelas yang telah disetujui pada *milestone* sebelumnya.
+2. **Dukungan terhadap Karakteristik Pengguna dan Dua Antarmuka Berbeda (*Dual Interface*)**  
+   Sistem PahamHukum melayani tiga aktor dengan kebutuhan yang kontras. Pencari Informasi mengakses antarmuka publik tanpa akun (*read-only*, cepat, responsif), sedangkan Kurator dan Administrator mengakses panel pengelola yang membutuhkan autentikasi serta manipulasi data yang intensif. Pola MVC memungkinkan entitas data yang sama (misalnya `RangkumanKasus` dan `RiwayatStatus`) disajikan ke dalam antarmuka publik maupun antarmuka moderasi melalui *View* yang terpisah, tanpa terjadi duplikasi atau perubahan pada logika bisnis *Model*.
 
 <p align="center">
 <img alt="Contoh Arsitektur MVC" src="./assets/diagram/contoh-arsitektur-mvc.webp" width="70%">
@@ -54,11 +77,12 @@ Tabel 1.1. Lingkungan Operasi Perangkat Lunak
 
 | Komponen | Spesifikasi |
 | :--- | :--- |
-| *Server* | *[contoh: Node.js v20 dengan Next.js, dijalankan secara lokal (localhost)]* |
-| *Client* | *[contoh: Web Browser modern (Chrome, Firefox terbaru)]* |
-| *DBMS* | *[contoh: PostgreSQL 15 pada Supabase sebagai basis data terpusat]* |
-| *OS* | *[contoh: Cross-platform (Windows/Linux/MacOS) melalui browser]* |
-| *...* | *...* |
+| Server | Web server pada layanan *cloud hosting* gratis atau berbiaya rendah dengan dukungan HTTPS |
+| Client | Peramban Chrome, Firefox, Edge, atau Safari (versi rilis dua tahun terakhir) di komputer maupun ponsel |
+| DBMS | Basis data relasional (PostgreSQL atau MySQL) untuk data akun, bidang hukum, kelompok kasus, konten, dan riwayat perubahan status |
+| Penyimpanan Berkas | Penyimpanan di sisi server untuk templat PDF dan DOCX |
+| OS | Tidak bergantung pada sistem operasi tertentu selama tersedia peramban yang didukung |
+| Jaringan | Koneksi internet minimal 1 Mbps agar beranda termuat paling lama 3 detik |
 
 <sub><b><i>Catatan</i></b>: <i>Style/pattern yang dipilih di bab ini menjadi acuan untuk BAB 2 (pengelompokan komponen) dan BAB 3 (model arsitektur). Contoh pada dokumen ini memakai MVC secara konsisten dari BAB 1 sampai BAB 3. Kelompok boleh memakai pattern lain selama alasannya dijelaskan dan BAB 2 serta BAB 3 disesuaikan. Tabel 1.1 harus sama persis dengan subbab 2.5 dokumen SKPL; jangan menambah atau mengubah isinya karena SKPL sudah final.</i></sub>
 
