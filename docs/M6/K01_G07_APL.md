@@ -34,19 +34,24 @@ Dipersiapkan oleh:
 
 # BAB 1: Style/Pattern Arsitektur Acuan
 
-Dalam perancangan PahamHukum, arsitektur acuan yang dipilih adalah **Model-View-Controller (MVC)**. Pola arsitektur ini memisahkan tanggung jawab sistem ke dalam tiga komponen utama yang saling berkolaborasi:
+Untuk **PahamHukum**, Pattern Arsitektur yang dipilih adalah **Model-View-Controller (MVC)**. Pattern ini memisahkan sistem menjadi tiga bagian dengan tanggung jawab yang berbeda, yaitu Model, View, dan Controller. Pemisahan tersebut bertujuan agar perubahan di satu bagian tidak menuntut perombakan menyeluruh paga bagian lainnya. Adapun pembagian tanggung jawabnya adalah sebagai berikut:
 
-1. **Model**  
-   Komponen *Model* bertanggung jawab untuk mengelola data domain, logika bisnis (*business logic*), aturan validasi data, serta integritas persistensi data ke basis data. Pada PahamHukum, *Model* merepresentasikan struktur data hukum dan pengelola sistem yang terdiri atas 12 entitas: data hierarki dan konten (`BidangHukum`, `KelompokKasus`, `RangkumanKasus`, `LangkahPenyelesaian`, `Checklist`, `TemplatDokumen`, `Artikel`, `LembagaBantuanHukum`), data otorisasi pengguna (`Akun`, `Kurator`, `Administrator`), serta jejak audit perubahan status (`RiwayatStatus`).
+1. **Model**
+   Komponen **Model** adalah bagian yang merepresentasikan data dan cara data tersebut dikelola. Model memiliki aturan untuk menjaga data, cara data disimpan, dan cara data diambil oleh komponen lain. Pada PahamHukum, **Model** merepresentasikan struktur data konten dan pengelola sistem yang terdiri atas 12 *entity*, data konten (`BidangHukum`, `KelompokKasus`, `RangkumanKasus`, `LangkahPenyelesaian`, `Checklist`, `TemplatDokumen`, `Artikel`, `LembagaBantuanHukum`), data otorisasi pengguna (`Akun`, `Kurator`, `Administrator`), serta riwayat perubahan status (`RiwayatStatus`)
+   
+2. **View**
+   Komponen **View** bertanggung jawab menampilkan antarmuka sistem yang dapat langsung dilihat oleh pengguna sekaligus menerima masukan dari interaksi pengguna. Namun, **View** tidak seharusnya mengambil data langsung dari *database* atau memutuskan kelayakan konten. **View** hanya menerima data yang diberikan *Controller* dan meneruskan interaksi pengguna kembali ke *Controller*. Pada PahamHukum, **View** terbagi menjadi dua kelompok antarmuka utama:
 
-2. **View**  
-   Komponen *View* bertanggung jawab menyajikan antarmuka visual kepada pengguna dan menangkap interaksi masukan. PahamHukum memiliki karakteristik *dual interface*, sehingga *View* terbagi menjadi dua kelompok antarmuka utama:
-   - **Antarmuka Publik:** Berfungsi menampilkan beranda penelusuran bidang hukum, hasil pencarian berbasis kata kunci sehari-hari, serta halaman tunggal rangkuman kasus yang memuat hak, langkah bertahap, daftar periksa (*checklist*) dokumen, dan tombol unduh templat surat.
-   - **Antarmuka Pengelola:** Berfungsi menyediakan halaman masuk (*login*), formulir penyusunan konten bagi Kurator, antrean peninjauan konten bagi Administrator, serta halaman pengelolaan akun Kurator. 
-   Seluruh komponen *View* diturunkan dari kelas-kelas *Boundary* pada pemodelan SKPL.
+   - **Antarmuka Publik:** menampilkan beranda penelusuran bidang hukum, hasil pencarian pengguna, serta halaman rangkuman kasus yang memuat penjelasan, hak, langkah-langkah, *checklist* dokumen, dan tombol unduh templat surat.
+   - **Antarmuka Pengelola**: Berfungsi menyediakan halaman *login*, formulir penyusunan konten bagi Kurator, antrean peninjauan konten bagi Administrator, serta halaman pengelolaan akun Kurator.
+   
+   Seluruh komponen **View** diturunkan dari kelas-kelas *Boundary* pada dokumen Class Diagram (M4).
+
+3. **Controller**
+   Komponen **Controller** adalah penghubung antara *View* dan *Model*. Ia menerima permintaan dari *View* dan memeriksa apakah inputnya sudah sesuai, baru memanggil *Model* untuk mengambil atau mengubah data. Setelah itu, ia juga bisa memilih *View* mana yang harus ditampilkan atau pesan spesifik yang harus diberikan. Contoh dalam skenario *login* akun: *View* akan mengirimkan permintaan untuk mengecek apakah kombinasi akun dan kata sandi sudah benar ke **Controller**. Lalu, **Controller** akan mengecek dengan meminta data dari *Model*. Jika sudah benar, **Controller** akan menampilkan *View* ke halaman beranda, jika masih salah maka *View* tetap di halaman tersebut. Pada PahamHukum, **Controller** menangani alur penelurusan, pencarian, pengelolaan sesi *login* dan *logout*, interaksi pengguna (*checklist*), pemilihan dokumen templat, hingga alur peninjauan dan perubahan status konten.
 
 3. **Controller**  
-   Komponen *Controller* bertindak sebagai pengendali alur interaksi dan perantara antara *View* dan *Model*. *Controller* menerima masukan dan aksi pengguna dari *View*, melakukan validasi awal permintaan, memanggil operasi bisnis yang relevan pada *Model*, serta menentukan data dan *View* yang akan diperbarui atau disajikan kembali kepada pengguna. Pada PahamHukum, *Controller* menangani alur penelusuran, kueri pencarian, pengelolaan sesi masuk dan keluar (*login/logout*), interaksi *checklist*, pengaliran berkas templat, hingga alur peninjauan dan perubahan status konten.
+   Komponen **Controller** adalah penghubung antara *View* dan *Model*. Ia menerima permintaan dari *View*, memvalidasi input, lalu memanggil *Model* untuk mengambil atau mengubah data. Setelah itu, ia memilih *View* yang harus ditampilkan atau menentukan pesan spesifik yang perlu diberikan. Contoh dalam skenario *login* akun: *View* mengirimkan permintaan ke **Controller** untuk mengecek kombinasi akun dan kata sandi. **Controller** kemudian meminta *Model* memverifikasi data tersebut. Jika benar, **Controller** mengarahkan pengguna ke *View* halaman beranda. Jika salah, **Controller** menampilkan kembali *View* halaman *login* dengan pesan kesalahan. Pada PahamHukum, **Controller** menangani alur penelusuran, pencarian, pengelolaan sesi *login* dan *logout*, interaksi pengguna dengan *checklist*, pengunduhan templat dokumen, hingga alur peninjauan dan perubahan status konten.
 
 ### Alasan Pemilihan Arsitektur MVC:
 
