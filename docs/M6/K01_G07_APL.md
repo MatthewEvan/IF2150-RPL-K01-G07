@@ -111,30 +111,44 @@ PahamHukum berjalan sebagai aplikasi web yang dilayani dari satu web server pada
 
 # BAB 2: Identifikasi Komponen / Modul / Subsistem
 
-Pada bagian ini, lakukan identifikasi terhadap komponen, modul, atau subsistem yang menyusun aplikasi berdasarkan *pattern* arsitektur yang telah ditetapkan sebelumnya. Setiap komponen memiliki tanggung jawab tertentu dalam mendukung fungsionalitas sistem.
-
-Setiap komponen memiliki tanggung jawab tertentu dalam mendukung fungsionalitas sistem secara keseluruhan. Komponen dapat dikelompokkan berdasarkan lapisan arsitektur (misalnya *Model*, *View*, dan *Controller* pada pattern MVC), atau berdasarkan fungsi atau peran komponen di dalam sistem (misalnya modul autentikasi, manajemen data, dan integrasi eksternal).
+Komponen pada PahamHukum diidentifikasi berdasarkan pola Model-View-Controller (MVC) yang telah ditetapkan pada BAB 1. Setiap komponen dikelompokkan menurut lapisan arsitektur, yaitu View, Controller, dan Model, ditambah komponen penyimpanan data. Database dan Penyimpanan Berkas berasal dari lingkungan operasi pada Tabel 1.1, sedangkan Penyimpanan Lokal Peramban berasal dari KF14 dan KNF06 pada dokumen SKPL. Kelas Boundary pada dokumen Class Diagram (M4) menjadi komponen View, kelas Control menjadi komponen Controller, dan kelas Entity menjadi komponen Model. Dengan demikian, seluruh 29 kelas pada M4 tercakup oleh komponen pada tabel berikut, dan seluruh use case UC01 sampai UC09 pada dokumen SKPL dapat dijalankan oleh komponen-komponen tersebut.
 
 Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 
 | Nama Komponen/Modul/Subsistem | Jenis                 | Penjelasan                                                                                                           |
 | :---------------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------- |
-| *KatalogView*                 | *View*                | *Menampilkan daftar produk dan meneruskan aksi pelanggan (misalnya "Tambah ke Keranjang") ke KatalogController.*     |
-| *KeranjangView*               | *View*                | *Menampilkan isi keranjang pelanggan beserta tombol checkout.*                                                       |
-| *CheckoutView*                | *View*                | *Menampilkan ringkasan pesanan dan pilihan metode pembayaran kepada pelanggan.*                                      |
-| *RiwayatPesananView*          | *View*                | *Menampilkan daftar pesanan yang pernah dibuat pelanggan beserta statusnya.*                                         |
-| *KatalogController*           | *Controller*          | *Memproses permintaan daftar produk dan penambahan produk ke keranjang.*                                             |
-| *KeranjangController*         | *Controller*          | *Memproses perubahan isi keranjang dan membuat pesanan baru saat checkout.*                                          |
-| *PembayaranController*        | *Controller*          | *Memproses pemilihan metode pembayaran dan meneruskan permintaan otorisasi ke PaymentGatewayAdapter.*                |
-| *PesananController*           | *Controller*          | *Memproses permintaan riwayat pesanan milik pelanggan.*                                                              |
-| *Produk*                      | *Model*               | *Merepresentasikan data produk beserta stoknya serta metode untuk mengakses dan mengubahnya.*                        |
-| *Keranjang*                   | *Model*               | *Merepresentasikan item yang dipilih pelanggan sebelum checkout serta metode untuk mengakses dan mengubahnya.*       |
-| *Pesanan*                     | *Model*               | *Merepresentasikan data pesanan beserta status pembayarannya serta metode untuk mengakses dan mengubahnya.*          |
-| *Pelanggan*                   | *Model*               | *Merepresentasikan data akun pelanggan serta metode untuk mengakses dan mengubahnya.*                                |
-| *Validasi*                    | *Pendukung*           | *Memvalidasi input pelanggan sebelum diproses oleh controller.*                                                      |
-| *PaymentGatewayAdapter*       | *Integrasi Eksternal* | *Mengirim permintaan otorisasi ke payment gateway (dummy) dan meneruskan status pembayaran ke PembayaranController.* |
-| *Database*                    | *Penyimpanan Data*    | *Menyimpan seluruh data model secara persisten, baik lokal (misalnya SQLite) maupun terpusat (misalnya Supabase).*   |
-| *...*                         | *...*                 | *...*                                                                                                                |
+| HalamanJelajahKasus | *View* | Menampilkan beranda berisi bidang hukum dan kelompok kasus, serta peringatan prioritas untuk kasus darurat, lalu meneruskan pilihan pengguna ke KontrolJelajahKasus. |
+| HalamanRangkumanKasus | *View* | Menampilkan satu rangkuman kasus lengkap (langkah, *checklist*, templat, artikel, direktori LBH), menyimpan dan memuat status centang *checklist* di peramban, serta meneruskan aksi unduh templat ke KontrolUnduhTemplat. |
+| HalamanPencarianKataKunci | *View* | Menampilkan kolom pencarian, daftar hasil, dan pesan serta saran jika kasus tidak ditemukan, lalu meneruskan kata kunci ke KontrolPencarianKataKunci. |
+| HalamanLogin | *View* | Menampilkan formulir *login* pengelola beserta pesan galat dan meneruskan kredensial ke KontrolAutentikasi. |
+| HalamanPenyusunanKonten | *View* | Menampilkan formulir penyusunan konten satu halaman bagi Kurator dan meneruskan aksi simpan draf, unggah templat, dan ajukan ke KontrolPenyusunanKonten. |
+| HalamanDaftarKontenKurator | *View* | Menampilkan daftar konten milik Kurator beserta status dan catatan revisinya. |
+| HalamanModerasiKonten | *View* | Menampilkan antrean dan isi konten untuk Administrator beserta tombol Setujui dan Kembalikan pada layar yang sama, lalu meneruskan keputusan ke KontrolModerasiKonten. |
+| HalamanPengelolaanAkun | *View* | Menampilkan daftar Kurator dan formulir pendaftaran, pembaruan, serta penonaktifan akun bagi Administrator. |
+| KontrolJelajahKasus | *Controller* | Mengatur alur penampilan bidang hukum, kelompok kasus, rangkuman kasus, dan direktori LBH. |
+| KontrolPencarianKataKunci | *Controller* | Memproses kata kunci, mengambil hasil yang relevan, dan menyarankan bidang lain jika kasus tidak ditemukan. |
+| KontrolChecklist | *Controller* | Mengambil *checklist* rangkuman dan menghitung kelengkapan dokumen yang dicentang. |
+| KontrolUnduhTemplat | *Controller* | Menyediakan daftar dan berkas templat versi terbaru untuk diunduh. |
+| KontrolAutentikasi | *Controller* | Memeriksa kredensial akun, mengarahkan pengguna sesuai perannya, serta mengakhiri sesi saat keluar atau kedaluwarsa (30 menit tanpa aktivitas). |
+| KontrolPenyusunanKonten | *Controller* | Mengatur pembuatan draf, pelampiran templat, validasi isian, dan pengajuan konten (Draft menjadi Diajukan), serta mencatat riwayat statusnya. |
+| KontrolPelacakanKonten | *Controller* | Mengambil daftar konten milik Kurator dan catatan revisinya. |
+| KontrolModerasiKonten | *Controller* | Mengatur persetujuan dan pengembalian konten oleh Administrator, mewajibkan alasan revisi, dan mencatat riwayat status ke RiwayatStatus. |
+| KontrolPengelolaanAkun | *Controller* | Mengatur pendaftaran, pembaruan, dan penonaktifan akun Kurator. |
+| Akun | *Model* | Merepresentasikan data akun pengelola (email, kata sandi ter-*hash*, peran) serta metode untuk memverifikasi dan mengubahnya. |
+| Kurator | *Model* | Merepresentasikan akun Kurator (status aktif dan jumlah konten) serta metode untuk mengakses dan mengubahnya, turunan Akun. |
+| Administrator | *Model* | Merepresentasikan akun Administrator beserta daftar Kurator yang dikelolanya, turunan Akun. |
+| BidangHukum | *Model* | Merepresentasikan bidang hukum beserta status aktif dan kelompok kasus di bawahnya serta metode untuk mengakses dan mengubahnya. |
+| KelompokKasus | *Model* | Merepresentasikan satu jenis kasus (judul sehari-hari, istilah resmi, penanda darurat) serta metode pencocokan kata kunci. |
+| RangkumanKasus | *Model* | Merepresentasikan isi rangkuman kasus beserta status, penulis, tanggal peninjauan, dan catatan revisi serta metode untuk mengakses dan mengubahnya. |
+| LangkahPenyelesaian | *Model* | Merepresentasikan langkah bernomor beserta tujuan, dokumen yang diperlukan, dan tenggat. |
+| Checklist | *Model* | Merepresentasikan daftar dokumen yang perlu disiapkan untuk suatu kasus. |
+| TemplatDokumen | *Model* | Merepresentasikan berkas templat (format, ukuran, versi, tanggal pembaruan) serta validasi unggahan PDF/DOCX maksimal 5 MB. |
+| Artikel | *Model* | Merepresentasikan artikel pendukung beserta tautan ke sumber hukum resmi. |
+| LembagaBantuanHukum | *Model* | Merepresentasikan direktori LBH beserta wilayah layanannya. |
+| RiwayatStatus | *Model* | Merepresentasikan catatan perubahan status konten (konten, pelaku, status, waktu) yang bersifat permanen dan tidak dapat diubah (KNF09). |
+| Database | *Penyimpanan Data* | Menyimpan seluruh data *Model* secara persisten pada DBMS relasional (PostgreSQL atau MySQL). |
+| Penyimpanan Berkas | *Penyimpanan Data* | Menyimpan berkas templat PDF dan DOCX di sisi server. |
+| Penyimpanan Lokal Peramban | *Penyimpanan Data* | Menyimpan status centang *checklist* di perangkat pengguna dan tidak pernah dikirim ke server (KNF06). |
 
 Ketentuan pengisian Tabel 2.1:
 1. Kolom **Jenis** mengikuti pengelompokan pada *style/pattern* di BAB 1. Untuk MVC, jenisnya adalah *Model*, *View*, dan *Controller*. Jenis lain boleh ditambahkan, misalnya *Pendukung* untuk komponen bantu yang dipakai bersama, atau *Integrasi Eksternal* untuk penghubung ke sistem di luar P/L yang disebutkan pada subbab 2.2 dokumen SKPL. Kolom ini juga boleh diisi dengan *Subsistem*, *Modul*, atau *Komponen* apabila komponen dikelompokkan berdasarkan fungsinya. Tuliskan subsistem terlebih dahulu, lalu komponen penyusunnya di baris-baris berikutnya.
