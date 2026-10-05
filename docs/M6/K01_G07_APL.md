@@ -47,22 +47,36 @@ Untuk **PahamHukum**, Pattern Arsitektur yang dipilih adalah **Model-View-Contro
    
    Seluruh komponen **View** diturunkan dari kelas-kelas *Boundary* pada dokumen Class Diagram (M4).
 
-3. **Controller**
-   Komponen **Controller** adalah penghubung antara *View* dan *Model*. Ia menerima permintaan dari *View* dan memeriksa apakah inputnya sudah sesuai, baru memanggil *Model* untuk mengambil atau mengubah data. Setelah itu, ia juga bisa memilih *View* mana yang harus ditampilkan atau pesan spesifik yang harus diberikan. Contoh dalam skenario *login* akun: *View* akan mengirimkan permintaan untuk mengecek apakah kombinasi akun dan kata sandi sudah benar ke **Controller**. Lalu, **Controller** akan mengecek dengan meminta data dari *Model*. Jika sudah benar, **Controller** akan menampilkan *View* ke halaman beranda, jika masih salah maka *View* tetap di halaman tersebut. Pada PahamHukum, **Controller** menangani alur penelurusan, pencarian, pengelolaan sesi *login* dan *logout*, interaksi pengguna (*checklist*), pemilihan dokumen templat, hingga alur peninjauan dan perubahan status konten.
-
 3. **Controller**  
    Komponen **Controller** adalah penghubung antara *View* dan *Model*. Ia menerima permintaan dari *View*, memvalidasi input, lalu memanggil *Model* untuk mengambil atau mengubah data. Setelah itu, ia memilih *View* yang harus ditampilkan atau menentukan pesan spesifik yang perlu diberikan. Contoh dalam skenario *login* akun: *View* mengirimkan permintaan ke **Controller** untuk mengecek kombinasi akun dan kata sandi. **Controller** kemudian meminta *Model* memverifikasi data tersebut. Jika benar, **Controller** mengarahkan pengguna ke *View* halaman beranda. Jika salah, **Controller** menampilkan kembali *View* halaman *login* dengan pesan kesalahan. Pada PahamHukum, **Controller** menangani alur penelusuran, pencarian, pengelolaan sesi *login* dan *logout*, interaksi pengguna dengan *checklist*, pengunduhan templat dokumen, hingga alur peninjauan dan perubahan status konten.
 
 ### Alasan Pemilihan Arsitektur MVC:
 
-1. **Keterlacakan Penuh dengan Pemodelan Kelas SKPL (Stereotipe ECB)**  
-   Pada BAB 5 dokumen SKPL (dan perancangan Tugas 4), PahamHukum telah memodelkan 29 kelas ke dalam pola stereotipe *Entity-Control-Boundary* (ECB). Struktur ini memiliki korespondensi langsung (satu-ke-satu) dengan pola MVC:
-   - 8 kelas *Boundary* bersesuaian langsung dengan komponen *View*.
-   - 9 kelas *Control* bersesuaian langsung dengan komponen *Controller*.
-   - 12 kelas *Entity* bersesuaian langsung dengan komponen *Model*.  
-   Penerapan MVC menjamin konsistensi rantai keterlacakan (*traceability*) dari kebutuhan awal, *use case*, hingga implementasi modular tanpa perlu merombak rancangan kelas yang telah disetujui pada *milestone* sebelumnya.
-2. **Dukungan terhadap Karakteristik Pengguna dan Dua Antarmuka Berbeda (*Dual Interface*)**  
-   Sistem PahamHukum melayani tiga aktor dengan kebutuhan yang kontras. Pencari Informasi mengakses antarmuka publik tanpa akun (*read-only*, cepat, responsif), sedangkan Kurator dan Administrator mengakses panel pengelola yang membutuhkan autentikasi serta manipulasi data yang intensif. Pola MVC memungkinkan entitas data yang sama (misalnya `RangkumanKasus` dan `RiwayatStatus`) disajikan ke dalam antarmuka publik maupun antarmuka moderasi melalui *View* yang terpisah, tanpa terjadi duplikasi atau perubahan pada logika bisnis *Model*.
+1. **Keterlacakan dengan pemodelan kelas *Entity, Control, Boundary* pada M4**
+   Pada BAB 5 SKPL dan M4, PahamHukum telah dimodelkan menjadi 29 kelas yang terbagi kembali menjadi *Entity, Control, Boundary*. Struktur tersebut berhubungan langsung dengan MVC:
+   - 8 kelas *Boundary* sesuai dengan komponen *View*.
+   - 9 kelas *Control* sesuai dengan komponen *Controller*.
+   - 12 kelas *Entity* sesuai dengan komponen *Model*.  
+   Dengan memilih MVC, rantai keterlacakan dari kebutuhan awal, use case, hingga rancangan kelas tetap terjaga tanpa perombakan kembali. Dengan MVC yang lebih familiar dan mudah dipahami, proses perancangan akan lebih mudah.
+
+2. **Dukungan terhadap dua kelompok antarmuka berbeda**  
+   Sistem PahamHukum melayani tiga aktor dengan kebutuhan yang kontras. Pencari Informasi mengakses antarmuka publik tanpa akun, sedangkan Kurator dan Administrator mengakses panel pengelola yang membutuhkan autentikasi dan manipulasi data. Pola MVC memungkinkan entitas data yang sama (misalnya `RangkumanKasus` dan `RiwayatStatus`) disajikan ke dalam antarmuka publik maupun antarmuka pengelola
+   melalui *View* yang terpisah, tanpa duplikasi atau perubahan logika bisnis pada *Model*.
+
+3. **Penegakan alur status konten yang terkendali**  
+   Konten melewati siklus `Draft` $\rightarrow$ `Diajukan` $\rightarrow$ `Disetujui` atau `Perlu Revisi` dan publik hanya bisa melihat konten `Disetujui`. *Controller* yang mengatur penyusunan dan moderasi konten bertindak dalam memvalidasi alur: memvalidasi hak akses konten dan status sebelum mengubah data di *Model*. Lalu mencatat perubahannya secara permanen di `RiwayatStatus` sesuai KNF09.
+
+4. **Menjaga pemisahan antara aturan domain dan tampilan**
+   Perubahan di sisi antarmuka atau *View* tidak bisa melangkahi aturan seperti urutan status pengajuan konten dan pencatatan riwayat. Konten yang belum disetujui tidak bisa muncul ke halaman utama. Dengan MVC, aturan-aturan ini berada pada *Model*, sementara *View* hanya menampilkan. MVC mengurangi risiko rusaknya aturan bisnis saat tampilan mengalami perubahan.
+
+5. **Mendukung penggunaan ulang komponen tampilan di antarmuka**
+   Halaman Jelajah, Rangkuman, dan Pencarian memakai komponen tampilan yang serupa untuk menampilkan konten dengan sumber data dan aksi yang berbeda. *View* yang sama dapat dipakai beberapa *Controller* dan *Model* tanpa duplikasi. Sebaliknya, satu *Model* seperti `RangkumanKasus` dapat ditampilkan lewat beberapa *View* tanpa mengubah *Model*-nya.
+
+6. **Mendukung beberapa KNF dari PahamHukum**
+   - KNF09 menetapkan bahwa riwayat perubahan status konten bersifat permanen dan tidak dapat diubah. Aturan ini lebih layak ditaruh di bagian *Model* tepatnya pada entitas RiwayatStatus
+   - KNF14 menyebutkan bahwa sesi pengelola harus berakhir otomatis setelah 30 menit tanpa aktivitas. Aturan seperti itu adalah urusan alur, bukan urusan data atau tampilan sehingga cocok masuk ke *Controller*.
+   - KNF12 dan KNF13 menuntut mengatur adanya formulir penyusunan konten dalam satu halaman dan semuanya murni soal tampilan sehingga harus diselesaikan di *View* tanpa mengganggu komponen lain.
+
 
 <p align="center">
 <img alt="Contoh Arsitektur MVC" src="./assets/diagram/contoh-arsitektur-mvc.webp" width="70%">
