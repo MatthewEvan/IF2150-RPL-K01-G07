@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" width="1200" height="780" font-family="Arial, Helvetica, sans-serif">
+  <title>Arsitektur MVC PahamHukum</title>
+  <defs>
+    <marker id="panah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <style>
+      .kotak { fill: #fff; stroke: #1a8fd1; stroke-width: 2; }
+      .kepala { fill: #8fd8f8; stroke: #1a8fd1; stroke-width: 2; }
+      .simpan { fill: #f4f4f4; stroke: #666; stroke-width: 1.5; }
+      .judul { font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+      .grup { font-size: 13px; font-weight: bold; fill: #1a6fa1; }
+      .komp { font-size: 13px; fill: #1a1a1a; font-family: Consolas, Menlo, "DejaVu Sans Mono", monospace; }
+      .label { font-size: 12px; fill: #333; font-style: italic; }
+      .catatan { font-size: 11px; fill: #666; }
+      .garis { stroke: #333; stroke-width: 1.5; fill: none; marker-end: url(#panah); }
+      .sekat { stroke: #cfe9f7; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Pengguna -->
+  <rect x="30" y="10" width="500" height="40" rx="20" class="simpan"/>
+  <text x="280" y="35" text-anchor="middle" font-size="14" fill="#1a1a1a">Pencari Informasi, Kurator, Administrator</text>
+  <line x1="280" y1="50" x2="280" y2="98" class="garis"/>
+  <text x="290" y="80" class="label">berinteraksi melalui peramban</text>
+
+  <!-- View -->
+  <rect x="30" y="100" width="500" height="220" class="kotak"/>
+  <rect x="30" y="100" width="500" height="36" class="kepala"/>
+  <text x="280" y="124" text-anchor="middle" class="judul">View</text>
+  <text x="45" y="160" class="grup">Antarmuka Publik</text>
+  <text x="45" y="185" class="komp">HalamanJelajahKasus</text>
+  <text x="45" y="207" class="komp">HalamanRangkumanKasus</text>
+  <text x="45" y="229" class="komp">HalamanPencarianKataKunci</text>
+  <line x1="275" y1="146" x2="275" y2="310" class="sekat"/>
+  <text x="285" y="160" class="grup">Antarmuka Pengelola</text>
+  <text x="285" y="185" class="komp">HalamanLogin</text>
+  <text x="285" y="207" class="komp">HalamanPenyusunanKonten</text>
+  <text x="285" y="229" class="komp">HalamanDaftarKontenKurator</text>
+  <text x="285" y="251" class="komp">HalamanModerasiKonten</text>
+  <text x="285" y="273" class="komp">HalamanPengelolaanAkun</text>
+
+  <!-- Controller -->
+  <rect x="670" y="100" width="500" height="220" class="kotak"/>
+  <rect x="670" y="100" width="500" height="36" class="kepala"/>
+  <text x="920" y="124" text-anchor="middle" class="judul">Controller</text>
+  <text x="685" y="160" class="grup">Alur Publik</text>
+  <text x="685" y="185" class="komp">KontrolJelajahKasus</text>
+  <text x="685" y="207" class="komp">KontrolPencarianKataKunci</text>
+  <text x="685" y="229" class="komp">KontrolChecklist</text>
+  <text x="685" y="251" class="komp">KontrolUnduhTemplat</text>
+  <line x1="915" y1="146" x2="915" y2="310" class="sekat"/>
+  <text x="925" y="160" class="grup">Alur Pengelola</text>
+  <text x="925" y="185" class="komp">KontrolAutentikasi</text>
+  <text x="925" y="207" class="komp">KontrolPenyusunanKonten</text>
+  <text x="925" y="229" class="komp">KontrolPelacakanKonten</text>
+  <text x="925" y="251" class="komp">KontrolModerasiKonten</text>
+  <text x="925" y="273" class="komp">KontrolPengelolaanAkun</text>
+
+  <!-- View <-> Controller -->
+  <line x1="530" y1="180" x2="668" y2="180" class="garis"/>
+  <text x="600" y="160" text-anchor="middle" class="label">meneruskan</text>
+  <text x="600" y="174" text-anchor="middle" class="label">aksi pengguna</text>
+  <line x1="670" y1="250" x2="532" y2="250" class="garis"/>
+  <text x="600" y="268" text-anchor="middle" class="label">memilih View</text>
+  <text x="600" y="282" text-anchor="middle" class="label">dan mengirim data</text>
+
+  <!-- Penyimpanan Lokal Peramban (sisi klien) -->
+  <line x1="140" y1="320" x2="140" y2="458" class="garis"/>
+  <text x="150" y="370" class="label">menyimpan dan</text>
+  <text x="150" y="384" class="label">memuat status</text>
+  <text x="150" y="398" class="label">centang checklist</text>
+  <rect x="30" y="460" width="230" height="60" class="simpan"/>
+  <text x="145" y="495" text-anchor="middle" class="komp">Penyimpanan Lokal Peramban</text>
+  <text x="145" y="538" text-anchor="middle" class="catatan">di perangkat pengguna,</text>
+  <text x="145" y="552" text-anchor="middle" class="catatan">tidak dikirim ke server (KNF06)</text>
+
+  <!-- Controller <-> Model -->
+  <line x1="820" y1="320" x2="820" y2="428" class="garis"/>
+  <text x="830" y="370" class="label">mengambil dan</text>
+  <text x="830" y="384" class="label">mengubah data</text>
+  <line x1="1060" y1="430" x2="1060" y2="322" class="garis"/>
+  <text x="1070" y="370" class="label">mengembalikan</text>
+  <text x="1070" y="384" class="label">data</text>
+
+  <!-- Model -->
+  <rect x="290" y="430" width="880" height="200" class="kotak"/>
+  <rect x="290" y="430" width="880" height="36" class="kepala"/>
+  <text x="730" y="454" text-anchor="middle" class="judul">Model</text>
+  <text x="305" y="490" class="grup">Data Konten</text>
+  <text x="305" y="515" class="komp">BidangHukum</text>
+  <text x="305" y="537" class="komp">KelompokKasus</text>
+  <text x="305" y="559" class="komp">RangkumanKasus</text>
+  <text x="305" y="581" class="komp">LangkahPenyelesaian</text>
+  <text x="515" y="515" class="komp">Checklist</text>
+  <text x="515" y="537" class="komp">TemplatDokumen</text>
+  <text x="515" y="559" class="komp">Artikel</text>
+  <text x="515" y="581" class="komp">LembagaBantuanHukum</text>
+  <line x1="720" y1="476" x2="720" y2="620" class="sekat"/>
+  <text x="735" y="490" class="grup">Data Pengelola</text>
+  <text x="735" y="515" class="komp">Akun</text>
+  <text x="735" y="537" class="komp">Kurator</text>
+  <text x="735" y="559" class="komp">Administrator</text>
+  <text x="735" y="590" class="catatan">Kurator dan Administrator</text>
+  <text x="735" y="604" class="catatan">adalah turunan Akun</text>
+  <line x1="950" y1="476" x2="950" y2="620" class="sekat"/>
+  <text x="965" y="490" class="grup">Riwayat Konten</text>
+  <text x="965" y="515" class="komp">RiwayatStatus</text>
+  <text x="965" y="545" class="catatan">permanen, tidak dapat</text>
+  <text x="965" y="559" class="catatan">diubah (KNF09)</text>
+
+  <!-- Model -> Penyimpanan server -->
+  <line x1="560" y1="630" x2="560" y2="698" class="garis"/>
+  <text x="570" y="668" class="label">data persisten</text>
+  <rect x="430" y="700" width="260" height="60" class="simpan"/>
+  <text x="560" y="735" text-anchor="middle" class="komp">Database</text>
+
+  <line x1="910" y1="630" x2="910" y2="698" class="garis"/>
+  <text x="920" y="668" class="label">berkas templat PDF/DOCX</text>
+  <rect x="780" y="700" width="260" height="60" class="simpan"/>
+  <text x="910" y="735" text-anchor="middle" class="komp">Penyimpanan Berkas</text>
+</svg>
