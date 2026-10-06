@@ -174,20 +174,41 @@ Ketentuan pengisian BAB 3:
 6. Beri label pada setiap garis atau panah yang menghubungkan komponen agar hubungan antarkomponen dapat dipahami tanpa penjelasan tambahan.
 7. Jika membuat *Physical View*, gambarkan lingkungan operasi pada Tabel 1.1.
 
-## 3.1 XXX View
+## 3.1 Logical View
 
-Tuliskan secara singkat mengenai model arsitektur perangkat lunak yang Anda pilih dan sertakan alasan mengapa model arsitektur tersebut cocok untuk aplikasi Anda.
+Model arsitektur perangkat lunak yang dipilih untuk PahamHukum adalah **Model-View-Controller (MVC)** yang divisualisasikan melalui ***Logical View***. *Logical View* mendeskripsikan abstraksi komponen utama sistem dan hubungannya secara statis untuk mendukung pemenuhan kebutuhan fungsional bisnis. Model arsitektur ini dinilai paling cocok untuk aplikasi PahamHukum karena PahamHukum memiliki antarmuka yang sangat berbeda antara pengguna publik dan panel pengelola. MVC memungkinkan logika antarmuka (*View*) dipisah dari aturan validasi (*Controller*) dan struktur data (*Model*) sehingga perubahan tampilan di masa depan tidak akan merusak aturan atau status konten.
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-logical-view.webp" width="100%">
+  <img alt="Logical View pada Sistem PahamHukum berbasis Pola MVC" src="./assets/diagram/logical-view-pahamhukum.svg" width="100%">
 </p>
 <p align="center">
-<i>Gambar 2. Contoh Logical View pada P/L E-Commerce</i>
+  <i>Gambar 2. Logical View pada Sistem PahamHukum berbasis Pola MVC</i>
 </p>
 
-Gambar 2 adalah contoh *Logical View* dalam bentuk *block diagram*. Seluruh komponen pada Tabel 2.1 digambarkan dan dikelompokkan sesuai pola MVC (*View*, *Controller*, *Model*), ditambah komponen pendukung dan basis data. Sistem di luar P/L, seperti *Payment Gateway (dummy)*, digambarkan dengan garis putus-putus dan tidak perlu dimasukkan ke Tabel 2.1. Setiap garis diberi label: "Memanggil" untuk *View* yang memanggil *Controller*, "akses" untuk *Controller* yang mengakses *Model*, serta agregasi dan komposisi untuk hubungan antar-*Model*.
+### Penjelasan Komponen dan Label Relasi
 
-<sub><b><i>Catatan</i></b>: <i>Ganti XXX dengan nama view yang dibuat, misalnya Logical View. Gambar 2 hanya contoh untuk P/L e-commerce, ganti dengan view milik kelompok Anda yang memuat seluruh komponen pada Tabel 2.1. Jenis view dan notasinya boleh berbeda dari contoh. Jika membuat view tambahan, lanjutkan pola 3.x ini (3.2, 3.3, dan seterusnya).</i></sub>
+Diagram di atas memetakan ke-32 komponen yang terdaftar pada Tabel 2.1 ke dalam tiga lapisan utama MVC beserta subsistem penyimpanannya:
+
+1. **View**
+   Terdiri atas 8 komponen antarmuka yang melayani interaksi langsung dengan pengguna (mulai dari `HalamanJelajahKasus`, `HalamanRangkumanKasus`, `HalamanPencarianKataKunci` untuk pengguna publik anonim, hingga antarmuka pengelolaan konten untuk Administrator dan Kurator).
+
+2. **Controller**
+   Terdiri atas 9 komponen pengendali yang mengoordinasikan interaksi antara *View* dan *Model*. *Controller* bertanggung jawab untuk memvalidasi setiap *event* dari pengguna (misalnya verifikasi otorisasi pada `KontrolAutentikasi` atau penyetujuan pada `KontrolModerasiKonten`) sebelum mengizinkan pemanggilan operasi ke *Model*.
+
+3. **Model**
+   Terdiri atas 12 komponen entitas yang menyimpan struktur data hukum dan pengguna sistem. Komponen `RiwayatStatus` diisolasi guna memenuhi perlindungan KNF09 di mana riwayat tidak boleh dimanipulasi atau diubah setelah dibuat.
+
+4. **Storage**
+   Terdiri atas `Database` dan `Penyimpanan Berkas` yang berada di server, serta komponen khusus `Penyimpanan Lokal Peramban` (di sisi klien) dan `Sumber Hukum Resmi` (sistem eksternal). `Penyimpanan Lokal Peramban` digunakan oleh `KontrolChecklist` untuk mempertahankan daftar persiapan dokumen pengguna secara anonim.
+
+**Keterangan Relasi (Label Panah):**
+
+* **memanggil:** Aksi dari *View* yang meneruskan interaksi pengguna ke *Controller* terkait.
+* **akses:** Aksi dari *Controller* untuk menerapkan logika bisnis terhadap *Model* (mengambil, mengubah, atau menghapus data).
+* **komposisi / agregasi:** Relasi kepemilikan struktural antar-*Model* di mana komponen bagian (misal *Checklist*) terikat kuat (komposisi) atau terkait lepas (agregasi) dengan entitas induknya (misal *RangkumanKasus*).
+* **asosiasi:** Keterkaitan operasional spesifik berarah, di mana peranannya dituliskan langsung di atas garis (contoh: "menulis", "diubah oleh").
+* **generalisasi:** Pewarisan atribut dan *method* dari *Model* spesifik (Kurator, Administrator) ke *Model* umum (Akun).
+* **sistem eksternal:** Entitas di luar ruang lingkup PahamHukum (seperti JDIH/BPK) yang ditautkan melalui URL.
 
 ---
 
