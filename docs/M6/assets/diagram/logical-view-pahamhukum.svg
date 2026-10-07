@@ -136,8 +136,8 @@
   <text x="596" y="252" class="label" text-anchor="start">memanggil</text>
   <path d="M820,200 L820,300" class="garis" marker-end="url(#open)"/>
   <text x="826" y="252" class="label" text-anchor="start">memanggil</text>
-  <path d="M705,150 L705,76" class="garis" marker-end="url(#open)"/>
-  <text x="713" y="101" class="label" text-anchor="start">menyimpan &amp; memuat status centang checklist</text>
+  <path d="M660,300 L660,272 L935,272 L935,47 L845,47" class="garis putus" marker-end="url(#open)"/>
+  <text x="943" y="100" class="label" text-anchor="start">menyimpan &amp; memuat status centang checklist</text>
   <path d="M130,350 L130,480" class="garis putus" marker-end="url(#open)"/>
   <text x="136" y="432" class="label" text-anchor="start">akses</text>
   <path d="M160,350 L160,375 L300,375 L300,480" class="garis putus" marker-end="url(#open)"/>
