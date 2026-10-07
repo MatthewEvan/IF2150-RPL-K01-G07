@@ -27,6 +27,7 @@
 * [Milestone 3](#milestone-3)
 * [Milestone 4](#milestone-4)
 * [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -69,6 +70,11 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | Claude Opus 5.5 | Mengetahui apakah traceability sudah diisi dengan benar, apabila ada yang miss atau kurang teliti | Coba cek traceability nya, apakah ada KF atau UC atau yang terlewat | "Semuanya sudah benar dan saling terhubung.." atau "Ada satu yang masih kurang ...." |
+
+### Milestone 6
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Claude Sonnet 5.5 | Mengecek apakah diagram yang dibuat sudah sesuai dengan rancangan APL | Berdasarkan diagram yang dibuat, coba dicek kelengkapan dan kesesuaiannya. Bila ada revisi, berikan dalam poin | "Diagram sudah sesuai dengan APL dan hanya ada perbaikan minor" atau "Ada beberapa bagian yang kurang, yaitu 1. ..." |
 
 ---
 ### Pernyataan Integritas dan Persetujuan

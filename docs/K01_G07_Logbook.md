@@ -27,6 +27,7 @@
 * [Milestone 3](#milestone-3)
 * [Milestone 4](#milestone-4)
 * [Milestone 5](#milestone-5)
+* [Milestone 6](#milestone-6)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -122,5 +123,20 @@
 | 30-09-2026 | Matthew Evan Kurniawan | Mengecek kembali Bab 5: Class Diagram, melakukan revisi pada metode yang ada, dan mengerjakan Bab 6: Traceability | 2.5 | Done | - |
 | 30-09-2026 | Semua Anggota | Menyamakan visi dan pemahaman terhadap perangkat lunak, sekaligus melakukan pengecekan terakhir dan revisi | 3.5 | Done | - |
 | 30-09-2026 | Matthew Evan Kurniawan | Mengisi Logbook dan AI Usage | 1 | Done | - |
+
+### Milestone 6
+**Periode:**  2 Oktober 2026 - 7 Oktober 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 02-10-2026 | Semua Anggota | Mengikuti Asistensi Akbar RPL Milestone 6 melalui Teams | 1 | Done | - |
+| 04-10-2026 | Matthew Evan Kurniawan | Memilih arsitektur MVC sebagai dasar pattern untuk PahamHukum dan membuat poin penjelasan | 1.5 | On Progress | - |
+| 05-10-2026 | Matthew Evan Kurniawan | Melanjutkan alasan pemilihan MVC dan kaitannya dengan Lingkungan Operasi Sistem | 2.5 | Done | - |
+| 05-10-2026 | Wesley Lianto | Melist Model, View, dan Controller untuk PahamHukum pada bab 2 | 2.5 | Done | - |
+| 05-10-2026 | Raditya Wibian Sastaka | Mengerjakan diagram arsitektur MVC untuk penjelasan alasan MVC di Bab 1 | 1.5 | Done | - |
+| 06-10-2026 | Rivan Cahyadi | Mengerjakan Bab 3.1 untuk diagram Logical View | 3 | Done | - |
+| 07-10-2026 | Christopher Michael Jafeth Tobing | Mengerjakan Bab 3.1 untuk diagram Physical View | 2 | Done | - |
+| 07-10-2026 | Matthew Evan Kurniawan | Melakukan revisi minor pada Bab 1, 2, dan 3 untuk melengkapi keterangan dan alasan | 2 | Done | - |
+| 07-10-2026 | Matthew Evan Kurniawan | Melengkapi Form Asistensi, AI-Usage, dan Logbook untuk milestone 6 | 2 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
