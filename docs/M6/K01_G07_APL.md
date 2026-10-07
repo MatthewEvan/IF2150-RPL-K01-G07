@@ -210,6 +210,43 @@ Diagram di atas memetakan ke-32 komponen yang terdaftar pada Tabel 2.1 ke dalam 
 * **generalisasi:** Pewarisan atribut dan *method* dari *Model* spesifik (Kurator, Administrator) ke *Model* umum (Akun).
 * **sistem eksternal:** Entitas di luar ruang lingkup PahamHukum (seperti JDIH/BPK) yang ditautkan melalui URL.
 
+## 3.2 Physical View
+
+Selain *Logical View* pada 3.1, PahamHukum juga dimodelkan melalui ***Physical View*** (*deployment view*) agar lingkungan eksekusi perangkat lunak terlihat jelas, bukan hanya struktur logisnya. *Physical View* mendeskripsikan node tempat komponen berjalan atau tersimpan, artifact yang dipasang pada node tersebut, serta jalur jaringan antarnode. *View* ini dipilih sebagai pelengkap *Logical View* karena PahamHukum melayani klien yang sangat beragam (lintas perangkat, peramban, dan sistem operasi, dengan koneksi yang tidak selalu stabil — lihat Asumsi A-01 dan subbab 2.4 *Batasan Perangkat Lunak* SKPL poin 1 dan 4), sehingga penting menunjukkan secara eksplisit di mana data disimpan, di peramban klien (sementara, untuk *checklist*) atau di server (persisten, untuk seluruh data lain).
+
+Diagram digambar dengan notasi *UML Deployment Diagram*: node berstereotip `«Device»` dengan nama instans `:NamaNode`, lingkungan eksekusi di dalam node (`«Execution Environment»`, `«Database System»`, `«File System»`) digambar abu-abu sebagai perangkat lunak pihak ketiga, sedangkan setiap komponen pada Tabel 2.1 digambar sebagai `«artifact»` putih bergambar ikon komponen di luar node dan dihubungkan dengan panah putus-putus `«deploy»` ke lingkungan eksekusi tujuannya. Pemetaan ini langsung memakai lingkungan operasi pada Tabel 1.1, sehingga hubungan antara pilihan teknologi di BAB 1 dan tempat dijalankannya pola MVC terlihat secara konkret.
+
+<p align="center">
+  <img alt="Physical View pada Sistem PahamHukum" src="./assets/diagram/physical-view-pahamhukum.svg" width="100%">
+</p>
+<p align="center">
+  <i>Gambar 3. Physical View pada Sistem PahamHukum</i>
+</p>
+
+### Pemetaan Node dan Artifact ke Tabel 1.1 dan Tabel 2.1
+
+| Node | Lingkungan eksekusi (pihak ketiga) | Baris Tabel 1.1 | Artifact yang dipasang (nama sama dengan Tabel 2.1) |
+| :--- | :--- | :--- | :--- |
+| `:Perangkat Klien` `«Device»` | `:Peramban Web` `«Execution Environment»` | Client, OS | `:Penyimpanan Lokal Peramban` (status centang *checklist*, tidak dikirim ke server, KNF06), serta instans sisi klien dari `:HalamanRangkumanKasus` dan `:KontrolChecklist` |
+| `:Web Server` `«Device»` | `:Application Server` `«Execution Environment»` | Server | 8 artifact *View*, 9 artifact *Controller*, dan 12 artifact *Model* (total 29), dijalankan dalam satu proses aplikasi |
+| | `:Sistem Berkas Server` `«File System»` | Penyimpanan Berkas | `:Penyimpanan Berkas` (templat PDF/DOCX) |
+| `:Database Server` `«Device»` | `:PostgreSQL / MySQL` `«Database System»` | DBMS | `:Database` |
+| `:Sumber Hukum Resmi` (garis putus-putus) | — | — | Sistem eksternal di luar PahamHukum (JDIH, peraturan.bpk.go.id); bukan komponen Tabel 2.1 |
+
+`:HalamanRangkumanKasus` dan `:KontrolChecklist` dipasang pada **dua node**: instans di `:Web Server` menyusun halaman rangkuman dan mengambil isi *checklist* dari `Model`, sedangkan instans di `:Peramban Web` berjalan pada perangkat pengguna untuk memperbarui tampilan centang, menghitung kelengkapan dokumen, serta menyimpan dan memuat status centang di `:Penyimpanan Lokal Peramban` (UC03, KF13, KF14). Pemasangan ganda ini diperlukan karena KNF06 melarang status centang dikirim ke server, sehingga logika tersebut tidak mungkin berjalan di sisi server. Hal ini juga sesuai dengan panah *HalamanRangkumanKasus* ke *Penyimpanan Lokal Peramban* pada *Logical View* 3.1.
+
+Seluruh 32 komponen pada Tabel 2.1 muncul pada gambar dengan nama yang sama (awalan titik dua hanyalah notasi instans UML). Node, lingkungan eksekusi, dan sistem eksternal bukan komponen sehingga tidak terdaftar di Tabel 2.1. Bingkai putus-putus *View*, *Controller*, dan *Model* pada gambar hanya pengelompokan MVC dari BAB 1; panah `«deploy»` dari bingkai berlaku untuk semua artifact di dalamnya.
+
+### Keterangan Jalur Komunikasi
+
+| Penghubung | Stereotype | Multiplisitas | Keterangan |
+| :--- | :--- | :--- | :--- |
+| `:Perangkat Klien` — `:Web Server` | `«internet»` `{HTTPS}` | n : 1 | Permintaan halaman dan pengiriman formulir. Terkait baris *Jaringan* Tabel 1.1 (minimal 1 Mbps, beranda termuat paling lama 3 detik). |
+| `:Web Server` — `:Database Server` | `«intranet»` `{SQL}` | 1 : 1 | Kueri baca/tulis oleh lapisan *Model* ke `:Database`. |
+| `:Perangkat Klien` — `:Sumber Hukum Resmi` | `«internet»` `{hyperlink}` | n : 1 | Dibuka langsung oleh peramban pengguna saat mengeklik rujukan pada `Artikel`, bukan panggilan dari Web Server. |
+
+*Catatan:* `:Database Server` digambar sebagai node terpisah dari `:Web Server` karena DBMS pada Tabel 1.1 adalah layanan tersendiri. Jika pada implementasi basis data berada pada mesin yang sama dengan aplikasi, kedua node cukup digabung dan jalur `«intranet»` dihilangkan tanpa mengubah pemetaan artifact.
+
 ---
 
 # Referensi
