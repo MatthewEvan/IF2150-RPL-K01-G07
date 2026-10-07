@@ -118,19 +118,19 @@ Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 | Nama Komponen/Modul/Subsistem | Jenis                 | Penjelasan                                                                                                           |
 | :---------------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------- |
 | HalamanJelajahKasus | *View* | Menampilkan beranda berisi bidang hukum dan kelompok kasus, serta peringatan prioritas untuk kasus darurat, lalu meneruskan pilihan pengguna ke KontrolJelajahKasus. |
-| HalamanRangkumanKasus | *View* | Menampilkan satu rangkuman kasus lengkap (langkah, *checklist*, templat, artikel, direktori LBH), menyimpan dan memuat status centang *checklist* di peramban, serta meneruskan aksi unduh templat ke KontrolUnduhTemplat. |
+| HalamanRangkumanKasus | *View* | Menampilkan satu rangkuman kasus lengkap (langkah, *checklist*, templat, artikel, direktori LBH), menyimpan dan memuat status centang *checklist* di peramban, meneruskan permintaan centang *checklist* ke KontrolChecklist, serta meneruskan aksi unduh templat ke KontrolUnduhTemplat. |
 | HalamanPencarianKataKunci | *View* | Menampilkan kolom pencarian, daftar hasil, dan pesan serta saran jika kasus tidak ditemukan, lalu meneruskan kata kunci ke KontrolPencarianKataKunci. |
 | HalamanLogin | *View* | Menampilkan formulir *login* pengelola beserta pesan galat dan meneruskan kredensial ke KontrolAutentikasi. |
 | HalamanPenyusunanKonten | *View* | Menampilkan formulir penyusunan konten satu halaman bagi Kurator dan meneruskan aksi simpan draf, unggah templat, dan ajukan ke KontrolPenyusunanKonten. |
-| HalamanDaftarKontenKurator | *View* | Menampilkan daftar konten milik Kurator beserta status dan catatan revisinya. |
+| HalamanDaftarKontenKurator | *View* | Menampilkan daftar konten milik Kurator beserta status dan catatan revisinya, lalu meneruskan pilihan konten ke KontrolPelacakanKonten. |
 | HalamanModerasiKonten | *View* | Menampilkan antrean dan isi konten untuk Administrator beserta tombol Setujui dan Kembalikan pada layar yang sama, lalu meneruskan keputusan ke KontrolModerasiKonten. |
-| HalamanPengelolaanAkun | *View* | Menampilkan daftar Kurator dan formulir pendaftaran, pembaruan, serta penonaktifan akun bagi Administrator. |
+| HalamanPengelolaanAkun | *View* | Menampilkan daftar Kurator dan formulir pendaftaran, pembaruan, serta penonaktifan akun bagi Administrator, lalu meneruskan aksinya ke KontrolPengelolaanAkun. |
 | KontrolJelajahKasus | *Controller* | Mengatur alur penampilan bidang hukum, kelompok kasus, rangkuman kasus, dan direktori LBH. |
 | KontrolPencarianKataKunci | *Controller* | Memproses kata kunci, mengambil hasil yang relevan, dan menyarankan bidang lain jika kasus tidak ditemukan. |
 | KontrolChecklist | *Controller* | Mengambil *checklist* rangkuman dan menghitung kelengkapan dokumen yang dicentang. |
 | KontrolUnduhTemplat | *Controller* | Menyediakan daftar dan berkas templat versi terbaru untuk diunduh. |
 | KontrolAutentikasi | *Controller* | Memeriksa kredensial akun, mengarahkan pengguna sesuai perannya, serta mengakhiri sesi saat keluar atau kedaluwarsa (30 menit tanpa aktivitas). |
-| KontrolPenyusunanKonten | *Controller* | Mengatur pembuatan draf, pelampiran templat, validasi isian, dan pengajuan konten (Draft menjadi Diajukan), serta mencatat riwayat statusnya. |
+| KontrolPenyusunanKonten | *Controller* | Mengatur pembuatan draf, pelampiran templat, validasi isian, dan pengajuan konten (`Draft` menjadi `Diajukan`), serta mencatat riwayat statusnya. |
 | KontrolPelacakanKonten | *Controller* | Mengambil daftar konten milik Kurator dan catatan revisinya. |
 | KontrolModerasiKonten | *Controller* | Mengatur persetujuan dan pengembalian konten oleh Administrator, mewajibkan alasan revisi, dan mencatat riwayat status ke RiwayatStatus. |
 | KontrolPengelolaanAkun | *Controller* | Mengatur pendaftaran, pembaruan, dan penonaktifan akun Kurator. |
