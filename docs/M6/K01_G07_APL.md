@@ -82,7 +82,7 @@ Untuk **PahamHukum**, Pattern Arsitektur yang dipilih adalah **Model-View-Contro
 <img alt="Contoh Arsitektur MVC" src="./assets/diagram/arsitektur-mvc-pahamhukum.svg" width="70%">
 </p>
 <p align="center">
-<i>Gambar 1. Contoh Arsitektur MVC</i>
+<i>Gambar 1. Arsitektur MVC pada Sistem PahamHukum</i>
 </p>
 
 <sub>Isi bab ini dengan hal-hal berikut:</sub>
@@ -118,7 +118,7 @@ Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 | Nama Komponen/Modul/Subsistem | Jenis                 | Penjelasan                                                                                                           |
 | :---------------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------- |
 | HalamanJelajahKasus | *View* | Menampilkan beranda berisi bidang hukum dan kelompok kasus, serta peringatan prioritas untuk kasus darurat, lalu meneruskan pilihan pengguna ke KontrolJelajahKasus. |
-| HalamanRangkumanKasus | *View* | Menampilkan satu rangkuman kasus lengkap (langkah, *checklist*, templat, artikel, direktori LBH), menyimpan dan memuat status centang *checklist* di peramban, meneruskan permintaan centang *checklist* ke KontrolChecklist, serta meneruskan aksi unduh templat ke KontrolUnduhTemplat. |
+| HalamanRangkumanKasus | *View* | Menampilkan satu rangkuman kasus lengkap (langkah, *checklist*, templat, artikel, direktori LBH) beserta status centang *checklist*, meneruskan permintaan centang *checklist* ke KontrolChecklist, serta meneruskan aksi unduh templat ke KontrolUnduhTemplat. |
 | HalamanPencarianKataKunci | *View* | Menampilkan kolom pencarian, daftar hasil, dan pesan serta saran jika kasus tidak ditemukan, lalu meneruskan kata kunci ke KontrolPencarianKataKunci. |
 | HalamanLogin | *View* | Menampilkan formulir *login* pengelola beserta pesan galat dan meneruskan kredensial ke KontrolAutentikasi. |
 | HalamanPenyusunanKonten | *View* | Menampilkan formulir penyusunan konten satu halaman bagi Kurator dan meneruskan aksi simpan draf, unggah templat, dan ajukan ke KontrolPenyusunanKonten. |
@@ -127,7 +127,7 @@ Tabel 2.1. Identifikasi Komponen/Modul/Subsistem
 | HalamanPengelolaanAkun | *View* | Menampilkan daftar Kurator dan formulir pendaftaran, pembaruan, serta penonaktifan akun bagi Administrator, lalu meneruskan aksinya ke KontrolPengelolaanAkun. |
 | KontrolJelajahKasus | *Controller* | Mengatur alur penampilan bidang hukum, kelompok kasus, rangkuman kasus, dan direktori LBH. |
 | KontrolPencarianKataKunci | *Controller* | Memproses kata kunci, mengambil hasil yang relevan, dan menyarankan bidang lain jika kasus tidak ditemukan. |
-| KontrolChecklist | *Controller* | Mengambil *checklist* rangkuman dan menghitung kelengkapan dokumen yang dicentang. |
+| KontrolChecklist | *Controller* | Mengambil *checklist* rangkuman, menghitung kelengkapan dokumen yang dicentang, serta menyimpan dan memuat status centang pada Penyimpanan Lokal Peramban. |
 | KontrolUnduhTemplat | *Controller* | Menyediakan daftar dan berkas templat versi terbaru untuk diunduh. |
 | KontrolAutentikasi | *Controller* | Memeriksa kredensial akun, mengarahkan pengguna sesuai perannya, serta mengakhiri sesi saat keluar atau kedaluwarsa (30 menit tanpa aktivitas). |
 | KontrolPenyusunanKonten | *Controller* | Mengatur pembuatan draf, pelampiran templat, validasi isian, dan pengajuan konten (`Draft` menjadi `Diajukan`), serta mencatat riwayat statusnya. |
@@ -176,7 +176,7 @@ Ketentuan pengisian BAB 3:
 
 ## 3.1 Logical View
 
-Model arsitektur perangkat lunak yang dipilih untuk PahamHukum adalah **Model-View-Controller (MVC)** yang divisualisasikan melalui ***Logical View***. *Logical View* mendeskripsikan abstraksi komponen utama sistem dan hubungannya secara statis untuk mendukung pemenuhan kebutuhan fungsional bisnis. Model arsitektur ini dinilai paling cocok untuk aplikasi PahamHukum karena PahamHukum memiliki antarmuka yang sangat berbeda antara pengguna publik dan panel pengelola. MVC memungkinkan logika antarmuka (*View*) dipisah dari aturan validasi (*Controller*) dan struktur data (*Model*) sehingga perubahan tampilan di masa depan tidak akan merusak aturan atau status konten.
+Model arsitektur perangkat lunak yang dipilih untuk PahamHukum adalah **Model-View-Controller (MVC)** yang divisualisasikan melalui ***Logical View***. *Logical View* mendeskripsikan abstraksi komponen utama sistem dan hubungannya secara statis untuk mendukung pemenuhan kebutuhan fungsional bisnis. Model arsitektur ini dinilai paling cocok untuk aplikasi PahamHukum karena PahamHukum memiliki antarmuka yang sangat berbeda antara pengguna publik dan panel pengelola. MVC memungkinkan tampilan (*View*) dipisah dari alur dan validasi (*Controller*) serta aturan dan data (*Model*) sehingga perubahan tampilan di masa depan tidak akan merusak aturan atau status konten. *Logical View* dipilih karena memperlihatkan pembagian tanggung jawab *View*, *Controller*, dan *Model* serta arah panggilan antarkomponen, sehingga BAB 1 dapat ditelusuri langsung ke komponen pada BAB 2.
 
 <p align="center">
   <img alt="Logical View pada Sistem PahamHukum berbasis Pola MVC" src="./assets/diagram/logical-view-pahamhukum.svg" width="100%">
@@ -198,8 +198,8 @@ Diagram di atas memetakan ke-32 komponen yang terdaftar pada Tabel 2.1 ke dalam 
 3. **Model**
    Terdiri atas 12 komponen entitas yang menyimpan struktur data hukum dan pengguna sistem. Komponen `RiwayatStatus` diisolasi guna memenuhi perlindungan KNF09 di mana riwayat tidak boleh dimanipulasi atau diubah setelah dibuat.
 
-4. **Storage**
-   Terdiri atas `Database` dan `Penyimpanan Berkas` yang berada di server, serta komponen khusus `Penyimpanan Lokal Peramban` (di sisi klien) dan `Sumber Hukum Resmi` (sistem eksternal). `Penyimpanan Lokal Peramban` digunakan oleh `KontrolChecklist` untuk mempertahankan daftar persiapan dokumen pengguna secara anonim.
+4. **Penyimpanan Data**
+   Terdiri atas `Database` dan `Penyimpanan Berkas` yang berada di server, serta komponen khusus `Penyimpanan Lokal Peramban` (di sisi klien). `Penyimpanan Lokal Peramban` digunakan oleh `KontrolChecklist` untuk mempertahankan daftar persiapan dokumen pengguna secara anonim. `Sumber Hukum Resmi` digambar sebagai sistem eksternal dan bukan komponen pada Tabel 2.1.
 
 **Keterangan Relasi (Label Panah):**
 
