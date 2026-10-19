@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 500" width="1160" height="500" font-family="Arial, Helvetica, sans-serif">
+  <title>Sequence Diagram UC04 - Skenario Alternatif 1</title>
+  <defs>
+    <marker id="solidArrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,1 L10,5 L0,9 z" fill="#000"/>
+    </marker>
+    <marker id="openArrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1,1 L10,5 L1,9" fill="none" stroke="#000" stroke-width="1.4"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .lifeline { stroke: #000000; stroke-width: 1.2; stroke-dasharray: 5,5; }
+      .act { fill: #ffffff; stroke: #000000; stroke-width: 1.2; }
+      .icon-shape { fill: #ffffff; stroke: #000000; stroke-width: 1.3; }
+      .icon-line { fill: none; stroke: #000000; stroke-width: 1.3; }
+      .obj-text { font-size: 11.5px; fill: #000000; text-anchor: middle; }
+      .actor-text { font-size: 12px; fill: #000000; text-anchor: middle; }
+      .msg-solid { stroke: #000000; stroke-width: 1.3; fill: none; marker-end: url(#solidArrow); }
+      .msg-return { stroke: #000000; stroke-width: 1.2; stroke-dasharray: 5,4; fill: none; marker-end: url(#openArrow); }
+      .msg-label { font-size: 11.5px; fill: #000000; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1160" height="500" class="bg"/>
+
+  <!-- ==================== TOP ICONS ==================== -->
+  <!-- 1. Actor: Pencari Informasi (x=90) -->
+  <g transform="translate(90, 20)">
+    <circle cx="0" cy="12" r="10" class="icon-shape"/>
+    <line x1="0" y1="22" x2="0" y2="48" class="icon-line"/>
+    <line x1="-16" y1="31" x2="16" y2="31" class="icon-line"/>
+    <line x1="0" y1="48" x2="-13" y2="68" class="icon-line"/>
+    <line x1="0" y1="48" x2="13" y2="68" class="icon-line"/>
+    <text x="0" y="84" class="actor-text">Pencari Informasi</text>
+  </g>
+
+  <!-- 2. Boundary: :HalamanRangkumanKasus (x=350) -->
+  <g transform="translate(350, 58)">
+    <line x1="-50" y1="-16" x2="-50" y2="16" class="icon-line"/>
+    <line x1="-50" y1="0" x2="-38" y2="0" class="icon-line"/>
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <text x="0" y="-10" class="obj-text">:Halaman</text>
+    <text x="0" y="4" class="obj-text">Rangkuman</text>
+    <text x="0" y="18" class="obj-text">Kasus</text>
+  </g>
+
+  <!-- 3. Control: :KontrolUnduhTemplat (x=610) -->
+  <g transform="translate(610, 58)">
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <polyline points="8,-44 -3,-38 7,-31" class="icon-line"/>
+    <text x="0" y="-10" class="obj-text">:Kontrol</text>
+    <text x="0" y="4" class="obj-text">Unduh</text>
+    <text x="0" y="18" class="obj-text">Templat</text>
+  </g>
+
+  <!-- 4. Entity: :RangkumanKasus (x=850) -->
+  <g transform="translate(850, 58)">
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <line x1="-32" y1="38" x2="32" y2="38" class="icon-line"/>
+    <text x="0" y="-3" class="obj-text">:Rangkuman</text>
+    <text x="0" y="11" class="obj-text">Kasus</text>
+  </g>
+
+  <!-- 5. Entity: :TemplatDokumen (x=1060) -->
+  <g transform="translate(1060, 58)">
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <line x1="-32" y1="38" x2="32" y2="38" class="icon-line"/>
+    <text x="0" y="-3" class="obj-text">:Templat</text>
+    <text x="0" y="11" class="obj-text">Dokumen</text>
+  </g>
+
+  <!-- ==================== LIFELINES ==================== -->
+  <line x1="90" y1="112" x2="90" y2="385" class="lifeline"/>
+  <line x1="350" y1="104" x2="350" y2="385" class="lifeline"/>
+  <line x1="610" y1="104" x2="610" y2="385" class="lifeline"/>
+  <line x1="850" y1="104" x2="850" y2="385" class="lifeline"/>
+  <line x1="1060" y1="104" x2="1060" y2="385" class="lifeline"/>
+
+  <!-- ==================== ACTIVATION BARS ==================== -->
+  <rect x="343" y="140" width="14" height="205" class="act"/>
+  <rect x="603" y="175" width="14" height="130" class="act"/>
+  <rect x="843" y="210" width="14" height="60" class="act"/>
+
+  <!-- ==================== MESSAGES ==================== -->
+  <!-- 1. tampilkanHalaman(idKelompok) -->
+  <line x1="90" y1="140" x2="343" y2="140" class="msg-solid"/>
+  <text x="216" y="133" class="msg-label">tampilkanHalaman(idKelompok)</text>
+
+  <!-- 2. ambilDaftarTemplat(idRangkuman) -->
+  <line x1="357" y1="175" x2="603" y2="175" class="msg-solid"/>
+  <text x="480" y="168" class="msg-label">ambilDaftarTemplat(idRangkuman)</text>
+
+  <!-- 3. ambilDaftarTemplat() -->
+  <line x1="617" y1="210" x2="843" y2="210" class="msg-solid"/>
+  <text x="730" y="203" class="msg-label">ambilDaftarTemplat()</text>
+
+  <!-- 4. return daftarTemplat (kosong) -->
+  <line x1="843" y1="270" x2="617" y2="270" class="msg-return"/>
+  <text x="730" y="263" class="msg-label">daftarTemplat (kosong)</text>
+
+  <!-- 5. return daftarTemplat (kosong) -->
+  <line x1="603" y1="305" x2="357" y2="305" class="msg-return"/>
+  <text x="480" y="298" class="msg-label">daftarTemplat (kosong)</text>
+
+  <!-- 6. tampilkan pesan templat belum tersedia -->
+  <line x1="343" y1="345" x2="90" y2="345" class="msg-return"/>
+  <text x="216" y="338" class="msg-label">pesan templat belum tersedia (labelInfoBerkas)</text>
+
+  <!-- ==================== BOTTOM ICONS ==================== -->
+  <!-- 1. Actor: Pencari Informasi (x=90) -->
+  <g transform="translate(90, 390)">
+    <circle cx="0" cy="12" r="10" class="icon-shape"/>
+    <line x1="0" y1="22" x2="0" y2="48" class="icon-line"/>
+    <line x1="-16" y1="31" x2="16" y2="31" class="icon-line"/>
+    <line x1="0" y1="48" x2="-13" y2="68" class="icon-line"/>
+    <line x1="0" y1="48" x2="13" y2="68" class="icon-line"/>
+    <text x="0" y="84" class="actor-text">Pencari Informasi</text>
+  </g>
+
+  <!-- 2. Boundary: :HalamanRangkumanKasus (x=350) -->
+  <g transform="translate(350, 430)">
+    <line x1="-50" y1="-16" x2="-50" y2="16" class="icon-line"/>
+    <line x1="-50" y1="0" x2="-38" y2="0" class="icon-line"/>
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <text x="0" y="-10" class="obj-text">:Halaman</text>
+    <text x="0" y="4" class="obj-text">Rangkuman</text>
+    <text x="0" y="18" class="obj-text">Kasus</text>
+  </g>
+
+  <!-- 3. Control: :KontrolUnduhTemplat (x=610) -->
+  <g transform="translate(610, 430)">
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <polyline points="8,-44 -3,-38 7,-31" class="icon-line"/>
+    <text x="0" y="-10" class="obj-text">:Kontrol</text>
+    <text x="0" y="4" class="obj-text">Unduh</text>
+    <text x="0" y="18" class="obj-text">Templat</text>
+  </g>
+
+  <!-- 4. Entity: :RangkumanKasus (x=850) -->
+  <g transform="translate(850, 430)">
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <line x1="-32" y1="38" x2="32" y2="38" class="icon-line"/>
+    <text x="0" y="-3" class="obj-text">:Rangkuman</text>
+    <text x="0" y="11" class="obj-text">Kasus</text>
+  </g>
+
+  <!-- 5. Entity: :TemplatDokumen (x=1060) -->
+  <g transform="translate(1060, 430)">
+    <circle cx="0" cy="0" r="38" class="icon-shape"/>
+    <line x1="-32" y1="38" x2="32" y2="38" class="icon-line"/>
+    <text x="0" y="-3" class="obj-text">:Templat</text>
+    <text x="0" y="11" class="obj-text">Dokumen</text>
+  </g>
+</svg>

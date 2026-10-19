@@ -1,30 +1,29 @@
 <h1>
 IF2150 REKAYASA PERANGKAT LUNAK
 <br>
-TUGAS 5
+TUGAS 7
 <br>
 DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## PahamHukum
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
-Dipersiapkan oleh:
+Dipersiapkan oleh: #PenjagaNilai
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | K01 |
+| Kelompok | G07  |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525007 | Rivan Cahyadi |
+| 13525019 | Raditya Wibian Sastaka |
+| 13525064 | Matthew Evan Kurniawan |
+| 13525100 | Wesley Lianto |
+| 13525109 | Christopherus Michael Jafeth Tobing |
 ---
 
 ## Daftar Perubahan
@@ -211,6 +210,98 @@ Pada diagram, pastikan:
 ## 3.2 Use Case XX
 
 Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
+
+## 3.3 Use Case Menyiapkan Dokumen dengan *Checklist*
+
+**ID Use Case:** UC03  
+**Nama Use Case:** Menyiapkan Dokumen dengan *Checklist*
+
+### 3.3.1 Identifikasi Kelas
+
+Tabel 3.3. Identifikasi Kelas Use Case UC03
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanRangkumanKasus` | C14 - `HalamanRangkumanKasus` |
+| 2 | `KontrolChecklist` | C23 - `KontrolChecklist` |
+| 3 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 4 | `Checklist` | C08 - `Checklist` |
+
+### 3.3.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC03_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.3. Sequence Diagram UC03 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Pengguna Memuat Ulang atau Membuka Kembali Halaman**
+
+<p align="center">
+<img alt="Sequence Diagram UC03 - Pengguna Memuat Ulang atau Membuka Kembali Halaman" src="./assets/diagram/SequenceDiagram_UC03_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.4. Sequence Diagram UC03 - Pengguna Memuat Ulang atau Membuka Kembali Halaman</i>
+</p>
+
+### 3.3.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC03" src="./assets/diagram/ClassDiagram_UC03.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.5. Diagram Kelas Menyiapkan Dokumen dengan Checklist (UC03)</i>
+</p>
+
+<br>
+
+## 3.4 Use Case Mengunduh Templat Dokumen
+
+**ID Use Case:** UC04  
+**Nama Use Case:** Mengunduh Templat Dokumen
+
+### 3.4.1 Identifikasi Kelas
+
+Tabel 3.4. Identifikasi Kelas Use Case UC04
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanRangkumanKasus` | C14 - `HalamanRangkumanKasus` |
+| 2 | `KontrolUnduhTemplat` | C24 - `KontrolUnduhTemplat` |
+| 3 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 4 | `TemplatDokumen` | C09 - `TemplatDokumen` |
+
+### 3.4.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC04_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.6. Sequence Diagram UC04 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Kasus Belum Memiliki Templat**
+
+<p align="center">
+<img alt="Sequence Diagram UC04 - Kasus Belum Memiliki Templat" src="./assets/diagram/SequenceDiagram_UC04_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.7. Sequence Diagram UC04 - Kasus Belum Memiliki Templat</i>
+</p>
+
+### 3.4.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC04" src="./assets/diagram/ClassDiagram_UC04.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.8. Diagram Kelas Mengunduh Templat Dokumen (UC04)</i>
+</p>
 
 <br>
 
