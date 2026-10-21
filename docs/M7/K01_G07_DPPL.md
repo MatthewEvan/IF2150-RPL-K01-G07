@@ -37,14 +37,10 @@ Dipersiapkan oleh: #PenjagaNilai
 | *B* | Penyesuaian kelas pada use case UC07 dan UC08: penambahan metode `ambilDaftarKonten()` pada C02 `Kurator` untuk mengambil konten milik Kurator, penambahan metode `ambilAntreanPeninjauan()` pada C03 `Administrator` untuk mengambil konten berstatus Diajukan terurut dari yang paling lama menunggu, serta perubahan tipe kembalian `kembalikanKonten(...)` pada C28 `KontrolModerasiKonten` dari `void` menjadi `bool` agar halaman dapat menampilkan pesan wajib isi ketika alasan revisi kosong. Tidak ada kelas baru. |
 | *C* | Penyesuaian kelas pada use case UC01 dan UC02: penambahan atribut `- idKelompokTerpilih: int` dan `- teksDisclaimer: Text` serta operasi `+ tampilkanPeringatanDarurat(): void` pada C13 `HalamanJelajahKasus`, penambahan operasi `+ cekDarurat(idKelompok: int): bool` pada C21 `KontrolJelajahKasus`, penambahan atribut `- teksDisclaimer: Text` serta operasi `+ tampilkanHasil(daftarHasil: KelompokKasus [0..*]): void` dan `+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..*]): void` pada C15 `HalamanPencarianKataKunci`, penyertaan operasi `+ ambilDaftarLangkah(): LangkahPenyelesaian [1..*]` dan `+ ambilDaftarArtikel(): Artikel [1..*]` pada C06 `RangkumanKasus` ke dalam diagram kelas UC01 agar sesuai dengan pemanggilan pada sequence diagram, serta penyertaan C14 `HalamanRangkumanKasus` ke dalam diagram kelas use case UC02 karena halaman rangkuman kasus ikut terlibat pada alur membuka hasil pencarian. Tidak ada kelas baru. |
 | *D* | Penyesuaian kelas pada use case UC05 dan UC09. Metode `cariAkun(email)` ditambahkan pada C01 `Akun` karena `prosesLogin()` menerima email, sedangkan SKPL belum menyediakan cara mencari akun berdasarkan email. Metode `putusSesi(idAkun)` ditambahkan pada C25 `KontrolAutentikasi` untuk memenuhi KF37 yang menuntut sesi Kurator terputus seketika saat akunnya dinonaktifkan. Metode `ambilDaftarKurator(idAdministrator)` ditambahkan pada C29 `KontrolPengelolaanAkun` agar pemuatan tabel daftar Kurator tidak melangkahi lapisan *Controller*. Selain itu, C25 dimasukkan ke daftar kelas UC09 dan alur login UC05 kini memanggil `cekAktif()` milik C02 `Kurator`, yang sebelumnya tidak pernah ditempatkan pada alur mana pun. Tidak ada kelas baru. |
-| ... |  |
 
 ---
 
 <br>
-
----
-
 
 # BAB 1: Pendahuluan
 
@@ -816,35 +812,36 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
 | C01 | `Akun` | - idAkun: int<br>- email: string<br>- kataSandiHash: string<br>- peran: string | + {static} cariAkun(email: string): Akun<br>+ cocokkanKataSandi(kataSandi: string): bool<br>- hashKataSandi(kataSandi: string): string<br>+ ambilPeran(): string<br>+ perbaruiEmail(emailBaru: string): void |
-| C02 | `Kurator` | - jumlahKonten: int<br>- statusAktif: bool<br>- idAdministrator: int<br>(serta atribut warisan Akun) | + cekAktif(): bool<br>+ tambahJumlahKonten(): void<br>+ nonaktifkan(): void |
-| C03 | `Administrator` | (mewarisi atribut Akun) | + ambilKuratorTerdaftar(): Kurator [0..\*] |
+| C02 | `Kurator` | - jumlahKonten: int<br>- statusAktif: bool<br>- idAdministrator: int<br>(serta atribut warisan Akun) | + cekAktif(): bool<br>+ tambahJumlahKonten(): void<br>+ nonaktifkan(): void<br>+ ambilDaftarKonten(): RangkumanKasus [0..\*] |
+| C03 | `Administrator` | (mewarisi atribut Akun) | + ambilKuratorTerdaftar(): Kurator [0..\*]<br>+ ambilAntreanPeninjauan(): RangkumanKasus [0..\*] |
 | C04 | `BidangHukum` | - idBidang: int<br>- nama: string<br>- jumlahKelompokKasus: int<br>- statusAktif: bool | + ambilDaftarKelompok(): KelompokKasus [1..\*]<br>+ cekAktif(): bool |
 | C05 | `KelompokKasus` | - idKelompok: int<br>- idBidang: int<br>- judulUmum: string<br>- istilahResmi: string<br>- penandaDarurat: bool | + ambilRangkuman(): RangkumanKasus<br>+ cekDarurat(): bool<br>+ cocokkanKataKunci(kataKunci: string): bool |
-| C06 | `RangkumanKasus` | - idRangkuman: int<br>- idKelompok: int<br>- idKurator: int<br>- intiMasalah: string<br>- hak: string<br>- poinPertimbangan: string<br>- status: string<br>- namaPenulis: string<br>- tanggalPeninjauan: date<br>- catatanRevisi: string | + cekDisetujui(): bool<br>+ cocokkanKataKunci(kataKunci: string): bool<br>+ ambilChecklist(): Checklist<br>+ ambilDaftarTemplat(): TemplatDokumen [0..\*]<br>+ ambilTemplat(idTemplat: int): TemplatDokumen<br>+ lampirkanTemplat(berkas: file): void<br>+ simpanDraf(): void<br>+ cekIsianLengkap(): bool<br>+ aturStatus(statusBaru: string): void<br>+ ambilCatatanRevisi(): string<br>+ simpanCatatanRevisi(catatan: string): void |
-| C07 | `LangkahPenyelesaian` | - idLangkah: int<br>- idRangkuman: int<br>- nomor: int<br>- deskripsi: string<br>- tujuan: string<br>- dokumenDiperlukan: string [1..\*]<br>- tenggat: date [0..1] | + punyaTenggat(): bool |
-| C08 | `Checklist` | - idChecklist: int<br>- idRangkuman: int<br>- daftarDokumen: string [1..\*] | + hitungJumlahDokumen(): int |
-| C09 | `TemplatDokumen` | - idTemplat: int<br>- idRangkuman: int<br>- namaBerkas: string<br>- format: string<br>- ukuran: int<br>- versi: string<br>- tanggalPembaruan: date | + unduh(): file<br>+ perbaruiVersi(berkas: file): void<br>- validasiUnggahan(berkas: file): bool |
-| C10 | `Artikel` | - idArtikel: int<br>- idRangkuman: int<br>- judul: string<br>- tautanSumber: string | + ambilTautan(): string |
+| C06 | `RangkumanKasus` | - idRangkuman: int<br>- idKelompok: int<br>- idKurator: int<br>- intiMasalah: string<br>- hak: string<br>- poinPertimbangan: string<br>- status: string<br>- namaPenulis: string<br>- tanggalPeninjauan: date<br>- catatanRevisi: string | + cekDisetujui(): bool<br>+ cocokkanKataKunci(kataKunci: string): bool<br>+ ambilDaftarLangkah(): LangkahPenyelesaian [1..\*]<br>+ ambilChecklist(): Checklist<br>+ ambilDaftarTemplat(): TemplatDokumen [0..\*]<br>+ ambilTemplat(idTemplat: int): TemplatDokumen<br>+ ambilDaftarArtikel(): Artikel [1..\*]<br>+ lampirkanTemplat(berkas: file): void<br>+ simpanDraf(dataKonten: Map&lt;string, string&gt;): void<br>+ cekIsianLengkap(): bool<br>+ ambilIsianKosong(): string [0..\*]<br>+ aturStatus(statusBaru: string): void<br>+ ambilCatatanRevisi(): string<br>+ simpanCatatanRevisi(catatan: string): void |
+| C07 | `LangkahPenyelesaian` | - idLangkah: int<br>- idRangkuman: int<br>- nomor: int<br>- deskripsi: string<br>- tujuan: string<br>- dokumenDiperlukan: string [1..\*]<br>- tenggat: date [0..1] | + punyaTenggat(): bool<br>+ simpan(): void |
+| C08 | `Checklist` | - idChecklist: int<br>- idRangkuman: int<br>- daftarDokumen: string [1..\*] | + hitungJumlahDokumen(): int<br>+ simpan(): void |
+| C09 | `TemplatDokumen` | - idTemplat: int<br>- idRangkuman: int<br>- namaBerkas: string<br>- format: string<br>- ukuran: int<br>- versi: string<br>- tanggalPembaruan: date | + unduh(): file<br>+ perbaruiVersi(berkas: file): void<br>+ validasiUnggahan(berkas: file): bool |
+| C10 | `Artikel` | - idArtikel: int<br>- idRangkuman: int<br>- judul: string<br>- tautanSumber: string | + ambilTautan(): string<br>+ simpan(): void |
 | C11 | `LembagaBantuanHukum` | - idLBH: int<br>- nama: string<br>- wilayah: string<br>- tautan: string | + cocokkanWilayah(wilayah: string): bool |
 | C12 | `RiwayatStatus` | - idRiwayat: int<br>- idRangkuman: int<br>- idPelaku: int<br>- status: string<br>- waktu: date | + simpan(): void |
-| C13 | `HalamanJelajahKasus` | - sectionDaftarBidang: Section<br>- kartuBidangHukum: Card [1..\*]<br>- sectionDaftarKelompok: Section<br>- kartuKelompokKasus: Card [1..\*]<br>- popupPeringatanDarurat: Modal<br>- tombolTutupPeringatan: Button | + tampilkanHalaman(): void<br>+ klikBidangHukum(idBidang: int): void<br>+ klikKelompokKasus(idKelompok: int): void<br>+ tutupPeringatan(): void |
+| C13 | `HalamanJelajahKasus` | - sectionDaftarBidang: Section<br>- kartuBidangHukum: Card [1..\*]<br>- sectionDaftarKelompok: Section<br>- kartuKelompokKasus: Card [1..\*]<br>- popupPeringatanDarurat: Modal<br>- tombolTutupPeringatan: Button<br>- idKelompokTerpilih: int<br>- teksDisclaimer: Text | + tampilkanHalaman(): void<br>+ klikBidangHukum(idBidang: int): void<br>+ klikKelompokKasus(idKelompok: int): void<br>+ tampilkanPeringatanDarurat(): void<br>+ tutupPeringatan(): void |
 | C14 | `HalamanRangkumanKasus` | - sectionIntiMasalah: Section<br>- sectionHak: Section<br>- sectionPertimbangan: Section<br>- sectionLangkah: Section<br>- penandaTenggat: Badge [0..\*]<br>- sectionChecklist: Section<br>- checkboxDokumen: Checkbox [1..\*]<br>- labelKelengkapan: Text<br>- sectionTemplat: Section<br>- tombolUnduh: Button [0..\*]<br>- labelInfoBerkas: Text<br>- sectionArtikel: Section<br>- sectionLBH: Section<br>- dropdownWilayah: Select<br>- labelPenulis: Text<br>- teksDisclaimer: Text | + tampilkanHalaman(idKelompok: int): void<br>+ pilihWilayah(wilayah: string): void<br>+ centangDokumen(indeks: int): void<br>- simpanStatusCentang(): void<br>- muatStatusCentang(): void<br>+ klikTombolUnduh(idTemplat: int): void |
-| C15 | `HalamanPencarianKataKunci` | - kolomPencarian: TextField<br>- tombolCari: Button<br>- daftarHasil: Card [0..\*]<br>- pesanTidakDitemukan: Text<br>- saranBidangLain: Card [0..\*]<br>- sectionLBH: Section<br>- dropdownWilayah: Select | + klikCari(kataKunci: string): void<br>+ klikHasil(idKelompok: int): void<br>+ pilihWilayah(wilayah: string): void |
+| C15 | `HalamanPencarianKataKunci` | - kolomPencarian: TextField<br>- tombolCari: Button<br>- daftarHasil: Card [0..\*]<br>- pesanTidakDitemukan: Text<br>- saranBidangLain: Card [0..\*]<br>- sectionLBH: Section<br>- dropdownWilayah: Select<br>- teksDisclaimer: Text | + klikCari(kataKunci: string): void<br>+ tampilkanHasil(daftarHasil: KelompokKasus [0..\*]): void<br>+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..\*]): void<br>+ klikHasil(idKelompok: int): void<br>+ pilihWilayah(wilayah: string): void |
 | C16 | `HalamanLogin` | - inputEmail: TextField<br>- inputKataSandi: PasswordField<br>- tombolMasuk: Button<br>- pesanGalat: Text | + tampilkanHalaman(): void<br>+ klikMasuk(email: string, kataSandi: string): void |
-| C17 | `HalamanPenyusunanKonten` | - formulirKonten: Form<br>- inputIntiMasalah: TextArea<br>- inputHak: TextArea<br>- inputPertimbangan: TextArea<br>- inputLangkah: TextArea [1..\*]<br>- inputChecklist: TextArea<br>- inputArtikel: TextField [1..\*]<br>- inputUnggahTemplat: FileInput<br>- tombolSimpanDraf: Button<br>- tombolAjukan: Button<br>- penandaIsianKosong: Text [0..\*]<br>- pesanGalatUnggah: Text<br>- tombolKeluar: Button | + tampilkanFormulir(idRangkuman: int): void<br>+ klikSimpanDraf(): void<br>+ unggahTemplat(berkas: file): void<br>+ klikAjukan(): void |
+| C17 | `HalamanPenyusunanKonten` | - formulirKonten: Form<br>- inputIntiMasalah: TextArea<br>- inputHak: TextArea<br>- inputPertimbangan: TextArea<br>- inputLangkah: TextArea [1..\*]<br>- inputChecklist: TextArea<br>- inputArtikel: TextField [1..\*]<br>- inputUnggahTemplat: FileInput<br>- pilihKelompok: Select<br>- tombolBuatDraf: Button<br>- tombolSimpanDraf: Button<br>- tombolAjukan: Button<br>- tombolTayangkan: Button<br>- penandaIsianKosong: Text [0..\*]<br>- pesanGalatUnggah: Text<br>- pesanPenolakan: Text<br>- idRangkumanAktif: int<br>- tombolKeluar: Button | + tampilkanFormulir(idRangkuman: int [0..1]): void<br>+ klikBuatDraf(idKelompok: int): void<br>+ klikSimpanDraf(dataKonten: Map&lt;string, string&gt;): void<br>+ unggahTemplat(berkas: file): void<br>+ klikAjukan(): void<br>+ klikTayangkan(idRangkuman: int): void<br>+ tampilkanGalatUnggah(): void<br>+ tandaiIsianKosong(daftarIsian: string [1..\*]): void<br>+ tampilkanPenolakan(): void |
 | C18 | `HalamanDaftarKontenKurator` | - tabelDaftarKonten: Table<br>- labelStatus: Badge [0..\*]<br>- panelCatatanRevisi: Section<br>- tombolKeluar: Button | + tampilkanHalaman(): void<br>+ klikKonten(idRangkuman: int): void |
 | C19 | `HalamanModerasiKonten` | - tabelAntrean: Table<br>- panelIsiKonten: Section<br>- tombolSetujui: Button<br>- tombolKembalikan: Button<br>- inputAlasanRevisi: TextArea<br>- pesanWajibIsi: Text<br>- tombolKeluar: Button | + tampilkanAntrean(): void<br>+ klikKonten(idRangkuman: int): void<br>+ klikSetujui(idRangkuman: int): void<br>+ klikKembalikan(idRangkuman: int, alasan: string): void |
 | C20 | `HalamanPengelolaanAkun` | - tabelDaftarKurator: Table<br>- formulirAkun: Form<br>- inputEmail: TextField<br>- inputKataSandi: PasswordField<br>- tombolDaftarkan: Button<br>- tombolSimpan: Button<br>- tombolNonaktifkan: Button<br>- tombolKeluar: Button | + tampilkanHalaman(): void<br>+ klikDaftarkan(email: string, kataSandi: string): void<br>+ klikSimpanPerubahan(idAkun: int, email: string): void<br>+ klikNonaktifkan(idAkun: int): void |
-| C21 | `KontrolJelajahKasus` | - | + ambilDaftarBidang(): BidangHukum [1..\*]<br>+ ambilDaftarKelompok(idBidang: int): KelompokKasus [1..\*]<br>+ ambilRangkuman(idKelompok: int): RangkumanKasus<br>+ ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..\*] |
+| C21 | `KontrolJelajahKasus` | - | + ambilDaftarBidang(): BidangHukum [1..\*]<br>+ ambilDaftarKelompok(idBidang: int): KelompokKasus [1..\*]<br>+ cekDarurat(idKelompok: int): bool<br>+ ambilRangkuman(idKelompok: int): RangkumanKasus<br>+ ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..\*] |
 | C22 | `KontrolPencarianKataKunci` | - | + cariKasus(kataKunci: string): KelompokKasus [0..\*]<br>+ sarankanBidangLain(): BidangHukum [1..\*]<br>+ ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..\*] |
 | C23 | `KontrolChecklist` | - | + ambilChecklist(idRangkuman: int): Checklist<br>+ hitungKelengkapan(jumlahDicentang: int, jumlahTotal: int): int |
 | C24 | `KontrolUnduhTemplat` | - | + ambilDaftarTemplat(idRangkuman: int): TemplatDokumen [0..\*]<br>+ unduhTemplat(idRangkuman: int, idTemplat: int): file |
 | C25 | `KontrolAutentikasi` | - | + putusSesi(idAkun: int): void<br>+ prosesLogin(email: string, kataSandi: string): bool<br>+ arahkanSesuaiPeran(peran: string): void<br>+ cekSesi(): bool<br>+ logout(): void |
-| C26 | `KontrolPenyusunanKonten` | - | + buatDraf(idKelompok: int, idKurator: int): RangkumanKasus<br>+ simpanDraf(idRangkuman: int): void<br>+ lampirkanTemplat(idRangkuman: int, berkas: file): void<br>+ ajukanKonten(idRangkuman: int): void<br>- catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void |
+| C26 | `KontrolPenyusunanKonten` | - | + buatDraf(idKelompok: int, idKurator: int): RangkumanKasus<br>+ simpanDraf(idRangkuman: int, dataKonten: Map&lt;string, string&gt;): void<br>+ lampirkanTemplat(idRangkuman: int, berkas: file): bool<br>+ ajukanKonten(idRangkuman: int, idKurator: int): string [0..\*]<br>+ tayangkanKonten(idRangkuman: int, idPelaku: int): bool<br>- catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void |
 | C27 | `KontrolPelacakanKonten` | - | + ambilDaftarKonten(idKurator: int): RangkumanKasus [0..\*]<br>+ ambilCatatanRevisi(idRangkuman: int): string |
-| C28 | `KontrolModerasiKonten` | - | + ambilAntrean(): RangkumanKasus [0..\*]<br>+ ambilKonten(idRangkuman: int): RangkumanKasus<br>+ setujuiKonten(idRangkuman: int, idAdministrator: int): void<br>+ kembalikanKonten(idRangkuman: int, idAdministrator: int, alasan: string): void<br>- cekAlasanTerisi(alasan: string): bool<br>- catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void |
+| C28 | `KontrolModerasiKonten` | - | + ambilAntrean(): RangkumanKasus [0..\*]<br>+ ambilKonten(idRangkuman: int): RangkumanKasus<br>+ setujuiKonten(idRangkuman: int, idAdministrator: int): void<br>+ kembalikanKonten(idRangkuman: int, idAdministrator: int, alasan: string): bool<br>- cekAlasanTerisi(alasan: string): bool<br>- catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void |
 | C29 | `KontrolPengelolaanAkun` | - | + ambilDaftarKurator(idAdministrator: int): Kurator [0..\*]<br>+ daftarkanKurator(email: string, kataSandi: string, idAdministrator: int): Kurator<br>+ perbaruiKurator(idAkun: int, emailBaru: string): void<br>+ nonaktifkanKurator(idAkun: int): void<br>- cekEmailUnik(email: string): bool |
-Tiga metode berikut tidak terdapat pada BAB 5 dokumen SKPL dan baru ditambahkan pada tahap perancangan. Penambahannya dicatat pada tabel Daftar Perubahan.
+
+Seluruh penambahan dan penyesuaian atribut maupun metode/operasi pada Tabel 4.1 di atas dibandingkan dengan BAB 5 dokumen SKPL telah dicatat pada tabel Daftar Perubahan (Revisi A hingga Revisi D). Adapun pada use case pengelolaan akun dan autentikasi (UC05 dan UC09), terdapat tiga metode baru yang ditambahkan pada tahap perancangan:
 
 1. `cariAkun(email)` pada `Akun`. Metode `prosesLogin()` menerima email, tetapi SKPL tidak menyediakan cara mencari akun berdasarkan email, sehingga `cocokkanKataSandi()` tidak memiliki objek sasaran. Metode ini bersifat statis karena dipanggil sebelum objek `Akun` terbentuk.
 2. `putusSesi(idAkun)` pada `KontrolAutentikasi`. KF37 menuntut sesi Kurator terputus seketika saat akunnya dinonaktifkan, sedangkan pemegang sesi adalah `KontrolAutentikasi`.
@@ -858,40 +855,42 @@ Selain ketiganya, alur login UC05 kini memanggil `cekAktif()` milik `Kurator`. M
 
 # BAB 5: Matriks Kerunutan
 
-Matriks kerunutan memetakan tiap kelas perancangan terhadap *use case* yang merealisasikannya. Acuannya adalah BAB 6 dokumen SKPL, disesuaikan dengan hasil realisasi pada BAB 3. Satu penyesuaian terjadi pada `KontrolAutentikasi`, yang semula hanya terkait UC05 dan kini juga terkait UC09 karena penonaktifan akun menuntut pemutusan sesi.
+Matriks kerunutan pada Tabel 5.1 memetakan setiap kelas perancangan (`C01` hingga `C29`) terhadap *use case* yang direalisasikannya (`UC01` hingga `UC09`) pada perangkat lunak **PahamHukum**. Pemetaan ini disusun dengan mengacu pada **BAB 6 Traceability pada dokumen SKPL** serta disesuaikan dengan hasil realisasi *use case* dan kelas perancangan pada BAB 3 dan BAB 4 dokumen DPPL ini. Terdapat dua penyesuaian keterkaitan kelas terhadap *use case* dibandingkan SKPL:
+1. Kelas `C14 - HalamanRangkumanKasus`, yang semula hanya dipetakan ke `UC01`, `UC03`, dan `UC04`, kini juga dipetakan ke `UC02 - Mencari Kasus` (Revisi C) karena alur pemilihan hasil pencarian pada `UC02` mengarahkan Pencari Informasi untuk membuka halaman rangkuman kasus terkait.
+2. Kelas `C25 - KontrolAutentikasi`, yang semula hanya dipetakan ke `UC05`, kini juga dipetakan ke `UC09 - Mengelola Akun Kurator` (Revisi D) karena skenario penonaktifan akun Kurator pada `UC09` menuntut pemutusan sesi aktif Kurator secara langsung melalui `KontrolAutentikasi`.
 
-Seluruh 29 kelas terpetakan ke sekurang-kurangnya satu *use case*, sehingga tidak ada kelas yang dirancang tanpa kebutuhan yang mendasarinya. Sebaliknya, kesembilan *use case* pada SKPL juga terwakili, sehingga tidak ada kebutuhan yang kehilangan rancangan kelasnya.
+Seluruh 29 kelas perancangan terpetakan ke sekurang-kurangnya satu *use case* dan kesembilan *use case* pada SKPL telah terwakili seluruhnya, sehingga ketertelusuran antara kebutuhan fungsional dan kelas perancangan terjaga secara utuh.
 
 Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| C01 - `Akun` | UC05, UC06, UC08, UC09 |
-| C02 - `Kurator` | UC05, UC06, UC07, UC09 |
-| C03 - `Administrator` | UC05, UC08, UC09 |
-| C04 - `BidangHukum` | UC01, UC02 |
-| C05 - `KelompokKasus` | UC01, UC02 |
-| C06 - `RangkumanKasus` | UC01, UC02, UC03, UC04, UC06, UC07, UC08 |
-| C07 - `LangkahPenyelesaian` | UC01, UC06 |
-| C08 - `Checklist` | UC01, UC03, UC06 |
-| C09 - `TemplatDokumen` | UC01, UC04, UC06 |
-| C10 - `Artikel` | UC01, UC06 |
-| C11 - `LembagaBantuanHukum` | UC01, UC02 |
-| C12 - `RiwayatStatus` | UC06, UC08 |
-| C13 - `HalamanJelajahKasus` | UC01 |
-| C14 - `HalamanRangkumanKasus` | UC01, UC03, UC04 |
-| C15 - `HalamanPencarianKataKunci` | UC02 |
-| C16 - `HalamanLogin` | UC05 |
-| C17 - `HalamanPenyusunanKonten` | UC06 |
-| C18 - `HalamanDaftarKontenKurator` | UC07 |
-| C19 - `HalamanModerasiKonten` | UC08 |
-| C20 - `HalamanPengelolaanAkun` | UC09 |
-| C21 - `KontrolJelajahKasus` | UC01 |
-| C22 - `KontrolPencarianKataKunci` | UC02 |
-| C23 - `KontrolChecklist` | UC03 |
-| C24 - `KontrolUnduhTemplat` | UC04 |
-| C25 - `KontrolAutentikasi` | UC05, UC09 |
-| C26 - `KontrolPenyusunanKonten` | UC06 |
-| C27 - `KontrolPelacakanKonten` | UC07 |
-| C28 - `KontrolModerasiKonten` | UC08 |
-| C29 - `KontrolPengelolaanAkun` | UC09 |
+| C01 - `Akun` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC06 - Mengelola Konten Rangkuman Kasus<br>UC08 - Meninjau dan Memutuskan Konten<br>UC09 - Mengelola Akun Kurator |
+| C02 - `Kurator` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC06 - Mengelola Konten Rangkuman Kasus<br>UC07 - Memantau Status dan Revisi Konten<br>UC09 - Mengelola Akun Kurator |
+| C03 - `Administrator` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC08 - Meninjau dan Memutuskan Konten<br>UC09 - Mengelola Akun Kurator |
+| C04 - `BidangHukum` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus |
+| C05 - `KelompokKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus |
+| C06 - `RangkumanKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus<br>UC03 - Menyiapkan Dokumen dengan *Checklist*<br>UC04 - Mengunduh Templat Dokumen<br>UC06 - Mengelola Konten Rangkuman Kasus<br>UC07 - Memantau Status dan Revisi Konten<br>UC08 - Meninjau dan Memutuskan Konten |
+| C07 - `LangkahPenyelesaian` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C08 - `Checklist` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC03 - Menyiapkan Dokumen dengan *Checklist*<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C09 - `TemplatDokumen` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC04 - Mengunduh Templat Dokumen<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C10 - `Artikel` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C11 - `LembagaBantuanHukum` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus |
+| C12 - `RiwayatStatus` | UC06 - Mengelola Konten Rangkuman Kasus<br>UC08 - Meninjau dan Memutuskan Konten |
+| C13 - `HalamanJelajahKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus |
+| C14 - `HalamanRangkumanKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus<br>UC03 - Menyiapkan Dokumen dengan *Checklist*<br>UC04 - Mengunduh Templat Dokumen |
+| C15 - `HalamanPencarianKataKunci` | UC02 - Mencari Kasus |
+| C16 - `HalamanLogin` | UC05 - Masuk dan Keluar Panel Pengelolaan |
+| C17 - `HalamanPenyusunanKonten` | UC06 - Mengelola Konten Rangkuman Kasus |
+| C18 - `HalamanDaftarKontenKurator` | UC07 - Memantau Status dan Revisi Konten |
+| C19 - `HalamanModerasiKonten` | UC08 - Meninjau dan Memutuskan Konten |
+| C20 - `HalamanPengelolaanAkun` | UC09 - Mengelola Akun Kurator |
+| C21 - `KontrolJelajahKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus |
+| C22 - `KontrolPencarianKataKunci` | UC02 - Mencari Kasus |
+| C23 - `KontrolChecklist` | UC03 - Menyiapkan Dokumen dengan *Checklist* |
+| C24 - `KontrolUnduhTemplat` | UC04 - Mengunduh Templat Dokumen |
+| C25 - `KontrolAutentikasi` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC09 - Mengelola Akun Kurator |
+| C26 - `KontrolPenyusunanKonten` | UC06 - Mengelola Konten Rangkuman Kasus |
+| C27 - `KontrolPelacakanKonten` | UC07 - Memantau Status dan Revisi Konten |
+| C28 - `KontrolModerasiKonten` | UC08 - Meninjau dan Memutuskan Konten |
+| C29 - `KontrolPengelolaanAkun` | UC09 - Mengelola Akun Kurator |
