@@ -651,7 +651,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <img alt="Sequence Diagram UC07 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC07_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.23. Sequence Diagram UC07 - Skenario Normal</i>
+<i>Gambar 3.7.1 Sequence Diagram UC07 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Konten Berstatus Perlu Revisi**
@@ -660,7 +660,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <img alt="Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi" src="./assets/diagram/SequenceDiagram_UC07_Alt1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.24. Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi</i>
+<i>Gambar 3.7.2 Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi</i>
 </p>
 
 ### 3.7.3 Diagram Kelas
@@ -669,7 +669,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <img alt="Diagram Kelas UC07" src="./assets/diagram/ClassDiagram_UC07.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar 3.25. Diagram Kelas Memantau Status dan Revisi Konten (UC07)</i>
+<i>Gambar 3.7.3 Diagram Kelas Memantau Status dan Revisi Konten (UC07)</i>
 </p>
 
 <br>
@@ -700,7 +700,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Sequence Diagram UC08 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC08_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.26. Sequence Diagram UC08 - Skenario Normal</i>
+<i>Gambar 3.8.1 Sequence Diagram UC08 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi**
@@ -709,7 +709,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi" src="./assets/diagram/SequenceDiagram_UC08_Alt1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.27. Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi</i>
+<i>Gambar 3.8.2 Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi</i>
 </p>
 
 - **Skenario Alternatif 2: Alasan Revisi Dikosongkan**
@@ -718,7 +718,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan" src="./assets/diagram/SequenceDiagram_UC08_Alt2.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.28. Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan</i>
+<i>Gambar 3.8.3 Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan</i>
 </p>
 
 ### 3.8.3 Diagram Kelas
@@ -727,7 +727,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Diagram Kelas UC08" src="./assets/diagram/ClassDiagram_UC08.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar 3.29. Diagram Kelas Meninjau dan Memutuskan Konten (UC08)</i>
+<i>Gambar 3.8.4 Diagram Kelas Meninjau dan Memutuskan Konten (UC08)</i>
 </p>
 
 <br>
