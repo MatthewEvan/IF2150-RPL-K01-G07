@@ -34,7 +34,7 @@ Dipersiapkan oleh: #PenjagaNilai
 | Revisi | Deskripsi |
 | :--- | :--- |
 | *A* | Penambahan dan penyesuaian atribut serta metode kelas pada use case UC06 (C06, C07, C08, C09, C10, C17, C26) agar realisasi skenario normal dan alternatif dapat digambarkan pada sequence diagram. Tidak ada kelas baru. |
-| *B* |  |
+| *B* | Penyesuaian kelas pada use case UC07 dan UC08: penambahan metode `ambilDaftarKonten()` pada C02 `Kurator` untuk mengambil konten milik Kurator, penambahan metode `ambilAntreanPeninjauan()` pada C03 `Administrator` untuk mengambil konten berstatus Diajukan terurut dari yang paling lama menunggu, serta perubahan tipe kembalian `kembalikanKonten(...)` pada C28 `KontrolModerasiKonten` dari `void` menjadi `bool` agar halaman dapat menampilkan pesan wajib isi ketika alasan revisi kosong. Tidak ada kelas baru. |
 | *C* |  |
 | ... |  |
 
@@ -522,6 +522,111 @@ Tabel 3.6. Identifikasi Kelas Use Case UC06
 </p>
 <p align="center">
 <i>Gambar 3.6.3 Diagram Kelas Mengelola Konten Rangkuman Kasus (UC06)</i>
+</p>
+
+<br>
+
+## 3.7 Use Case Memantau Status dan Revisi Konten
+
+**ID Use Case:** UC07  
+**Nama Use Case:** Memantau Status dan Revisi Konten
+
+### 3.7.1 Identifikasi Kelas
+
+Tabel 3.7. Identifikasi Kelas Use Case UC07
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanDaftarKontenKurator` | C18 - `HalamanDaftarKontenKurator` |
+| 2 | `KontrolPelacakanKonten` | C27 - `KontrolPelacakanKonten` |
+| 3 | `Kurator` | C02 - `Kurator` |
+| 4 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+
+### 3.7.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC07 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC07_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.23. Sequence Diagram UC07 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Konten Berstatus Perlu Revisi**
+
+<p align="center">
+<img alt="Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi" src="./assets/diagram/SequenceDiagram_UC07_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.24. Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi</i>
+</p>
+
+### 3.7.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC07" src="./assets/diagram/ClassDiagram_UC07.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.25. Diagram Kelas Memantau Status dan Revisi Konten (UC07)</i>
+</p>
+
+<br>
+
+## 3.8 Use Case Meninjau dan Memutuskan Konten
+
+**ID Use Case:** UC08  
+**Nama Use Case:** Meninjau dan Memutuskan Konten
+
+### 3.8.1 Identifikasi Kelas
+
+Tabel 3.8. Identifikasi Kelas Use Case UC08
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanModerasiKonten` | C19 - `HalamanModerasiKonten` |
+| 2 | `KontrolModerasiKonten` | C28 - `KontrolModerasiKonten` |
+| 3 | `Akun` | C01 - `Akun` |
+| 4 | `Administrator` | C03 - `Administrator` |
+| 5 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 6 | `RiwayatStatus` | C12 - `RiwayatStatus` |
+
+### 3.8.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC08 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC08_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.26. Sequence Diagram UC08 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi**
+
+<p align="center">
+<img alt="Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi" src="./assets/diagram/SequenceDiagram_UC08_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.27. Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi</i>
+</p>
+
+- **Skenario Alternatif 2: Alasan Revisi Dikosongkan**
+
+<p align="center">
+<img alt="Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan" src="./assets/diagram/SequenceDiagram_UC08_Alt2.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.28. Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan</i>
+</p>
+
+### 3.8.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas UC08" src="./assets/diagram/ClassDiagram_UC08.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.29. Diagram Kelas Meninjau dan Memutuskan Konten (UC08)</i>
 </p>
 
 <br>
