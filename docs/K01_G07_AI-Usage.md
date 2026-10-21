@@ -28,6 +28,7 @@
 * [Milestone 4](#milestone-4)
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -75,6 +76,13 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
 | :--- | :--- | :--- | :--- |
 | Claude Sonnet 5.5 | Mengecek apakah diagram yang dibuat sudah sesuai dengan rancangan APL | Berdasarkan diagram yang dibuat, coba dicek kelengkapan dan kesesuaiannya. Bila ada revisi, berikan dalam poin | "Diagram sudah sesuai dengan APL dan hanya ada perbaikan minor" atau "Ada beberapa bagian yang kurang, yaitu 1. ..." |
+
+### Milestone 7
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Claude Opus 5.5 | Menjelaskan kaidah penggambaran skenario alternatif pada sequence diagram (penggunaan fragmen alt vs pemisahan diagram) dan alur Boundary-Control-Entity | "Bagaimana aturan penggambaran skenario alternatif pada sequence diagram DPPL? Kapan sebaiknya pakai fragmen alt dan kapan harus dipisah jadi diagram baru?" | Kami mencocokkan penjelasan AI dengan catatan asistensi M7. Skenario alternatif sederhana dengan alur awal yang sama digabungkan menggunakan alt, sedangkan skenario alternatif dengan alur berbeda digambarkan pada diagram terpisah. |
+| Claude Opus 5.5 | Mengecek konsistensi pemanggilan operasi pada sequence diagram dengan atribut dan metode pada diagram kelas per use case | "Coba cek apakah operasi yang dipanggil pada sequence diagram skenario normal dan alternatif UC03 dan UC04 sudah lengkap dan ada di dalam kotak kelas masing-masing." | Kami mengecek kembali daftar metode hasil analisis AI terhadap dokumen SKPL Bab 5. Beberapa visibilitas, parameter, dan return type yang belum tepat kami perbaiki manual agar sesuai dengan spesifikasi perancangan. |
+| Gemini 5 Argon | Membantu mengecek kelengkapan dan struktur perancangan arsitektur BAB 2 (lingkungan implementasi, MVC, dan view arsitektur) agar selaras dengan dokumen APL | "Apakah pemetaan komponen MVC dan spesifikasi lingkungan implementasi (OS, DBMS, tools, filing system, bahasa) di BAB 2 ini sudah konsisten dengan dokumen APL dan SKPL?" | Kami membaca saran AI, membuang usulan penambahan teknologi yang tidak ada di SKPL, dan menyesuaikan tabel lingkungan operasi serta pemetaan komponen agar merujuk secara konsisten ke dokumen APL. |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
