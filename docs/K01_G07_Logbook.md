@@ -158,8 +158,8 @@
 | 20-10-2026 | Wesley Lianto | Mengerjakan Sequence Diagram dan Class Diagram untuk UC07 dan UC08 | 3 | Done | - |
 | 20-10-2026 | Christopherus Michael Jafeth Tobing | Mengerjakan Sequence Diagram dan Class Diagram untuk UC01 dan UC02 | 3 | Done | - |
 | 21-10-2026 | Rivan Cahyadi | Menyusun Bab 2: Perancangan Arsitektur (Rancangan Lingkungan, MVC, Identifikasi Komponen, dan Model Arsitektur) | 3 | Done | - |
-| 21-10-2026 | Rivan Cahyadi | Pengerjaan Bab 4: Diagram Kelas Keseluruhan | 3 | Done | Menunggu finalisasi seluruh sequence diagram di Bab 3 |
-| 21-10-2026 |Rivan Cahyadi | Pengerjaan Bab 5: Matriks Kerunutan | 2.5 | Done | Menunggu finalisasi kelas perancangan di Bab 4 |
+| 21-10-2026 | Raditya Wibian Sastaka | Pengerjaan Bab 4: Diagram Kelas Keseluruhan | 3 | Done | Menunggu finalisasi seluruh sequence diagram di Bab 3 |
+| 21-10-2026 | Rivan Cahyadi | Pengerjaan Bab 5: Matriks Kerunutan | 2.5 | Done | Menunggu finalisasi kelas perancangan di Bab 4 |
 | 21-10-2026 | Rivan Cahyadi | Mengisi dan melengkapi Logbook serta AI-Usage untuk Milestone 7 | 1.5 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
