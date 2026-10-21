@@ -1,0 +1,101 @@
+@startuml SequenceDiagram_UC01_Skenario_Alternatif_1
+title Sequence Diagram UC01 - Menelusuri dan Membaca Rangkuman Kasus (Skenario Alternatif 1: Kasus Ditandai Situasi Darurat)
+<style>
+participant {
+Padding 14
+}
+</style>
+
+actor "Pencari Informasi" as PencariInformasi
+participant "HalamanJelajahKasus" as HalamanJelajahKasus
+participant "HalamanRangkumanKasus" as HalamanRangkumanKasus
+participant "KontrolJelajahKasus" as KontrolJelajahKasus
+participant "BidangHukum" as BidangHukum
+participant "KelompokKasus" as KelompokKasus
+participant "RangkumanKasus" as RangkumanKasus
+participant "LangkahPenyelesaian" as LangkahPenyelesaian
+participant "Checklist" as Checklist
+participant "Artikel" as Artikel
+participant "LembagaBantuanHukum" as LembagaBantuanHukum
+
+== Langkah 1: Pencari Informasi membuka halaman beranda ==
+PencariInformasi -> HalamanJelajahKasus : tampilkanHalaman()
+HalamanJelajahKasus -> KontrolJelajahKasus : ambilDaftarBidang()
+loop [untuk setiap BidangHukum]
+  KontrolJelajahKasus -> BidangHukum : cekAktif()
+  BidangHukum --> KontrolJelajahKasus : aktif : bool
+end
+note right of KontrolJelajahKasus
+  hanya BidangHukum yang aktif
+  yang diteruskan ke Halaman (KF01, KF02)
+end note
+KontrolJelajahKasus --> HalamanJelajahKasus : daftarBidang : BidangHukum [1..*]
+KontrolJelajahKasus --> PencariInformasi : bidang hukum aktif beserta\njumlah kelompok kasus ditampilkan
+
+== Langkah 2: Pencari Informasi memilih salah satu bidang hukum ==
+PencariInformasi -> HalamanJelajahKasus : klikBidangHukum(idBidang)
+HalamanJelajahKasus -> KontrolJelajahKasus : ambilDaftarKelompok(idBidang)
+KontrolJelajahKasus -> BidangHukum : ambilDaftarKelompok()
+BidangHukum --> KontrolJelajahKasus : daftarKelompok : KelompokKasus [1..*]
+loop [untuk setiap KelompokKasus]
+  KontrolJelajahKasus -> KelompokKasus : ambilRangkuman()
+  KelompokKasus --> KontrolJelajahKasus : rangkuman : RangkumanKasus
+  KontrolJelajahKasus -> RangkumanKasus : cekDisetujui()
+  RangkumanKasus --> KontrolJelajahKasus : disetujui : bool
+end
+note right of KontrolJelajahKasus
+  hanya kelompok dengan rangkuman
+  berstatus Disetujui yang diteruskan (KF02)
+end note
+KontrolJelajahKasus --> HalamanJelajahKasus : daftarKelompok : KelompokKasus [1..*]
+KontrolJelajahKasus --> PencariInformasi : kelompok kasus ditampilkan\n(judul sehari-hari + istilah hukum resmi)
+
+== Langkah 3: Pencari Informasi memilih kelompok kasus yang ditandai sebagai situasi darurat ==
+PencariInformasi -> HalamanJelajahKasus : klikKelompokKasus(idKelompok)
+HalamanJelajahKasus -> KontrolJelajahKasus : cekDarurat(idKelompok)
+KontrolJelajahKasus -> KelompokKasus : cekDarurat()
+KelompokKasus --> KontrolJelajahKasus : darurat : bool
+note right of KontrolJelajahKasus
+  darurat = true
+  kasus ditandai sebagai situasi darurat,
+  sehingga peringatan prioritas ditampilkan (KF21)
+end note
+KontrolJelajahKasus --> HalamanJelajahKasus : darurat = true
+HalamanJelajahKasus -> HalamanJelajahKasus : tampilkanPeringatanDarurat()
+note right of HalamanJelajahKasus
+  peringatan prioritas agar segera melapor
+  ke gendarmerie atau unit perlindungan khusus
+end note
+HalamanJelajahKasus --> PencariInformasi : peringatan prioritas ditampilkan\n(modal popupPeringatanDarurat)
+
+== Langkah 4: Pencari Informasi menutup peringatan dan melanjutkan ==
+PencariInformasi -> HalamanJelajahKasus : tutupPeringatan()
+HalamanJelajahKasus -> HalamanRangkumanKasus : tampilkanHalaman(idKelompok)
+HalamanRangkumanKasus -> KontrolJelajahKasus : ambilRangkuman(idKelompok)
+KontrolJelajahKasus -> KelompokKasus : ambilRangkuman()
+KelompokKasus --> KontrolJelajahKasus : rangkuman : RangkumanKasus
+KontrolJelajahKasus -> RangkumanKasus : cekDisetujui()
+RangkumanKasus --> KontrolJelajahKasus : disetujui : bool
+KontrolJelajahKasus -> RangkumanKasus : ambilDaftarLangkah()
+RangkumanKasus --> KontrolJelajahKasus : daftarLangkah : LangkahPenyelesaian [1..*]
+loop [untuk setiap LangkahPenyelesaian]
+  KontrolJelajahKasus -> LangkahPenyelesaian : punyaTenggat()
+  LangkahPenyelesaian --> KontrolJelajahKasus : adaTenggat : bool
+end
+KontrolJelajahKasus -> RangkumanKasus : ambilChecklist()
+RangkumanKasus --> KontrolJelajahKasus : checklist : Checklist
+KontrolJelajahKasus -> Checklist : hitungJumlahDokumen()
+Checklist --> KontrolJelajahKasus : jumlahDokumen : int
+KontrolJelajahKasus -> RangkumanKasus : ambilDaftarTemplat()
+RangkumanKasus --> KontrolJelajahKasus : daftarTemplat : TemplatDokumen [0..*]
+KontrolJelajahKasus -> RangkumanKasus : ambilDaftarArtikel()
+RangkumanKasus --> KontrolJelajahKasus : daftarArtikel : Artikel [1..*]
+loop [untuk setiap Artikel]
+  KontrolJelajahKasus -> Artikel : ambilTautan()
+  Artikel --> KontrolJelajahKasus : tautanSumber : string
+end
+KontrolJelajahKasus --> HalamanRangkumanKasus : rangkuman : RangkumanKasus
+HalamanRangkumanKasus --> HalamanJelajahKasus : halaman rangkuman tersusun berurutan
+HalamanJelajahKasus --> PencariInformasi : halaman rangkuman kasus ditampilkan\n(inti masalah, hak, langkah, pertimbangan,\nchecklist, templat, artikel, disclaimer)
+
+@enduml
