@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.2" baseProfile="tiny" viewBox="0 0 1260 538">
+  <title>document.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path d="M0 0 L1260 0 L1260 538 L0 538 Z" fill="#ffffff"/>
+    <g>
+      <path d="M20 37.0 L295 37.0 L295 233.0 L20 233.0 Z" fill="#ffffff" stroke="#181818" stroke-width="1.5"/>
+      <path d="M20 37.0 L295 37.0 L295 85.0 L20 85.0 Z" fill="#f5f5f5" stroke="#181818" stroke-width="1.5"/>
+      <text transform="matrix(1 0 0 1 157.5 56)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12" font-style="italic" fill="#333333" text-anchor="middle"><tspan x="0" y="0">«boundary»</tspan></text>
+      <text transform="matrix(1 0 0 1 157.5 76)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle"><tspan x="0" y="0">HalamanDaftarKontenKurator</tspan></text>
+      <text transform="matrix(1 0 0 1 30 105)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- tabelDaftarKonten: Table</tspan></text>
+      <text transform="matrix(1 0 0 1 30 122)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- labelStatus: Badge [0..*]</tspan></text>
+      <text transform="matrix(1 0 0 1 30 139)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- panelCatatanRevisi: Section</tspan></text>
+      <text transform="matrix(1 0 0 1 30 156)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- tombolKeluar: Button</tspan></text>
+      <path d="M20 171.0 L295 171.0" fill="#000000" stroke="#181818" stroke-width="1.2"/>
+      <text transform="matrix(1 0 0 1 30 193)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ tampilkanHalaman(): void</tspan></text>
+      <text transform="matrix(1 0 0 1 30 213)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ klikKonten(idRangkuman: int): void</tspan></text>
+    </g>
+    <g>
+      <path d="M365 70 L790 70 L790 200 L365 200 Z" fill="#ffffff" stroke="#181818" stroke-width="1.5"/>
+      <path d="M365 70 L790 70 L790 118 L365 118 Z" fill="#f5f5f5" stroke="#181818" stroke-width="1.5"/>
+      <text transform="matrix(1 0 0 1 577.5 89)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12" font-style="italic" fill="#333333" text-anchor="middle"><tspan x="0" y="0">«control»</tspan></text>
+      <text transform="matrix(1 0 0 1 577.5 109)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle"><tspan x="0" y="0">KontrolPelacakanKonten</tspan></text>
+      <path d="M365 138 L790 138" fill="#000000" stroke="#181818" stroke-width="1.2"/>
+      <text transform="matrix(1 0 0 1 375 160)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilDaftarKonten(idKurator: int): RangkumanKasus [0..*]</tspan></text>
+      <text transform="matrix(1 0 0 1 375 180)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilCatatanRevisi(idRangkuman: int): string</tspan></text>
+    </g>
+    <g>
+      <path d="M412.5 299 L742.5 299 L742.5 518 L412.5 518 Z" fill="#ffffff" stroke="#181818" stroke-width="1.5"/>
+      <path d="M412.5 299 L742.5 299 L742.5 347 L412.5 347 Z" fill="#f5f5f5" stroke="#181818" stroke-width="1.5"/>
+      <text transform="matrix(1 0 0 1 577.5 318)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12" font-style="italic" fill="#333333" text-anchor="middle"><tspan x="0" y="0">«entity»</tspan></text>
+      <text transform="matrix(1 0 0 1 577.5 338)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle"><tspan x="0" y="0">Kurator</tspan></text>
+      <text transform="matrix(1 0 0 1 422.5 367)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- jumlahKonten: int</tspan></text>
+      <text transform="matrix(1 0 0 1 422.5 384)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- statusAktif: bool</tspan></text>
+      <text transform="matrix(1 0 0 1 422.5 401)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- idAdministrator: int</tspan></text>
+      <path d="M412.5 416 L742.5 416" fill="#000000" stroke="#181818" stroke-width="1.2"/>
+      <text transform="matrix(1 0 0 1 422.5 438)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ cekAktif(): bool</tspan></text>
+      <text transform="matrix(1 0 0 1 422.5 458)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ tambahJumlahKonten(): void</tspan></text>
+      <text transform="matrix(1 0 0 1 422.5 478)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ nonaktifkan(): void</tspan></text>
+      <text transform="matrix(1 0 0 1 422.5 498)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilDaftarKonten(): RangkumanKasus [0..*]</tspan></text>
+    </g>
+    <g>
+      <path d="M860 20 L1240 20 L1240 518 L860 518 Z" fill="#ffffff" stroke="#181818" stroke-width="1.5"/>
+      <path d="M860 20 L1240 20 L1240 68 L860 68 Z" fill="#f5f5f5" stroke="#181818" stroke-width="1.5"/>
+      <text transform="matrix(1 0 0 1 1050 39)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12" font-style="italic" fill="#333333" text-anchor="middle"><tspan x="0" y="0">«entity»</tspan></text>
+      <text transform="matrix(1 0 0 1 1050 59)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle"><tspan x="0" y="0">RangkumanKasus</tspan></text>
+      <text transform="matrix(1 0 0 1 870 88)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- idRangkuman: int</tspan></text>
+      <text transform="matrix(1 0 0 1 870 105)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- idKelompok: int</tspan></text>
+      <text transform="matrix(1 0 0 1 870 122)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- idKurator: int</tspan></text>
+      <text transform="matrix(1 0 0 1 870 139)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- intiMasalah: string</tspan></text>
+      <text transform="matrix(1 0 0 1 870 156)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- hak: string</tspan></text>
+      <text transform="matrix(1 0 0 1 870 173)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- poinPertimbangan: string</tspan></text>
+      <text transform="matrix(1 0 0 1 870 190)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- status: string</tspan></text>
+      <text transform="matrix(1 0 0 1 870 207)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- namaPenulis: string</tspan></text>
+      <text transform="matrix(1 0 0 1 870 224)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- tanggalPeninjauan: date</tspan></text>
+      <text transform="matrix(1 0 0 1 870 241)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">- catatanRevisi: string</tspan></text>
+      <path d="M860 256 L1240 256" fill="#000000" stroke="#181818" stroke-width="1.2"/>
+      <text transform="matrix(1 0 0 1 870 278)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ cekDisetujui(): bool</tspan></text>
+      <text transform="matrix(1 0 0 1 870 298)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ cocokkanKataKunci(kataKunci: string): bool</tspan></text>
+      <text transform="matrix(1 0 0 1 870 318)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilChecklist(): Checklist</tspan></text>
+      <text transform="matrix(1 0 0 1 870 338)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilDaftarTemplat(): TemplatDokumen [0..*]</tspan></text>
+      <text transform="matrix(1 0 0 1 870 358)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilTemplat(idTemplat: int): TemplatDokumen</tspan></text>
+      <text transform="matrix(1 0 0 1 870 378)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ lampirkanTemplat(berkas: file): void</tspan></text>
+      <text transform="matrix(1 0 0 1 870 398)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ simpanDraf(dataKonten: Map&lt;string, string&gt;): void</tspan></text>
+      <text transform="matrix(1 0 0 1 870 418)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ cekIsianLengkap(): bool</tspan></text>
+      <text transform="matrix(1 0 0 1 870 438)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilIsianKosong(): string [0..*]</tspan></text>
+      <text transform="matrix(1 0 0 1 870 458)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ aturStatus(statusBaru: string): void</tspan></text>
+      <text transform="matrix(1 0 0 1 870 478)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ ambilCatatanRevisi(): string</tspan></text>
+      <text transform="matrix(1 0 0 1 870 498)" x="0" y="0" xml:space="preserve" font-family="Consolas" font-size="12" fill="#000000"><tspan x="0" y="0">+ simpanCatatanRevisi(catatan: string): void</tspan></text>
+    </g>
+    <path d="M295 135 L365 135" fill="none" stroke="#181818" stroke-width="1.4"/>
+    <path d="M353.66 140.04 L365 135 L353.66 129.96" fill="none" stroke="#181818" stroke-width="1.764"/>
+    <text transform="matrix(1 0 0 1 303 127)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12.5" fill="#000000"><tspan x="0" y="0">1</tspan></text>
+    <text transform="matrix(1 0 0 1 357 127)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12.5" fill="#000000" text-anchor="end"><tspan x="0" y="0">1</tspan></text>
+    <path d="M790 135 L860 135" fill="none" stroke="#181818" stroke-width="1.4" stroke-dasharray="6 5"/>
+    <path d="M848.66 140.04 L860 135 L848.66 129.96" fill="none" stroke="#181818" stroke-width="1.764"/>
+    <path d="M577.5 200 L577.5 299" fill="none" stroke="#181818" stroke-width="1.4" stroke-dasharray="6 5"/>
+    <path d="M572.46 287.66 L577.5 299 L582.54 287.66" fill="none" stroke="#181818" stroke-width="1.764"/>
+    <path d="M742.5 408.5 L860 408.5" fill="none" stroke="#181818" stroke-width="1.4"/>
+    <path d="M848.66 413.54 L860 408.5 L848.66 403.46" fill="none" stroke="#181818" stroke-width="1.764"/>
+    <text transform="matrix(1 0 0 1 750.5 400.5)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12.5" fill="#000000"><tspan x="0" y="0">1</tspan></text>
+    <text transform="matrix(1 0 0 1 852 400.5)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12.5" fill="#000000" text-anchor="end"><tspan x="0" y="0">0..*</tspan></text>
+    <text transform="matrix(1 0 0 1 801.25 428.5)" x="0" y="0" xml:space="preserve" font-family="Arial" font-size="12.5" fill="#000000" text-anchor="middle"><tspan x="0" y="0">menulis</tspan></text>
+  </g>
+</svg>
