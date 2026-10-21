@@ -347,8 +347,6 @@ Sebelas kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.1. Perubahan pa
 
 ### 3.1.2 Sequence Diagram
 
-Sequence diagram di bawah ini merealisasikan kedua skenario yang telah ditetapkan pada SKPL Subbab 4.4.1. Setiap kelas *boundary* meneruskan permintaan pengguna ke *controller*, dan *controller* kemudian meminta data dari kelas *entity* sesuai aturan MVC pada APL. Sesuai catatan asistensi, proses *login* tidak digambar karena merupakan alur bawaan pada awal penggunaan sistem.
-
 - **Skenario Normal**
 
 <p align="center">
@@ -368,8 +366,6 @@ Sequence diagram di bawah ini merealisasikan kedua skenario yang telah ditetapka
 </p>
 
 ### 3.1.3 Diagram Kelas
-
-Diagram kelas pada subbab ini memuat sebelas kelas yang telah diidentifikasi pada Tabel 3.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
 <img alt="Diagram Kelas Use Case UC01" src="./assets/diagram/ClassDiagram_UC01.svg" width="95%">
@@ -399,8 +395,6 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 | 6 | `RangkumanKasus` | C06 - `RangkumanKasus` |
 | 7 | `LembagaBantuanHukum` | C11 - `LembagaBantuanHukum` |
 
-Enam dari tujuh kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.2. Kelas `HalamanRangkumanKasus` (C14) ditambahkan ke dalam diagram kelas use case ini karena pada Langkah 3 skenario normal pencarian, `Pencari Informasi` diarahkan untuk membuka halaman rangkuman kasus terkait, sehingga kelas tersebut ikut terlibat pada alur use case. Penambahan ini dicatat pada Daftar Perubahan revisi C dan tidak menambahkan kelas baru pada sistem secara keseluruhan.
-
 ### 3.2.2 Sequence Diagram
 
 - **Skenario Normal**
@@ -422,8 +416,6 @@ Enam dari tujuh kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.2. Kela
 </p>
 
 ### 3.2.3 Diagram Kelas
-
-Diagram kelas pada subbab ini memuat tujuh kelas yang telah diidentifikasi pada Tabel 3.2. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
 <img alt="Diagram Kelas Use Case UC02" src="./assets/diagram/ClassDiagram_UC02.svg" width="95%">
