@@ -28,6 +28,7 @@
 * [Milestone 4](#milestone-4)
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
+* [Milestone 7](#milestone-7)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -138,5 +139,27 @@
 | 07-10-2026 | Christopher Michael Jafeth Tobing | Mengerjakan Bab 3.1 untuk diagram Physical View | 2 | Done | - |
 | 07-10-2026 | Matthew Evan Kurniawan | Melakukan revisi minor pada Bab 1, 2, dan 3 untuk melengkapi keterangan dan alasan | 2 | Done | - |
 | 07-10-2026 | Matthew Evan Kurniawan | Melengkapi Form Asistensi, AI-Usage, dan Logbook untuk milestone 6 | 2 | Done | - |
+
+---
+
+### Milestone 7
+**Periode:** 10 Oktober 2026 - 21 Oktober 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 09-10-2026 | Semua Anggota | Mengikuti Asistensi Akbar RPL Milestone 7 melalui MS Teams | 1 | Done | - |
+| 17-10-2026 | Semua Anggota | Diskusi pembagian tugas Milestone 7 (DPPL) per bab dan pembagian use case Bab 3 | 2 | Done | - |
+| 18-10-2026 | Rivan Cahyadi | Mengerjakan Sequence Diagram dan Class Diagram untuk UC03 dan UC04 | 3 | Done | - |
+| 19-10-2026 | Matthew Evan Kurniawan | Menyusun Bab 1: Pendahuluan (Tujuan, Lingkup Masalah, Definisi, Aturan Penomoran, Referensi, dan Ikhtisar Dokumen) | 2 | Done | - |
+| 19-10-2026 | Matthew Evan Kurniawan | Mengerjakan Sequence Diagram dan Class Diagram untuk UC06 | 3 | Done | - |
+| 20-10-2026 | Matthew, Raditya, Rivan, Wesley | Mengikuti sesi asistensi Milestone 7 bersama asisten terkait | 1 | Done | - |
+| 20-10-2026 | Matthew Evan Kurniawan | Menyusun dan melengkapi dokumen Form Asistensi Milestone 7 | 0.5 | Done | - |
+| 20-10-2026 | Raditya Wibian Sastaka | Mengerjakan Sequence Diagram dan Class Diagram untuk UC05 dan UC09 | 3 | Done | - |
+| 20-10-2026 | Wesley Lianto | Mengerjakan Sequence Diagram dan Class Diagram untuk UC07 dan UC08 | 3 | Done | - |
+| 20-10-2026 | Christopherus Michael Jafeth Tobing | Mengerjakan Sequence Diagram dan Class Diagram untuk UC01 dan UC02 | 3 | Done | - |
+| 21-10-2026 | Rivan Cahyadi | Menyusun Bab 2: Perancangan Arsitektur (Rancangan Lingkungan, MVC, Identifikasi Komponen, dan Model Arsitektur) | 3 | Done | - |
+| 21-10-2026 | Raditya Wibian Sastaka | Pengerjaan Bab 4: Diagram Kelas Keseluruhan | 3 | Done | Menunggu finalisasi seluruh sequence diagram di Bab 3 |
+| 21-10-2026 | Rivan Cahyadi | Pengerjaan Bab 5: Matriks Kerunutan | 2.5 | Done | Menunggu finalisasi kelas perancangan di Bab 4 |
+| 21-10-2026 | Rivan Cahyadi | Mengisi dan melengkapi Logbook serta AI-Usage untuk Milestone 7 | 1.5 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``

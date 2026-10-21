@@ -35,7 +35,9 @@ Dipersiapkan oleh: #PenjagaNilai
 | :--- | :--- |
 | *A* | Penambahan dan penyesuaian atribut serta metode kelas pada use case UC06 (C06, C07, C08, C09, C10, C17, C26) agar realisasi skenario normal dan alternatif dapat digambarkan pada sequence diagram. Tidak ada kelas baru. |
 | *B* | Penyesuaian kelas pada use case UC07 dan UC08: penambahan metode `ambilDaftarKonten()` pada C02 `Kurator` untuk mengambil konten milik Kurator, penambahan metode `ambilAntreanPeninjauan()` pada C03 `Administrator` untuk mengambil konten berstatus Diajukan terurut dari yang paling lama menunggu, serta perubahan tipe kembalian `kembalikanKonten(...)` pada C28 `KontrolModerasiKonten` dari `void` menjadi `bool` agar halaman dapat menampilkan pesan wajib isi ketika alasan revisi kosong. Tidak ada kelas baru. |
-| *C* | Penyesuaian kelas pada use case UC05 dan UC09. Metode `cariAkun(email)` ditambahkan pada C01 `Akun` karena `prosesLogin()` menerima email, sedangkan SKPL belum menyediakan cara mencari akun berdasarkan email. Metode `putusSesi(idAkun)` ditambahkan pada C25 `KontrolAutentikasi` untuk memenuhi KF37 yang menuntut sesi Kurator terputus seketika saat akunnya dinonaktifkan. Metode `ambilDaftarKurator(idAdministrator)` ditambahkan pada C29 `KontrolPengelolaanAkun` agar pemuatan tabel daftar Kurator tidak melangkahi lapisan *Controller*. Selain itu, C25 dimasukkan ke daftar kelas UC09 dan alur login UC05 kini memanggil `cekAktif()` milik C02 `Kurator`, yang sebelumnya tidak pernah ditempatkan pada alur mana pun. Tidak ada kelas baru. |
+| *C* | Penyesuaian kelas pada use case UC01 dan UC02: penambahan atribut `- idKelompokTerpilih: int` dan `- teksDisclaimer: Text` serta operasi `+ tampilkanPeringatanDarurat(): void` pada C13 `HalamanJelajahKasus`, penambahan operasi `+ cekDarurat(idKelompok: int): bool` pada C21 `KontrolJelajahKasus`, penambahan atribut `- teksDisclaimer: Text` serta operasi `+ tampilkanHasil(daftarHasil: KelompokKasus [0..*]): void` dan `+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..*]): void` pada C15 `HalamanPencarianKataKunci`, penyertaan operasi `+ ambilDaftarLangkah(): LangkahPenyelesaian [1..*]` dan `+ ambilDaftarArtikel(): Artikel [1..*]` pada C06 `RangkumanKasus` ke dalam diagram kelas UC01 agar sesuai dengan pemanggilan pada sequence diagram, serta penyertaan C14 `HalamanRangkumanKasus` ke dalam diagram kelas use case UC02 karena halaman rangkuman kasus ikut terlibat pada alur membuka hasil pencarian. Tidak ada kelas baru. |
+| *D* | Penyesuaian kelas pada use case UC05 dan UC09. Metode `cariAkun(email)` ditambahkan pada C01 `Akun` karena `prosesLogin()` menerima email, sedangkan SKPL belum menyediakan cara mencari akun berdasarkan email. Metode `putusSesi(idAkun)` ditambahkan pada C25 `KontrolAutentikasi` untuk memenuhi KF37 yang menuntut sesi Kurator terputus seketika saat akunnya dinonaktifkan. Metode `ambilDaftarKurator(idAdministrator)` ditambahkan pada C29 `KontrolPengelolaanAkun` agar pemuatan tabel daftar Kurator tidak melangkahi lapisan *Controller*. Selain itu, C25 dimasukkan ke daftar kelas UC09 dan alur login UC05 kini memanggil `cekAktif()` milik C02 `Kurator`, yang sebelumnya tidak pernah ditempatkan pada alur mana pun. Tidak ada kelas baru. |
+| ... |  |
 
 ---
 
@@ -313,8 +315,10 @@ Tabel 2.4.2. Keterangan Jalur Komunikasi pada Physical View
 
 ## 3.1 Use Case Menelusuri dan Membaca Rangkuman Kasus
 
-**ID Use Case:** UC01
+**ID Use Case:** UC01  
 **Nama Use Case:** Menelusuri dan Membaca Rangkuman Kasus
+
+Use case ini merupakan alur utama yang dipakai **Pencari Informasi** untuk menemukan dan membaca isi satu kelompok kasus pada PahamHukum. Alur dimulai dari halaman beranda yang memuat seluruh bidang hukum aktif, dilanjutkan dengan pemilihan bidang hukum, pemilihan kelompok kasus, dan berakhir pada halaman rangkuman kasus yang tersusun berurutan memuat inti masalah, hak, langkah penyelesaian, poin pertimbangan, *checklist* dokumen, templat, artikel pendukung, serta *disclaimer*. Use case ini juga menangani kelompok kasus yang ditandai sebagai **situasi darurat**, yaitu kelompok kasus yang memerlukan peringatan prioritas agar pengguna segera melapor kepada instansi yang berwenang.
 
 ### 3.1.1 Identifikasi Kelas
 
@@ -334,6 +338,8 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 | 10 | `Artikel` | C10 - `Artikel` |
 | 11 | `LembagaBantuanHukum` | C11 - `LembagaBantuanHukum` |
 
+Sebelas kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.1. Perubahan pada tahap perancangan hanya berupa atribut dan metode baru pada kelas yang sudah ada, sehingga tidak ada kelas baru yang diperkenalkan pada use case ini.
+
 ### 3.1.2 Sequence Diagram
 
 - **Skenario Normal**
@@ -348,10 +354,10 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 - **Skenario Alternatif 1: Kasus Ditandai Situasi Darurat**
 
 <p align="center">
-<img alt="Sequence Diagram UC01 - Kasus Ditandai Situasi Darurat" src="./assets/diagram/SequenceDiagram_UC01_Skenario_Alternatif%201.svg" width="85%">
+<img alt="Sequence Diagram UC01 - Skenario Alternatif 1: Kasus Ditandai Situasi Darurat" src="./assets/diagram/SequenceDiagram_UC01_Skenario_Alternatif_1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.1.2 Sequence Diagram UC01 - Kasus Ditandai Situasi Darurat</i>
+<i>Gambar 3.1.2 Sequence Diagram UC01 - Skenario Alternatif 1: Kasus Ditandai Situasi Darurat</i>
 </p>
 
 ### 3.1.3 Diagram Kelas
@@ -363,11 +369,11 @@ Tabel 3.1. Identifikasi Kelas Use Case UC01
 <i>Gambar 3.1.3 Diagram Kelas Menelusuri dan Membaca Rangkuman Kasus (UC01)</i>
 </p>
 
-<br>
+Penyesuaian pada tahap perancangan untuk use case ini tercatat pada Daftar Perubahan revisi C, meliputi penambahan atribut `- idKelompokTerpilih: int` dan `- teksDisclaimer: Text` serta operasi `+ tampilkanPeringatanDarurat(): void` pada `HalamanJelajahKasus`, serta penambahan operasi `+ cekDarurat(idKelompok: int): bool` pada `KontrolJelajahKasus`. Kedua operasi tersebut diperlukan untuk dapat menggambar cabang skenario alternatif pada subbab 3.1.2.
 
 ## 3.2 Use Case Mencari Kasus
 
-**ID Use Case:** UC02
+**ID Use Case:** UC02  
 **Nama Use Case:** Mencari Kasus
 
 ### 3.2.1 Identifikasi Kelas
@@ -377,11 +383,12 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
 | 1 | `HalamanPencarianKataKunci` | C15 - `HalamanPencarianKataKunci` |
-| 2 | `KontrolPencarianKataKunci` | C22 - `KontrolPencarianKataKunci` |
-| 3 | `BidangHukum` | C04 - `BidangHukum` |
-| 4 | `KelompokKasus` | C05 - `KelompokKasus` |
-| 5 | `RangkumanKasus` | C06 - `RangkumanKasus` |
-| 6 | `LembagaBantuanHukum` | C11 - `LembagaBantuanHukum` |
+| 2 | `HalamanRangkumanKasus` | C14 - `HalamanRangkumanKasus` |
+| 3 | `KontrolPencarianKataKunci` | C22 - `KontrolPencarianKataKunci` |
+| 4 | `BidangHukum` | C04 - `BidangHukum` |
+| 5 | `KelompokKasus` | C05 - `KelompokKasus` |
+| 6 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 7 | `LembagaBantuanHukum` | C11 - `LembagaBantuanHukum` |
 
 ### 3.2.2 Sequence Diagram
 
@@ -397,10 +404,10 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 - **Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil**
 
 <p align="center">
-<img alt="Sequence Diagram UC02 - Pencarian Tidak Menemukan Hasil" src="./assets/diagram/SequenceDiagram_UC02_Skenario_Alternatif_1.svg" width="85%">
+<img alt="Sequence Diagram UC02 - Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil" src="./assets/diagram/SequenceDiagram_UC02_Skenario_Alternatif_1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.2.2 Sequence Diagram UC02 - Pencarian Tidak Menemukan Hasil</i>
+<i>Gambar 3.2.2 Sequence Diagram UC02 - Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil</i>
 </p>
 
 ### 3.2.3 Diagram Kelas
@@ -412,7 +419,7 @@ Tabel 3.2. Identifikasi Kelas Use Case UC02
 <i>Gambar 3.2.3 Diagram Kelas Mencari Kasus (UC02)</i>
 </p>
 
-<br>
+Penyesuaian pada tahap perancangan untuk use case ini tercatat pada Daftar Perubahan revisi C, meliputi penambahan atribut `- teksDisclaimer: Text` serta operasi `+ tampilkanHasil(daftarHasil: KelompokKasus [0..*]): void` dan `+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..*]): void` pada `HalamanPencarianKataKunci`. Kedua operasi tersebut diperlukan untuk dapat menggambar cabang skenario alternatif pada subbab 3.2.2.
 
 ## 3.3 Use Case Menyiapkan Dokumen dengan *Checklist*
 
@@ -731,6 +738,8 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 </p>
 
 <br>
+
+---
 
 ## 3.9 Use Case Mengelola Akun Kurator
 
