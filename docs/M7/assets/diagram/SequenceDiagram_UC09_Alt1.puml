@@ -1,0 +1,26 @@
+@startuml
+title Sequence Diagram UC09 - Skenario Alternatif 1: Penonaktifan Akun Kurator
+
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor Administrator as Aktor
+boundary ":HalamanPengelolaanAkun" as V
+control ":KontrolPengelolaanAkun" as C
+entity ":Kurator" as Ku
+control ":KontrolAutentikasi" as CA
+
+Aktor -> V ++ : klikNonaktifkan(idAkun)
+V -> C ++ : nonaktifkanKurator(idAkun)
+C -> Ku ++ : nonaktifkan()
+return statusAktif = false
+C -> CA ++ : putusSesi(idAkun)
+return sesi terputus
+note right of C
+  Sesi Kurator diputus seketika bila sedang login.
+  Pencegahan login berikutnya ditangani cekAktif()
+  pada skenario normal UC05 (KF37).
+end note
+return berhasil
+return tabelDaftarKurator diperbarui, akun nonaktif
+@enduml

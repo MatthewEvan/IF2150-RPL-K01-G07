@@ -1,0 +1,44 @@
+@startuml
+title Sequence Diagram UC09 - Skenario Normal
+
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor Administrator as Aktor
+boundary ":HalamanPengelolaanAkun" as V
+control ":KontrolPengelolaanAkun" as C
+entity ":Administrator" as Ad
+entity ":Kurator" as Ku
+
+Aktor -> V ++ : tampilkanHalaman()
+V -> C ++ : ambilDaftarKurator(idAdministrator)
+C -> Ad ++ : ambilKuratorTerdaftar()
+return daftarKurator
+return daftarKurator
+return tabelDaftarKurator terisi
+
+Aktor -> V ++ : klikDaftarkan(email, kataSandi)
+V -> C ++ : daftarkanKurator(email, kataSandi, idAdministrator)
+C -> C : cekEmailUnik(email)
+C -> Ku ++ : <<create>>
+Ku -> Ku : hashKataSandi(kataSandi)
+return kurator
+note right of C
+  Pendaftaran hanya tersedia melalui panel Administrator.
+  Tidak ada menu Sign Up pada interface publik (KF38).
+end note
+return kurator
+return tabelDaftarKurator diperbarui
+
+Aktor -> V ++ : klikSimpanPerubahan(idAkun, email)
+V -> C ++ : perbaruiKurator(idAkun, emailBaru)
+C -> C : cekEmailUnik(emailBaru)
+C -> Ku ++ : perbaruiEmail(emailBaru)
+return perubahan tersimpan
+note right of C
+  Perubahan detail akun berlaku pada sesi login
+  Kurator berikutnya (KF43).
+end note
+return berhasil
+return detail akun diperbarui
+@enduml

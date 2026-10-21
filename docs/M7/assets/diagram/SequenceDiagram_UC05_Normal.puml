@@ -1,0 +1,34 @@
+@startuml
+title Sequence Diagram UC05 - Skenario Normal
+
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor "Kurator / Administrator" as Aktor
+boundary ":HalamanLogin" as V
+control ":KontrolAutentikasi" as C
+entity ":Akun" as Ak
+entity ":Kurator" as Ku
+
+Aktor -> V ++ : tampilkanHalaman()
+return inputEmail, inputKataSandi, tombolMasuk
+
+Aktor -> V ++ : klikMasuk(email, kataSandi)
+V -> C ++ : prosesLogin(email, kataSandi)
+C -> Ak ++ : cariAkun(email)
+return akun
+C -> Ak ++ : cocokkanKataSandi(kataSandi)
+Ak -> Ak : hashKataSandi(kataSandi)
+return true
+C -> Ku ++ : cekAktif()
+return true
+note right of C
+  cekAktif() mencegah Kurator yang telah dinonaktifkan
+  Administrator untuk masuk kembali (KF37).
+end note
+C -> Ak ++ : ambilPeran()
+return peran
+C -> C : arahkanSesuaiPeran(peran)
+return true
+return dialihkan ke panel sesuai peran
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+title Sequence Diagram UC05 - Skenario Alternatif 1: Kredensial Salah
+
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor "Kurator / Administrator" as Aktor
+boundary ":HalamanLogin" as V
+control ":KontrolAutentikasi" as C
+entity ":Akun" as Ak
+
+Aktor -> V ++ : klikMasuk(email, kataSandi)
+V -> C ++ : prosesLogin(email, kataSandi)
+C -> Ak ++ : cariAkun(email)
+return akun
+
+alt email tidak terdaftar
+  C -> C : tandai kredensial tidak valid
+else kata sandi tidak cocok
+  C -> Ak ++ : cocokkanKataSandi(kataSandi)
+  Ak -> Ak : hashKataSandi(kataSandi)
+  return false
+end
+
+note right of C
+  Kedua cabang menghasilkan pesan galat yang sama.
+  Sistem tidak menyebutkan bagian mana yang keliru (KF40).
+end note
+
+return false
+return pesanGalat: "Email atau kata sandi salah"
+@enduml
