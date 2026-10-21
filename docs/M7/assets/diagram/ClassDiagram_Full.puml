@@ -1,0 +1,353 @@
+@startuml
+title Diagram Kelas Perancangan Keseluruhan PahamHukum
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam nodesep 25
+skinparam ranksep 45
+hide empty members
+
+class Akun <<entity>> {
+  - idAkun: int
+  - email: string
+  - kataSandiHash: string
+  - peran: string
+  --
+  + {static} cariAkun(email: string): Akun
+  + cocokkanKataSandi(kataSandi: string): bool
+  - hashKataSandi(kataSandi: string): string
+  + ambilPeran(): string
+  + perbaruiEmail(emailBaru: string): void
+}
+class Kurator <<entity>> {
+  - jumlahKonten: int
+  - statusAktif: bool
+  - idAdministrator: int
+  --
+  + cekAktif(): bool
+  + tambahJumlahKonten(): void
+  + nonaktifkan(): void
+}
+class Administrator <<entity>> {
+  + ambilKuratorTerdaftar(): Kurator [0..*]
+}
+class BidangHukum <<entity>> {
+  - idBidang: int
+  - nama: string
+  - jumlahKelompokKasus: int
+  - statusAktif: bool
+  --
+  + ambilDaftarKelompok(): KelompokKasus [1..*]
+  + cekAktif(): bool
+}
+class KelompokKasus <<entity>> {
+  - idKelompok: int
+  - idBidang: int
+  - judulUmum: string
+  - istilahResmi: string
+  - penandaDarurat: bool
+  --
+  + ambilRangkuman(): RangkumanKasus
+  + cekDarurat(): bool
+  + cocokkanKataKunci(kataKunci: string): bool
+}
+class RangkumanKasus <<entity>> {
+  - idRangkuman: int
+  - idKelompok: int
+  - idKurator: int
+  - intiMasalah: string
+  - hak: string
+  - poinPertimbangan: string
+  - status: string
+  - namaPenulis: string
+  - tanggalPeninjauan: date
+  - catatanRevisi: string
+  --
+  + cekDisetujui(): bool
+  + cocokkanKataKunci(kataKunci: string): bool
+  + ambilChecklist(): Checklist
+  + ambilDaftarTemplat(): TemplatDokumen [0..*]
+  + ambilTemplat(idTemplat: int): TemplatDokumen
+  + lampirkanTemplat(berkas: file): void
+  + simpanDraf(): void
+  + cekIsianLengkap(): bool
+  + aturStatus(statusBaru: string): void
+  + ambilCatatanRevisi(): string
+  + simpanCatatanRevisi(catatan: string): void
+}
+class LangkahPenyelesaian <<entity>> {
+  - idLangkah: int
+  - idRangkuman: int
+  - nomor: int
+  - deskripsi: string
+  - tujuan: string
+  - dokumenDiperlukan: string [1..*]
+  - tenggat: date [0..1]
+  --
+  + punyaTenggat(): bool
+}
+class Checklist <<entity>> {
+  - idChecklist: int
+  - idRangkuman: int
+  - daftarDokumen: string [1..*]
+  --
+  + hitungJumlahDokumen(): int
+}
+class TemplatDokumen <<entity>> {
+  - idTemplat: int
+  - idRangkuman: int
+  - namaBerkas: string
+  - format: string
+  - ukuran: int
+  - versi: string
+  - tanggalPembaruan: date
+  --
+  + unduh(): file
+  + perbaruiVersi(berkas: file): void
+  - validasiUnggahan(berkas: file): bool
+}
+class Artikel <<entity>> {
+  - idArtikel: int
+  - idRangkuman: int
+  - judul: string
+  - tautanSumber: string
+  --
+  + ambilTautan(): string
+}
+class LembagaBantuanHukum <<entity>> {
+  - idLBH: int
+  - nama: string
+  - wilayah: string
+  - tautan: string
+  --
+  + cocokkanWilayah(wilayah: string): bool
+}
+class RiwayatStatus <<entity>> {
+  - idRiwayat: int
+  - idRangkuman: int
+  - idPelaku: int
+  - status: string
+  - waktu: date
+  --
+  + simpan(): void
+}
+class HalamanJelajahKasus <<boundary>> {
+  - sectionDaftarBidang: Section
+  - kartuBidangHukum: Card [1..*]
+  - sectionDaftarKelompok: Section
+  - kartuKelompokKasus: Card [1..*]
+  - popupPeringatanDarurat: Modal
+  - tombolTutupPeringatan: Button
+  --
+  + tampilkanHalaman(): void
+  + klikBidangHukum(idBidang: int): void
+  + klikKelompokKasus(idKelompok: int): void
+  + tutupPeringatan(): void
+}
+class HalamanRangkumanKasus <<boundary>> {
+  - sectionIntiMasalah: Section
+  - sectionHak: Section
+  - sectionPertimbangan: Section
+  - sectionLangkah: Section
+  - penandaTenggat: Badge [0..*]
+  - sectionChecklist: Section
+  - checkboxDokumen: Checkbox [1..*]
+  - labelKelengkapan: Text
+  - sectionTemplat: Section
+  - tombolUnduh: Button [0..*]
+  - labelInfoBerkas: Text
+  - sectionArtikel: Section
+  - sectionLBH: Section
+  - dropdownWilayah: Select
+  - labelPenulis: Text
+  - teksDisclaimer: Text
+  --
+  + tampilkanHalaman(idKelompok: int): void
+  + pilihWilayah(wilayah: string): void
+  + centangDokumen(indeks: int): void
+  - simpanStatusCentang(): void
+  - muatStatusCentang(): void
+  + klikTombolUnduh(idTemplat: int): void
+}
+class HalamanPencarianKataKunci <<boundary>> {
+  - kolomPencarian: TextField
+  - tombolCari: Button
+  - daftarHasil: Card [0..*]
+  - pesanTidakDitemukan: Text
+  - saranBidangLain: Card [0..*]
+  - sectionLBH: Section
+  - dropdownWilayah: Select
+  --
+  + klikCari(kataKunci: string): void
+  + klikHasil(idKelompok: int): void
+  + pilihWilayah(wilayah: string): void
+}
+class HalamanLogin <<boundary>> {
+  - inputEmail: TextField
+  - inputKataSandi: PasswordField
+  - tombolMasuk: Button
+  - pesanGalat: Text
+  --
+  + tampilkanHalaman(): void
+  + klikMasuk(email: string, kataSandi: string): void
+}
+class HalamanPenyusunanKonten <<boundary>> {
+  - formulirKonten: Form
+  - inputIntiMasalah: TextArea
+  - inputHak: TextArea
+  - inputPertimbangan: TextArea
+  - inputLangkah: TextArea [1..*]
+  - inputChecklist: TextArea
+  - inputArtikel: TextField [1..*]
+  - inputUnggahTemplat: FileInput
+  - tombolSimpanDraf: Button
+  - tombolAjukan: Button
+  - penandaIsianKosong: Text [0..*]
+  - pesanGalatUnggah: Text
+  - tombolKeluar: Button
+  --
+  + tampilkanFormulir(idRangkuman: int): void
+  + klikSimpanDraf(): void
+  + unggahTemplat(berkas: file): void
+  + klikAjukan(): void
+}
+class HalamanDaftarKontenKurator <<boundary>> {
+  - tabelDaftarKonten: Table
+  - labelStatus: Badge [0..*]
+  - panelCatatanRevisi: Section
+  - tombolKeluar: Button
+  --
+  + tampilkanHalaman(): void
+  + klikKonten(idRangkuman: int): void
+}
+class HalamanModerasiKonten <<boundary>> {
+  - tabelAntrean: Table
+  - panelIsiKonten: Section
+  - tombolSetujui: Button
+  - tombolKembalikan: Button
+  - inputAlasanRevisi: TextArea
+  - pesanWajibIsi: Text
+  - tombolKeluar: Button
+  --
+  + tampilkanAntrean(): void
+  + klikKonten(idRangkuman: int): void
+  + klikSetujui(idRangkuman: int): void
+  + klikKembalikan(idRangkuman: int, alasan: string): void
+}
+class HalamanPengelolaanAkun <<boundary>> {
+  - tabelDaftarKurator: Table
+  - formulirAkun: Form
+  - inputEmail: TextField
+  - inputKataSandi: PasswordField
+  - tombolDaftarkan: Button
+  - tombolSimpan: Button
+  - tombolNonaktifkan: Button
+  - tombolKeluar: Button
+  --
+  + tampilkanHalaman(): void
+  + klikDaftarkan(email: string, kataSandi: string): void
+  + klikSimpanPerubahan(idAkun: int, email: string): void
+  + klikNonaktifkan(idAkun: int): void
+}
+class KontrolJelajahKasus <<control>> {
+  + ambilDaftarBidang(): BidangHukum [1..*]
+  + ambilDaftarKelompok(idBidang: int): KelompokKasus [1..*]
+  + ambilRangkuman(idKelompok: int): RangkumanKasus
+  + ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..*]
+}
+class KontrolPencarianKataKunci <<control>> {
+  + cariKasus(kataKunci: string): KelompokKasus [0..*]
+  + sarankanBidangLain(): BidangHukum [1..*]
+  + ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..*]
+}
+class KontrolChecklist <<control>> {
+  + ambilChecklist(idRangkuman: int): Checklist
+  + hitungKelengkapan(jumlahDicentang: int, jumlahTotal: int): int
+}
+class KontrolUnduhTemplat <<control>> {
+  + ambilDaftarTemplat(idRangkuman: int): TemplatDokumen [0..*]
+  + unduhTemplat(idRangkuman: int, idTemplat: int): file
+}
+class KontrolAutentikasi <<control>> {
+  + putusSesi(idAkun: int): void
+  + prosesLogin(email: string, kataSandi: string): bool
+  + arahkanSesuaiPeran(peran: string): void
+  + cekSesi(): bool
+  + logout(): void
+}
+class KontrolPenyusunanKonten <<control>> {
+  + buatDraf(idKelompok: int, idKurator: int): RangkumanKasus
+  + simpanDraf(idRangkuman: int): void
+  + lampirkanTemplat(idRangkuman: int, berkas: file): void
+  + ajukanKonten(idRangkuman: int): void
+  - catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void
+}
+class KontrolPelacakanKonten <<control>> {
+  + ambilDaftarKonten(idKurator: int): RangkumanKasus [0..*]
+  + ambilCatatanRevisi(idRangkuman: int): string
+}
+class KontrolModerasiKonten <<control>> {
+  + ambilAntrean(): RangkumanKasus [0..*]
+  + ambilKonten(idRangkuman: int): RangkumanKasus
+  + setujuiKonten(idRangkuman: int, idAdministrator: int): void
+  + kembalikanKonten(idRangkuman: int, idAdministrator: int, alasan: string): void
+  - cekAlasanTerisi(alasan: string): bool
+  - catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void
+}
+class KontrolPengelolaanAkun <<control>> {
+  + ambilDaftarKurator(idAdministrator: int): Kurator [0..*]
+  + daftarkanKurator(email: string, kataSandi: string, idAdministrator: int): Kurator
+  + perbaruiKurator(idAkun: int, emailBaru: string): void
+  + nonaktifkanKurator(idAkun: int): void
+  - cekEmailUnik(email: string): bool
+}
+
+' ================= View ke Controller =================
+HalamanJelajahKasus --> KontrolJelajahKasus
+HalamanRangkumanKasus --> KontrolJelajahKasus
+HalamanRangkumanKasus --> KontrolChecklist
+HalamanRangkumanKasus --> KontrolUnduhTemplat
+HalamanPencarianKataKunci --> KontrolPencarianKataKunci
+HalamanLogin --> KontrolAutentikasi
+HalamanPenyusunanKonten --> KontrolPenyusunanKonten
+HalamanDaftarKontenKurator --> KontrolPelacakanKonten
+HalamanModerasiKonten --> KontrolModerasiKonten
+HalamanPengelolaanAkun --> KontrolPengelolaanAkun
+
+' ================= Controller ke Model =================
+KontrolJelajahKasus ..> BidangHukum
+KontrolJelajahKasus ..> KelompokKasus
+KontrolJelajahKasus ..> RangkumanKasus
+KontrolJelajahKasus ..> LembagaBantuanHukum
+KontrolPencarianKataKunci ..> BidangHukum
+KontrolPencarianKataKunci ..> KelompokKasus
+KontrolPencarianKataKunci ..> RangkumanKasus
+KontrolChecklist ..> RangkumanKasus
+KontrolChecklist ..> Checklist
+KontrolUnduhTemplat ..> RangkumanKasus
+KontrolUnduhTemplat ..> TemplatDokumen
+KontrolAutentikasi ..> Akun
+KontrolAutentikasi ..> Kurator
+KontrolPenyusunanKonten ..> RangkumanKasus
+KontrolPenyusunanKonten ..> RiwayatStatus
+KontrolPelacakanKonten ..> RangkumanKasus
+KontrolModerasiKonten ..> RangkumanKasus
+KontrolModerasiKonten ..> RiwayatStatus
+KontrolPengelolaanAkun ..> Kurator
+KontrolPengelolaanAkun ..> Administrator
+KontrolPengelolaanAkun ..> KontrolAutentikasi
+
+' ================= Antar-Model =================
+Kurator --|> Akun
+Administrator --|> Akun
+Administrator "1" --> "0..*" Kurator : mengelola
+Kurator "1" --> "0..*" RangkumanKasus : menulis
+
+BidangHukum "1" *-- "1..*" KelompokKasus
+KelompokKasus "1" *-- "1" RangkumanKasus
+RangkumanKasus "1" *-- "1..*" LangkahPenyelesaian
+RangkumanKasus "1" *-- "1" Checklist
+RangkumanKasus "1" *-- "0..*" TemplatDokumen
+RangkumanKasus "1" *-- "1..*" Artikel
+RangkumanKasus "1" *-- "0..*" RiwayatStatus
+RiwayatStatus "0..*" --> "1" Akun : diubah oleh
+@enduml
