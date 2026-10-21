@@ -36,15 +36,10 @@ Dipersiapkan oleh: #PenjagaNilai
 | *A* | Penambahan dan penyesuaian atribut serta metode kelas pada use case UC06 (C06, C07, C08, C09, C10, C17, C26) agar realisasi skenario normal dan alternatif dapat digambarkan pada sequence diagram. Tidak ada kelas baru. |
 | *B* | Penyesuaian kelas pada use case UC07 dan UC08: penambahan metode `ambilDaftarKonten()` pada C02 `Kurator` untuk mengambil konten milik Kurator, penambahan metode `ambilAntreanPeninjauan()` pada C03 `Administrator` untuk mengambil konten berstatus Diajukan terurut dari yang paling lama menunggu, serta perubahan tipe kembalian `kembalikanKonten(...)` pada C28 `KontrolModerasiKonten` dari `void` menjadi `bool` agar halaman dapat menampilkan pesan wajib isi ketika alasan revisi kosong. Tidak ada kelas baru. |
 | *C* | Penyesuaian kelas pada use case UC01 dan UC02: penambahan atribut `- idKelompokTerpilih: int` dan `- teksDisclaimer: Text` serta operasi `+ tampilkanPeringatanDarurat(): void` pada C13 `HalamanJelajahKasus`, penambahan operasi `+ cekDarurat(idKelompok: int): bool` pada C21 `KontrolJelajahKasus`, penambahan atribut `- teksDisclaimer: Text` serta operasi `+ tampilkanHasil(daftarHasil: KelompokKasus [0..*]): void` dan `+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..*]): void` pada C15 `HalamanPencarianKataKunci`, penyertaan operasi `+ ambilDaftarLangkah(): LangkahPenyelesaian [1..*]` dan `+ ambilDaftarArtikel(): Artikel [1..*]` pada C06 `RangkumanKasus` ke dalam diagram kelas UC01 agar sesuai dengan pemanggilan pada sequence diagram, serta penyertaan C14 `HalamanRangkumanKasus` ke dalam diagram kelas use case UC02 karena halaman rangkuman kasus ikut terlibat pada alur membuka hasil pencarian. Tidak ada kelas baru. |
+| *D* | Penyesuaian kelas pada use case UC05 dan UC09. Metode `cariAkun(email)` ditambahkan pada C01 `Akun` karena `prosesLogin()` menerima email, sedangkan SKPL belum menyediakan cara mencari akun berdasarkan email. Metode `putusSesi(idAkun)` ditambahkan pada C25 `KontrolAutentikasi` untuk memenuhi KF37 yang menuntut sesi Kurator terputus seketika saat akunnya dinonaktifkan. Metode `ambilDaftarKurator(idAdministrator)` ditambahkan pada C29 `KontrolPengelolaanAkun` agar pemuatan tabel daftar Kurator tidak melangkahi lapisan *Controller*. Selain itu, C25 dimasukkan ke daftar kelas UC09 dan alur login UC05 kini memanggil `cekAktif()` milik C02 `Kurator`, yang sebelumnya tidak pernah ditempatkan pada alur mana pun. Tidak ada kelas baru. |
 | ... |  |
 
 ---
-
-<br>
-
-> **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
->
-> Dokumen ini melanjutkan **Spesifikasi Kebutuhan Perangkat Lunak (SKPL)** dan **Arsitektur Perangkat Lunak (APL)**. Gunakan nama, ID, kebutuhan, dan use case yang konsisten dengan kedua dokumen tersebut. Contoh pola ID baru di bawah dapat disesuaikan dengan kesepakatan kelompok, ID yang sudah ada tetap dipertahankan.
 
 <br>
 
@@ -54,7 +49,7 @@ Dipersiapkan oleh: #PenjagaNilai
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Deskripsi Perancangan Perangkat Lunak (DPPL) disusun untuk menjelaskan rancangan perangkat lunak PahamHukum yang akan diimplementasikan. Dokumen ini merupakan kelanjutan dari Spesifikasi Kebutuhan Perangkat ;unak (SKPL) dan Arsitektur Perangkat Lunak (APL) dengan mengolah kebutuhan dan arsitektur menjadi rancangan yang lebih rinci. Perincian itu merealisasikan tiap use case ke dalam sequence diagram yang merinci alur tiap proses yang dilakukan oleh user pada use case terkait. Dokumen ini penting bagi pengembang sebagai referensi alur saat menuliskan kode, bagi desainer sebagai landasan fitur dan tampilan yang dibutuhkan, dan bagi penguji sebagai dasar penyusunan skenario pengujian (*testing*).
+Deskripsi Perancangan Perangkat Lunak (DPPL) disusun untuk menjelaskan rancangan perangkat lunak PahamHukum yang akan diimplementasikan. Dokumen ini merupakan kelanjutan dari Spesifikasi Kebutuhan Perangkat Lunak (SKPL) dan Arsitektur Perangkat Lunak (APL) dengan mengolah kebutuhan dan arsitektur menjadi rancangan yang lebih rinci. Perincian itu merealisasikan tiap use case ke dalam sequence diagram yang merinci alur tiap proses yang dilakukan oleh user pada use case terkait. Dokumen ini penting bagi pengembang sebagai referensi alur saat menuliskan kode, bagi desainer sebagai landasan fitur dan tampilan yang dibutuhkan, dan bagi penguji sebagai dasar penyusunan skenario pengujian (*testing*).
 
 ## 1.2 Lingkup Masalah
 PahamHukum adalah platform literasi hukum berbasis web yang menjembatani masyarakat awam dengan informasi hukum. Informasi pada sistem disusun berdasarkan situasi sehari-hari dalam bentuk rangkuman kasus. Rangkuman kasus memuat inti masalah, hak, langkah penyelesaian, poin pertimbangan, checklist dokumen, templat surat yang dapat diunduh, dan artikel pendukung. Pencari Informasi dapat menggunakan seluruh fitur publik tanpa akun, sedangkan Kurator menyusun konten dan Administrator meninjau konten sebelum ditayangkan sekaligus mengelola akun Kurator. PahamHukum tidak bertindak sebagai penasihat hukum resmi, melainkan sebagai penuntun langkah awal sebelum masyarakat berinteraksi dengan lembaga hukum formal.
@@ -82,7 +77,7 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | **Administrator** | Pengelola sistem yang meninjau dan memutuskan kelayakan konten serta mengelola akun Kurator |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
+Penomoran ID pada dokumen ini mengikuti pola yang sudah dipakai pada dokumen SKPL dan APL.
 
 Tabel 1.4. Aturan Penomoran
 
@@ -259,7 +254,7 @@ Diagram pada Gambar 2.4.1 memetakan ke-32 komponen yang terdaftar pada Tabel 2.3
    Terdiri atas 9 komponen pengendali yang mengoordinasikan interaksi antara *View* dan *Model*. *Controller* bertanggung jawab memvalidasi setiap *event* dari pengguna (misalnya verifikasi otorisasi pada `KontrolAutentikasi` atau penyetujuan pada `KontrolModerasiKonten`) sebelum mengizinkan pemanggilan operasi ke *Model*.
 
 3. **Model**  
-   Terdiri atas 12 komponen entitas yang menyimpan struktur data hukum dan pengguna sistem. Komponen `RiwayatStatus` diisolasi guna memenuhi perlindungan KNF09 di mana riwayat perubahan status tidak boleh dimanipulasi atau diubah setelah dibuat.
+   Terdiri atas 12 komponen entitas yang menyimpan struktur data hukum dan pengguna sistem. Komponen `RiwayatStatus` diisolasi guna memenuhi perlindungan KNF09, yaitu riwayat perubahan status tidak boleh dimanipulasi atau diubah setelah dibuat.
 
 4. **Penyimpanan Data**  
    Terdiri atas `Database` dan `Penyimpanan Berkas` yang berada di server, serta komponen khusus `Penyimpanan Lokal Peramban` (di sisi klien). `Penyimpanan Lokal Peramban` digunakan oleh `KontrolChecklist` dan `HalamanRangkumanKasus` untuk mempertahankan daftar persiapan dokumen pengguna secara anonim. `Sumber Hukum Resmi` digambar sebagai sistem eksternal di luar ruang lingkup komponen Tabel 2.3.
@@ -267,8 +262,8 @@ Diagram pada Gambar 2.4.1 memetakan ke-32 komponen yang terdaftar pada Tabel 2.3
 **Keterangan Relasi (Label Panah):**
 - **memanggil:** Aksi dari *View* yang meneruskan interaksi pengguna ke *Controller* terkait.
 - **akses:** Aksi dari *Controller* untuk menerapkan logika bisnis terhadap *Model* (mengambil, mengubah, atau menghapus data).
-- **komposisi / agregasi:** Relasi kepemilikan struktural antar-*Model* di mana komponen bagian (misalnya `Checklist`) terikat kuat (komposisi) atau terkait lepas (agregasi) dengan entitas induknya (misalnya `RangkumanKasus`).
-- **asosiasi:** Keterkaitan operasional spesifik berarah, di mana peranannya dituliskan langsung di atas garis (contoh: "menulis", "diubah oleh").
+- **komposisi / agregasi:** Relasi kepemilikan struktural antar-*Model*. Komponen bagian (misalnya `Checklist`) terikat kuat (komposisi) atau terkait lepas (agregasi) dengan entitas induknya (misalnya `RangkumanKasus`).
+- **asosiasi:** Keterkaitan operasional spesifik berarah, dengan peranannya dituliskan langsung di atas garis (contoh: "menulis", "diubah oleh").
 - **generalisasi:** Pewarisan atribut dan metode dari *Model* spesifik (`Kurator`, `Administrator`) ke *Model* umum (`Akun`).
 - **sistem eksternal:** Entitas di luar ruang lingkup PahamHukum (seperti JDIH/BPK) yang ditautkan melalui URL.
 
@@ -295,7 +290,7 @@ Tabel 2.4.1. Pemetaan Node dan Artifact pada Physical View
 | `:Web Server` `«Device»` | `:Application Server` `«Execution Environment»` | Server | 8 *artifact* *View*, 9 *artifact* *Controller*, dan 12 *artifact* *Model* (total 29), dijalankan dalam satu proses aplikasi |
 | | `:Sistem Berkas Server` `«File System»` | Penyimpanan Berkas | `:Penyimpanan Berkas` (templat PDF/DOCX) |
 | `:Database Server` `«Device»` | `:PostgreSQL / MySQL` `«Database System»` | DBMS | `:Database` |
-| `:Sumber Hukum Resmi` (garis putus-putus) | — | — | Sistem eksternal di luar PahamHukum (JDIH, peraturan.bpk.go.id); bukan komponen Tabel 2.3 |
+| `:Sumber Hukum Resmi` (garis putus-putus) | Tidak ada | Tidak ada | Sistem eksternal di luar PahamHukum (JDIH, peraturan.bpk.go.id); bukan komponen Tabel 2.3 |
 
 `:HalamanRangkumanKasus` dan `:KontrolChecklist` dipasang pada **dua node**: instans di `:Web Server` menyusun halaman rangkuman dan mengambil isi *checklist* dari *Model*, sedangkan instans di `:Peramban Web` berjalan pada perangkat pengguna untuk memperbarui tampilan centang, menghitung kelengkapan dokumen, serta menyimpan dan memuat status centang di `:Penyimpanan Lokal Peramban` (UC03, KF13, KF14). Pemasangan ganda ini diperlukan karena KNF06 melarang status centang dikirim ke server.
 
@@ -305,9 +300,9 @@ Tabel 2.4.2. Keterangan Jalur Komunikasi pada Physical View
 
 | Penghubung | Stereotype | Multiplisitas | Keterangan |
 | :--- | :--- | :--- | :--- |
-| `:Perangkat Klien` — `:Web Server` | `«internet»` `{HTTPS}` | n : 1 | Permintaan halaman dan pengiriman formulir. Terkait baris *Jaringan* Tabel 2.1.1 (minimal 1 Mbps, beranda termuat paling lama 3 detik). |
-| `:Web Server` — `:Database Server` | `«intranet»` `{SQL}` | 1 : 1 | Kueri baca/tulis oleh lapisan *Model* ke `:Database`. |
-| `:Perangkat Klien` — `:Sumber Hukum Resmi` | `«internet»` `{hyperlink}` | n : 1 | Dibuka langsung oleh peramban pengguna saat mengeklik rujukan pada `Artikel`, bukan panggilan dari Web Server. |
+| `:Perangkat Klien` - `:Web Server` | `«internet»` `{HTTPS}` | n : 1 | Permintaan halaman dan pengiriman formulir. Terkait baris *Jaringan* Tabel 2.1.1 (minimal 1 Mbps, beranda termuat paling lama 3 detik). |
+| `:Web Server` - `:Database Server` | `«intranet»` `{SQL}` | 1 : 1 | Kueri baca/tulis oleh lapisan *Model* ke `:Database`. |
+| `:Perangkat Klien` - `:Sumber Hukum Resmi` | `«internet»` `{hyperlink}` | n : 1 | Dibuka langsung oleh peramban pengguna saat mengeklik rujukan pada `Artikel`, bukan panggilan dari Web Server. |
 
 *Catatan:* `:Database Server` digambar sebagai node terpisah dari `:Web Server` karena DBMS pada Tabel 2.1.1 adalah layanan tersendiri. Jika pada implementasi basis data berada pada mesin yang sama dengan aplikasi, kedua node cukup digabung dan jalur `«intranet»` dihilangkan tanpa mengubah pemetaan *artifact*.
 
@@ -520,6 +515,72 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 
 <br>
 
+## 3.5 Use Case Masuk dan Keluar Panel Pengelolaan
+
+**ID Use Case:** UC05
+**Nama Use Case:** Masuk dan Keluar Panel Pengelolaan
+
+### 3.5.1 Identifikasi Kelas
+
+Tabel 3.5. Identifikasi Kelas Use Case UC05
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanLogin` | C16 - `HalamanLogin` |
+| 2 | `KontrolAutentikasi` | C25 - `KontrolAutentikasi` |
+| 3 | `Akun` | C01 - `Akun` |
+| 4 | `Kurator` | C02 - `Kurator` |
+| 5 | `Administrator` | C03 - `Administrator` |
+
+### 3.5.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC05_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.1 Sequence Diagram UC05 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Kredensial Salah**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Kredensial Salah" src="./assets/diagram/SequenceDiagram_UC05_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.2 Sequence Diagram UC05 - Kredensial Salah</i>
+</p>
+
+- **Skenario Alternatif 2: Akses Tanpa Sesi yang Sah**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Akses Tanpa Sesi yang Sah" src="./assets/diagram/SequenceDiagram_UC05_Alt2.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.3 Sequence Diagram UC05 - Akses Tanpa Sesi yang Sah</i>
+</p>
+
+- **Skenario Alternatif 3: Mengakhiri Sesi Pengelolaan** (keluar atas permintaan pengguna dan sesi yang berakhir otomatis, digambarkan dengan fragmen `alt`)
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Mengakhiri Sesi Pengelolaan" src="./assets/diagram/SequenceDiagram_UC05_Alt3.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.4 Sequence Diagram UC05 - Mengakhiri Sesi Pengelolaan</i>
+</p>
+
+### 3.5.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC05" src="./assets/diagram/ClassDiagram_UC05.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.5.5 Diagram Kelas Masuk dan Keluar Panel Pengelolaan (UC05)</i>
+</p>
+
+<br>
+
 ## 3.6 Use Case Mengelola Konten Rangkuman Kasus
 
 **ID Use Case:** UC06
@@ -597,7 +658,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <img alt="Sequence Diagram UC07 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC07_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.23. Sequence Diagram UC07 - Skenario Normal</i>
+<i>Gambar 3.7.1 Sequence Diagram UC07 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Konten Berstatus Perlu Revisi**
@@ -606,7 +667,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <img alt="Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi" src="./assets/diagram/SequenceDiagram_UC07_Alt1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.24. Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi</i>
+<i>Gambar 3.7.2 Sequence Diagram UC07 - Skenario Alternatif 1: Konten Berstatus Perlu Revisi</i>
 </p>
 
 ### 3.7.3 Diagram Kelas
@@ -615,7 +676,7 @@ Tabel 3.7. Identifikasi Kelas Use Case UC07
 <img alt="Diagram Kelas UC07" src="./assets/diagram/ClassDiagram_UC07.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar 3.25. Diagram Kelas Memantau Status dan Revisi Konten (UC07)</i>
+<i>Gambar 3.7.3 Diagram Kelas Memantau Status dan Revisi Konten (UC07)</i>
 </p>
 
 <br>
@@ -646,7 +707,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Sequence Diagram UC08 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC08_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.26. Sequence Diagram UC08 - Skenario Normal</i>
+<i>Gambar 3.8.1 Sequence Diagram UC08 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi**
@@ -655,7 +716,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi" src="./assets/diagram/SequenceDiagram_UC08_Alt1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.27. Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi</i>
+<i>Gambar 3.8.2 Sequence Diagram UC08 - Skenario Alternatif 1: Konten Dikembalikan dengan Catatan Revisi</i>
 </p>
 
 - **Skenario Alternatif 2: Alasan Revisi Dikosongkan**
@@ -664,7 +725,7 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan" src="./assets/diagram/SequenceDiagram_UC08_Alt2.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.28. Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan</i>
+<i>Gambar 3.8.3 Sequence Diagram UC08 - Skenario Alternatif 2: Alasan Revisi Dikosongkan</i>
 </p>
 
 ### 3.8.3 Diagram Kelas
@@ -673,7 +734,58 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 <img alt="Diagram Kelas UC08" src="./assets/diagram/ClassDiagram_UC08.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar 3.29. Diagram Kelas Meninjau dan Memutuskan Konten (UC08)</i>
+<i>Gambar 3.8.4 Diagram Kelas Meninjau dan Memutuskan Konten (UC08)</i>
+</p>
+
+<br>
+
+---
+
+## 3.9 Use Case Mengelola Akun Kurator
+
+**ID Use Case:** UC09
+**Nama Use Case:** Mengelola Akun Kurator
+
+### 3.9.1 Identifikasi Kelas
+
+Tabel 3.9. Identifikasi Kelas Use Case UC09
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanPengelolaanAkun` | C20 - `HalamanPengelolaanAkun` |
+| 2 | `KontrolPengelolaanAkun` | C29 - `KontrolPengelolaanAkun` |
+| 3 | `KontrolAutentikasi` | C25 - `KontrolAutentikasi` |
+| 4 | `Akun` | C01 - `Akun` |
+| 5 | `Kurator` | C02 - `Kurator` |
+| 6 | `Administrator` | C03 - `Administrator` |
+
+### 3.9.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC09 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC09_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.9.1 Sequence Diagram UC09 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Penonaktifan Akun Kurator**
+
+<p align="center">
+<img alt="Sequence Diagram UC09 - Penonaktifan Akun Kurator" src="./assets/diagram/SequenceDiagram_UC09_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.9.2 Sequence Diagram UC09 - Penonaktifan Akun Kurator</i>
+</p>
+
+### 3.9.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC09" src="./assets/diagram/ClassDiagram_UC09.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.9.3 Diagram Kelas Mengelola Akun Kurator (UC09)</i>
 </p>
 
 <br>
@@ -684,23 +796,61 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 
 ## 4.1 Diagram Kelas
 
-**Bagian ini diisi dengan diagram kelas keseluruhan.**
+Realisasi sembilan *use case* pada BAB 3 menghasilkan 29 kelas perancangan. Penamaan dan penomoran kelas mengikuti BAB 5 dokumen SKPL, sedangkan atribut, metode, tipe data, dan visibilitasnya dirinci di sini agar siap diimplementasikan. Pemetaan ke lapisan MVC mengikuti ketetapan pada subbab 2.2, yaitu delapan kelas *boundary* menjadi *View*, sembilan kelas *control* menjadi *Controller*, dan dua belas kelas *entity* menjadi *Model*.
+
+Diagram pada Gambar 4.1 menyatukan seluruh kelas tersebut beserta relasinya. Panah asosiasi dari *View* ke *Controller* menunjukkan bahwa setiap halaman hanya memanggil pengendalinya sendiri, sedangkan panah dependensi dari *Controller* ke *Model* menegaskan bahwa data hanya disentuh melalui lapisan *Model*. Tidak ada satu pun relasi langsung dari *View* ke *Model*, sehingga pemisahan tanggung jawab yang dijanjikan pola MVC tetap terjaga pada tingkat rancangan kelas.
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-class_diargam.png" width="35%">
+<img alt="Diagram Kelas Perancangan Keseluruhan PahamHukum" src="./assets/diagram/ClassDiagram_Full.svg" width="100%">
 </p>
 <p align="center">
-<i>Gambar 4.1. Diagram Kelas Perancangan Keseluruhan [Nama P/L]</i>
+<i>Gambar 4.1. Diagram Kelas Perancangan Keseluruhan PahamHukum</i>
 </p>
+
+Relasi antarkelas *entity* membentuk satu rantai komposisi yang berpusat pada `RangkumanKasus`. Satu `BidangHukum` menaungi beberapa `KelompokKasus`, dan tiap kelompok memiliki tepat satu `RangkumanKasus`. Rangkuman itulah yang memiliki `LangkahPenyelesaian`, `Checklist`, `TemplatDokumen`, `Artikel`, dan `RiwayatStatus`. Karena relasinya komposisi, penghapusan sebuah rangkuman ikut menghapus seluruh bagian di bawahnya. Di sisi pengelola, `Kurator` dan `Administrator` merupakan turunan `Akun`, sehingga email, kata sandi, dan peran cukup disimpan satu kali pada kelas induk.
+
+Tabel 4.1 merinci atribut dan metode seluruh kelas. Daftar ini menggantikan tabel per kelas pada BAB 3, sebagaimana disebut pada subbab 3.1.3.
 
 Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 | ID Kelas | Nama Kelas | Atribut | Metode/Operasi |
 | :--- | :--- | :--- | :--- |
-| *[C01]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C02]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *[C03]* | *[Nama kelas]* | *[Daftar atribut]* | *[Daftar metode/operasi]* |
-| *...* | *...* | *...* | *...* |
+| C01 | `Akun` | - idAkun: int<br>- email: string<br>- kataSandiHash: string<br>- peran: string | + {static} cariAkun(email: string): Akun<br>+ cocokkanKataSandi(kataSandi: string): bool<br>- hashKataSandi(kataSandi: string): string<br>+ ambilPeran(): string<br>+ perbaruiEmail(emailBaru: string): void |
+| C02 | `Kurator` | - jumlahKonten: int<br>- statusAktif: bool<br>- idAdministrator: int<br>(serta atribut warisan Akun) | + cekAktif(): bool<br>+ tambahJumlahKonten(): void<br>+ nonaktifkan(): void |
+| C03 | `Administrator` | (mewarisi atribut Akun) | + ambilKuratorTerdaftar(): Kurator [0..\*] |
+| C04 | `BidangHukum` | - idBidang: int<br>- nama: string<br>- jumlahKelompokKasus: int<br>- statusAktif: bool | + ambilDaftarKelompok(): KelompokKasus [1..\*]<br>+ cekAktif(): bool |
+| C05 | `KelompokKasus` | - idKelompok: int<br>- idBidang: int<br>- judulUmum: string<br>- istilahResmi: string<br>- penandaDarurat: bool | + ambilRangkuman(): RangkumanKasus<br>+ cekDarurat(): bool<br>+ cocokkanKataKunci(kataKunci: string): bool |
+| C06 | `RangkumanKasus` | - idRangkuman: int<br>- idKelompok: int<br>- idKurator: int<br>- intiMasalah: string<br>- hak: string<br>- poinPertimbangan: string<br>- status: string<br>- namaPenulis: string<br>- tanggalPeninjauan: date<br>- catatanRevisi: string | + cekDisetujui(): bool<br>+ cocokkanKataKunci(kataKunci: string): bool<br>+ ambilChecklist(): Checklist<br>+ ambilDaftarTemplat(): TemplatDokumen [0..\*]<br>+ ambilTemplat(idTemplat: int): TemplatDokumen<br>+ lampirkanTemplat(berkas: file): void<br>+ simpanDraf(): void<br>+ cekIsianLengkap(): bool<br>+ aturStatus(statusBaru: string): void<br>+ ambilCatatanRevisi(): string<br>+ simpanCatatanRevisi(catatan: string): void |
+| C07 | `LangkahPenyelesaian` | - idLangkah: int<br>- idRangkuman: int<br>- nomor: int<br>- deskripsi: string<br>- tujuan: string<br>- dokumenDiperlukan: string [1..\*]<br>- tenggat: date [0..1] | + punyaTenggat(): bool |
+| C08 | `Checklist` | - idChecklist: int<br>- idRangkuman: int<br>- daftarDokumen: string [1..\*] | + hitungJumlahDokumen(): int |
+| C09 | `TemplatDokumen` | - idTemplat: int<br>- idRangkuman: int<br>- namaBerkas: string<br>- format: string<br>- ukuran: int<br>- versi: string<br>- tanggalPembaruan: date | + unduh(): file<br>+ perbaruiVersi(berkas: file): void<br>- validasiUnggahan(berkas: file): bool |
+| C10 | `Artikel` | - idArtikel: int<br>- idRangkuman: int<br>- judul: string<br>- tautanSumber: string | + ambilTautan(): string |
+| C11 | `LembagaBantuanHukum` | - idLBH: int<br>- nama: string<br>- wilayah: string<br>- tautan: string | + cocokkanWilayah(wilayah: string): bool |
+| C12 | `RiwayatStatus` | - idRiwayat: int<br>- idRangkuman: int<br>- idPelaku: int<br>- status: string<br>- waktu: date | + simpan(): void |
+| C13 | `HalamanJelajahKasus` | - sectionDaftarBidang: Section<br>- kartuBidangHukum: Card [1..\*]<br>- sectionDaftarKelompok: Section<br>- kartuKelompokKasus: Card [1..\*]<br>- popupPeringatanDarurat: Modal<br>- tombolTutupPeringatan: Button | + tampilkanHalaman(): void<br>+ klikBidangHukum(idBidang: int): void<br>+ klikKelompokKasus(idKelompok: int): void<br>+ tutupPeringatan(): void |
+| C14 | `HalamanRangkumanKasus` | - sectionIntiMasalah: Section<br>- sectionHak: Section<br>- sectionPertimbangan: Section<br>- sectionLangkah: Section<br>- penandaTenggat: Badge [0..\*]<br>- sectionChecklist: Section<br>- checkboxDokumen: Checkbox [1..\*]<br>- labelKelengkapan: Text<br>- sectionTemplat: Section<br>- tombolUnduh: Button [0..\*]<br>- labelInfoBerkas: Text<br>- sectionArtikel: Section<br>- sectionLBH: Section<br>- dropdownWilayah: Select<br>- labelPenulis: Text<br>- teksDisclaimer: Text | + tampilkanHalaman(idKelompok: int): void<br>+ pilihWilayah(wilayah: string): void<br>+ centangDokumen(indeks: int): void<br>- simpanStatusCentang(): void<br>- muatStatusCentang(): void<br>+ klikTombolUnduh(idTemplat: int): void |
+| C15 | `HalamanPencarianKataKunci` | - kolomPencarian: TextField<br>- tombolCari: Button<br>- daftarHasil: Card [0..\*]<br>- pesanTidakDitemukan: Text<br>- saranBidangLain: Card [0..\*]<br>- sectionLBH: Section<br>- dropdownWilayah: Select | + klikCari(kataKunci: string): void<br>+ klikHasil(idKelompok: int): void<br>+ pilihWilayah(wilayah: string): void |
+| C16 | `HalamanLogin` | - inputEmail: TextField<br>- inputKataSandi: PasswordField<br>- tombolMasuk: Button<br>- pesanGalat: Text | + tampilkanHalaman(): void<br>+ klikMasuk(email: string, kataSandi: string): void |
+| C17 | `HalamanPenyusunanKonten` | - formulirKonten: Form<br>- inputIntiMasalah: TextArea<br>- inputHak: TextArea<br>- inputPertimbangan: TextArea<br>- inputLangkah: TextArea [1..\*]<br>- inputChecklist: TextArea<br>- inputArtikel: TextField [1..\*]<br>- inputUnggahTemplat: FileInput<br>- tombolSimpanDraf: Button<br>- tombolAjukan: Button<br>- penandaIsianKosong: Text [0..\*]<br>- pesanGalatUnggah: Text<br>- tombolKeluar: Button | + tampilkanFormulir(idRangkuman: int): void<br>+ klikSimpanDraf(): void<br>+ unggahTemplat(berkas: file): void<br>+ klikAjukan(): void |
+| C18 | `HalamanDaftarKontenKurator` | - tabelDaftarKonten: Table<br>- labelStatus: Badge [0..\*]<br>- panelCatatanRevisi: Section<br>- tombolKeluar: Button | + tampilkanHalaman(): void<br>+ klikKonten(idRangkuman: int): void |
+| C19 | `HalamanModerasiKonten` | - tabelAntrean: Table<br>- panelIsiKonten: Section<br>- tombolSetujui: Button<br>- tombolKembalikan: Button<br>- inputAlasanRevisi: TextArea<br>- pesanWajibIsi: Text<br>- tombolKeluar: Button | + tampilkanAntrean(): void<br>+ klikKonten(idRangkuman: int): void<br>+ klikSetujui(idRangkuman: int): void<br>+ klikKembalikan(idRangkuman: int, alasan: string): void |
+| C20 | `HalamanPengelolaanAkun` | - tabelDaftarKurator: Table<br>- formulirAkun: Form<br>- inputEmail: TextField<br>- inputKataSandi: PasswordField<br>- tombolDaftarkan: Button<br>- tombolSimpan: Button<br>- tombolNonaktifkan: Button<br>- tombolKeluar: Button | + tampilkanHalaman(): void<br>+ klikDaftarkan(email: string, kataSandi: string): void<br>+ klikSimpanPerubahan(idAkun: int, email: string): void<br>+ klikNonaktifkan(idAkun: int): void |
+| C21 | `KontrolJelajahKasus` | - | + ambilDaftarBidang(): BidangHukum [1..\*]<br>+ ambilDaftarKelompok(idBidang: int): KelompokKasus [1..\*]<br>+ ambilRangkuman(idKelompok: int): RangkumanKasus<br>+ ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..\*] |
+| C22 | `KontrolPencarianKataKunci` | - | + cariKasus(kataKunci: string): KelompokKasus [0..\*]<br>+ sarankanBidangLain(): BidangHukum [1..\*]<br>+ ambilDaftarLBH(wilayah: string): LembagaBantuanHukum [0..\*] |
+| C23 | `KontrolChecklist` | - | + ambilChecklist(idRangkuman: int): Checklist<br>+ hitungKelengkapan(jumlahDicentang: int, jumlahTotal: int): int |
+| C24 | `KontrolUnduhTemplat` | - | + ambilDaftarTemplat(idRangkuman: int): TemplatDokumen [0..\*]<br>+ unduhTemplat(idRangkuman: int, idTemplat: int): file |
+| C25 | `KontrolAutentikasi` | - | + putusSesi(idAkun: int): void<br>+ prosesLogin(email: string, kataSandi: string): bool<br>+ arahkanSesuaiPeran(peran: string): void<br>+ cekSesi(): bool<br>+ logout(): void |
+| C26 | `KontrolPenyusunanKonten` | - | + buatDraf(idKelompok: int, idKurator: int): RangkumanKasus<br>+ simpanDraf(idRangkuman: int): void<br>+ lampirkanTemplat(idRangkuman: int, berkas: file): void<br>+ ajukanKonten(idRangkuman: int): void<br>- catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void |
+| C27 | `KontrolPelacakanKonten` | - | + ambilDaftarKonten(idKurator: int): RangkumanKasus [0..\*]<br>+ ambilCatatanRevisi(idRangkuman: int): string |
+| C28 | `KontrolModerasiKonten` | - | + ambilAntrean(): RangkumanKasus [0..\*]<br>+ ambilKonten(idRangkuman: int): RangkumanKasus<br>+ setujuiKonten(idRangkuman: int, idAdministrator: int): void<br>+ kembalikanKonten(idRangkuman: int, idAdministrator: int, alasan: string): void<br>- cekAlasanTerisi(alasan: string): bool<br>- catatRiwayat(idRangkuman: int, idPelaku: int, status: string): void |
+| C29 | `KontrolPengelolaanAkun` | - | + ambilDaftarKurator(idAdministrator: int): Kurator [0..\*]<br>+ daftarkanKurator(email: string, kataSandi: string, idAdministrator: int): Kurator<br>+ perbaruiKurator(idAkun: int, emailBaru: string): void<br>+ nonaktifkanKurator(idAkun: int): void<br>- cekEmailUnik(email: string): bool |
+Tiga metode berikut tidak terdapat pada BAB 5 dokumen SKPL dan baru ditambahkan pada tahap perancangan. Penambahannya dicatat pada tabel Daftar Perubahan.
+
+1. `cariAkun(email)` pada `Akun`. Metode `prosesLogin()` menerima email, tetapi SKPL tidak menyediakan cara mencari akun berdasarkan email, sehingga `cocokkanKataSandi()` tidak memiliki objek sasaran. Metode ini bersifat statis karena dipanggil sebelum objek `Akun` terbentuk.
+2. `putusSesi(idAkun)` pada `KontrolAutentikasi`. KF37 menuntut sesi Kurator terputus seketika saat akunnya dinonaktifkan, sedangkan pemegang sesi adalah `KontrolAutentikasi`.
+3. `ambilDaftarKurator(idAdministrator)` pada `KontrolPengelolaanAkun`. Tanpa metode ini, `HalamanPengelolaanAkun` harus memanggil `Administrator` secara langsung dan melangkahi lapisan *Controller*.
+
+Selain ketiganya, alur login UC05 kini memanggil `cekAktif()` milik `Kurator`. Metode tersebut sudah ada pada SKPL, tetapi belum pernah ditempatkan dalam alur mana pun, sehingga KF37 mengenai pencegahan login bagi Kurator nonaktif belum terealisasi.
 
 <br>
 
@@ -708,12 +858,40 @@ Tabel 4.1. Daftar Kelas Perancangan Keseluruhan
 
 # BAB 5: Matriks Kerunutan
 
-Petakan kelas perancangan dengan use case yang terkait. Gunakan **BAB 6 Traceability pada dokumen SKPL** sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada BAB 3–BAB 5 DPPL.
+Matriks kerunutan memetakan tiap kelas perancangan terhadap *use case* yang merealisasikannya. Acuannya adalah BAB 6 dokumen SKPL, disesuaikan dengan hasil realisasi pada BAB 3. Satu penyesuaian terjadi pada `KontrolAutentikasi`, yang semula hanya terkait UC05 dan kini juga terkait UC09 karena penonaktifan akun menuntut pemutusan sesi.
 
-Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
+Seluruh 29 kelas terpetakan ke sekurang-kurangnya satu *use case*, sehingga tidak ada kelas yang dirancang tanpa kebutuhan yang mendasarinya. Sebaliknya, kesembilan *use case* pada SKPL juga terwakili, sehingga tidak ada kebutuhan yang kehilangan rancangan kelasnya.
+
+Tabel 5.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| C01 - `Akun` | UC05, UC06, UC08, UC09 |
+| C02 - `Kurator` | UC05, UC06, UC07, UC09 |
+| C03 - `Administrator` | UC05, UC08, UC09 |
+| C04 - `BidangHukum` | UC01, UC02 |
+| C05 - `KelompokKasus` | UC01, UC02 |
+| C06 - `RangkumanKasus` | UC01, UC02, UC03, UC04, UC06, UC07, UC08 |
+| C07 - `LangkahPenyelesaian` | UC01, UC06 |
+| C08 - `Checklist` | UC01, UC03, UC06 |
+| C09 - `TemplatDokumen` | UC01, UC04, UC06 |
+| C10 - `Artikel` | UC01, UC06 |
+| C11 - `LembagaBantuanHukum` | UC01, UC02 |
+| C12 - `RiwayatStatus` | UC06, UC08 |
+| C13 - `HalamanJelajahKasus` | UC01 |
+| C14 - `HalamanRangkumanKasus` | UC01, UC03, UC04 |
+| C15 - `HalamanPencarianKataKunci` | UC02 |
+| C16 - `HalamanLogin` | UC05 |
+| C17 - `HalamanPenyusunanKonten` | UC06 |
+| C18 - `HalamanDaftarKontenKurator` | UC07 |
+| C19 - `HalamanModerasiKonten` | UC08 |
+| C20 - `HalamanPengelolaanAkun` | UC09 |
+| C21 - `KontrolJelajahKasus` | UC01 |
+| C22 - `KontrolPencarianKataKunci` | UC02 |
+| C23 - `KontrolChecklist` | UC03 |
+| C24 - `KontrolUnduhTemplat` | UC04 |
+| C25 - `KontrolAutentikasi` | UC05, UC09 |
+| C26 - `KontrolPenyusunanKonten` | UC06 |
+| C27 - `KontrolPelacakanKonten` | UC07 |
+| C28 - `KontrolModerasiKonten` | UC08 |
+| C29 - `KontrolPengelolaanAkun` | UC09 |

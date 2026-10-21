@@ -1,0 +1,32 @@
+@startuml
+title Sequence Diagram UC05 - Skenario Alternatif 3: Mengakhiri Sesi Pengelolaan
+
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor "Kurator / Administrator" as Aktor
+boundary ":HalamanPengelola" as P
+control ":KontrolAutentikasi" as C
+boundary ":HalamanLogin" as V
+
+alt keluar atas permintaan pengguna
+  Aktor -> P ++ : klik tombolKeluar
+  P -> C ++ : logout()
+  C -> C : akhiri sesi pengelolaan
+  return sesi berakhir
+  P -> V ++ : tampilkanHalaman()
+  return halaman login
+  return dialihkan ke halaman login
+else sesi berakhir otomatis setelah 30 menit tanpa aktivitas
+  note over C
+    Tidak ada aktivitas pengguna selama 30 menit (KNF14).
+  end note
+  C -> C : logout()
+  Aktor -> P ++ : mencoba melanjutkan pekerjaan
+  P -> C ++ : cekSesi()
+  return false
+  P -> V ++ : tampilkanHalaman()
+  return halaman login
+  return wajib masuk kembali sebelum melanjutkan
+end
+@enduml

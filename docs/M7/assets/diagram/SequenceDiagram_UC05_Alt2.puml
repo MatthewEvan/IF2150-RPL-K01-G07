@@ -1,0 +1,23 @@
+@startuml
+title Sequence Diagram UC05 - Skenario Alternatif 2: Akses Tanpa Sesi yang Sah
+
+skinparam shadowing false
+skinparam responseMessageBelowArrow true
+
+actor "Kurator / Administrator" as Aktor
+boundary ":HalamanPengelola" as P
+control ":KontrolAutentikasi" as C
+boundary ":HalamanLogin" as V
+
+note over P
+  Mewakili halaman pengelola mana pun yang meng-include UC05, yaitu
+  HalamanPenyusunanKonten, HalamanPeninjauanKonten, dan HalamanPengelolaanAkun.
+end note
+
+Aktor -> P ++ : tampilkanHalaman()
+P -> C ++ : cekSesi()
+return false
+P -> V ++ : tampilkanHalaman()
+return halaman login
+return dialihkan ke halaman login atau halaman akses ditolak
+@enduml
