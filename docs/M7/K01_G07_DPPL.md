@@ -35,7 +35,7 @@ Dipersiapkan oleh: #PenjagaNilai
 | :--- | :--- |
 | *A* | Penambahan dan penyesuaian atribut serta metode kelas pada use case UC06 (C06, C07, C08, C09, C10, C17, C26) agar realisasi skenario normal dan alternatif dapat digambarkan pada sequence diagram. Tidak ada kelas baru. |
 | *B* | Penyesuaian kelas pada use case UC07 dan UC08: penambahan metode `ambilDaftarKonten()` pada C02 `Kurator` untuk mengambil konten milik Kurator, penambahan metode `ambilAntreanPeninjauan()` pada C03 `Administrator` untuk mengambil konten berstatus Diajukan terurut dari yang paling lama menunggu, serta perubahan tipe kembalian `kembalikanKonten(...)` pada C28 `KontrolModerasiKonten` dari `void` menjadi `bool` agar halaman dapat menampilkan pesan wajib isi ketika alasan revisi kosong. Tidak ada kelas baru. |
-| *C* |  |
+| *C* | Penyesuaian kelas pada use case UC01 dan UC02: penambahan atribut `- idKelompokTerpilih: int` dan `- teksDisclaimer: Text` serta operasi `+ tampilkanPeringatanDarurat(): void` pada C13 `HalamanJelajahKasus`, penambahan operasi `+ cekDarurat(idKelompok: int): bool` pada C21 `KontrolJelajahKasus`, penambahan atribut `- teksDisclaimer: Text` serta operasi `+ tampilkanHasil(daftarHasil: KelompokKasus [0..*]): void` dan `+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..*]): void` pada C15 `HalamanPencarianKataKunci`, penyertaan operasi `+ ambilDaftarLangkah(): LangkahPenyelesaian [1..*]` dan `+ ambilDaftarArtikel(): Artikel [1..*]` pada C06 `RangkumanKasus` ke dalam diagram kelas UC01 agar sesuai dengan pemanggilan pada sequence diagram, serta penyertaan C14 `HalamanRangkumanKasus` ke dalam diagram kelas use case UC02 karena halaman rangkuman kasus ikut terlibat pada alur membuka hasil pencarian. Tidak ada kelas baru. |
 | ... |  |
 
 ---
@@ -318,66 +318,149 @@ Tabel 2.4.2. Keterangan Jalur Komunikasi pada Physical View
 
 # BAB 3: Realisasi Use Case
 
-## 3.1 Use Case [Nama Use Case 1]
+## 3.1 Use Case Menelusuri dan Membaca Rangkuman Kasus
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC01  
+**Nama Use Case:** Menelusuri dan Membaca Rangkuman Kasus
+
+Use case ini merupakan alur utama yang dipakai **Pencari Informasi** untuk menemukan dan membaca isi satu kelompok kasus pada PahamHukum. Alur dimulai dari halaman beranda yang memuat seluruh bidang hukum aktif, dilanjutkan dengan pemilihan bidang hukum, pemilihan kelompok kasus, dan berakhir pada halaman rangkuman kasus yang tersusun berurutan memuat inti masalah, hak, langkah penyelesaian, poin pertimbangan, *checklist* dokumen, templat, artikel pendukung, serta *disclaimer*. Use case ini juga menangani kelompok kasus yang ditandai sebagai **situasi darurat**, yaitu kelompok kasus yang memerlukan peringatan prioritas agar pengguna segera melapor kepada instansi yang berwenang.
 
 ### 3.1.1 Identifikasi Kelas
 
-Identifikasi kelas yang terkait dengan use case tersebut. Kelas di tahap perancangan dapat berbeda dengan dengan kelas di tahap analisis. Dapat menggunakan tabel di bawah:
-
-Tabel 3.1. Identifikasi Kelas Use Case [UC01]
+Tabel 3.1. Identifikasi Kelas Use Case UC01
 
 | No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
 |:--- | :--- | :--- |
-| 1 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| 2 | *[Nama kelas perancangan]* | *[Nama kelas analisis pada SKPL]* |
-| ... | *...* | *...* |
+| 1 | `HalamanJelajahKasus` | C13 - `HalamanJelajahKasus` |
+| 2 | `HalamanRangkumanKasus` | C14 - `HalamanRangkumanKasus` |
+| 3 | `KontrolJelajahKasus` | C21 - `KontrolJelajahKasus` |
+| 4 | `BidangHukum` | C04 - `BidangHukum` |
+| 5 | `KelompokKasus` | C05 - `KelompokKasus` |
+| 6 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 7 | `LangkahPenyelesaian` | C07 - `LangkahPenyelesaian` |
+| 8 | `Checklist` | C08 - `Checklist` |
+| 9 | `TemplatDokumen` | C09 - `TemplatDokumen` |
+| 10 | `Artikel` | C10 - `Artikel` |
+| 11 | `LembagaBantuanHukum` | C11 - `LembagaBantuanHukum` |
+
+Sebelas kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.1. Perubahan pada tahap perancangan hanya berupa atribut dan metode baru pada kelas yang sudah ada, sehingga tidak ada kelas baru yang diperkenalkan pada use case ini.
 
 ### 3.1.2 Sequence Diagram
 
-Buat *sequence diagram* untuk **setiap skenario use case**, mencakup skenario normal dan alternatif pada subbab 4.4 SKPL. Diagram melibatkan kelas-kelas yang telah diidentifikasi pada SKPL. 
+Sequence diagram di bawah ini merealisasikan kedua skenario yang telah ditetapkan pada SKPL Subbab 4.4.1. Setiap kelas *boundary* meneruskan permintaan pengguna ke *controller*, dan *controller* kemudian meminta data dari kelas *entity* sesuai aturan MVC pada APL. Sesuai catatan asistensi, proses *login* tidak digambar karena merupakan alur bawaan pada awal penggunaan sistem.
 
 - **Skenario Normal**
 
+Skenario normal dibagi menjadi enam langkah sebagaimana didefinisikan pada SKPL Subbab 4.4.1. Pada Langkah 1, `HalamanJelajahKasus` meminta daftar bidang hukum kepada `KontrolJelajahKasus`, kemudian `KontrolJelajahKasus` memanggil `cekAktif()` pada setiap objek `BidangHukum` agar hanya bidang hukum berstatus aktif yang diteruskan ke halaman, sekaligus menampilkan jumlah kelompok kasus pada masing-masing bidang (KF01, KF02).
+
+Pada Langkah 2, `Pencari Informasi` mengklik salah satu kartu bidang hukum melalui `klikBidangHukum(idBidang)`. `KontrolJelajahKasus` kemudian mengambil kelompok kasus milik bidang tersebut dan, untuk setiap kelompok kasus, mengambil rangkumannya serta memeriksa status persetujuannya melalui `cekDisetujui()`. Hanya kelompok kasus yang rangkumannya berstatus *Disetujui* yang ditampilkan, lengkap dengan judul dalam bahasa sehari-hari dan istilah hukum resmi sebagai keterangan pelengkap.
+
+Pada Langkah 3, `Pencari Informasi` mengklik kelompok kasus yang dipilih. `KontrolJelajahKasus` memeriksa apakah kelompok kasus tersebut ditandai sebagai situasi darurat melalui `cekDarurat(idKelompok)`. Karena pada skenario normal kasus yang dipilih tidak ditandai darurat, `darurat` bernilai `false` sehingga peringatan prioritas tidak ditampilkan dan alur langsung dilanjutkan ke halaman rangkuman.
+
+Langkah 4 sampai 6 merupakan penyajian halaman rangkuman yang datanya telah dimuat pada Langkah 3. `KontrolJelajahKasus` menghimpun seluruh bagian rangkuman melalui `RangkumanKasus`: daftar langkah penyelesaian beserta penanda tenggat melalui `punyaTenggat()`, *checklist* dokumen beserta jumlah dokumen melalui `hitungJumlahDokumen()`, daftar templat dokumen, serta daftar artikel pendukung beserta tautan ke sumber hukum resmi. Halaman rangkuman kemudian ditampilkan secara berurutan memuat bagian hak dan pertimbangan, bagian langkah penyelesaian bernomor, dan bagian akhir halaman yang memuat artikel pendukung, nama Kurator, tanggal peninjauan, direktori Lembaga Bantuan Hukum, serta *disclaimer*. Pencarian dan penambahan daftar Lembaga Bantuan Hukum terdekat pada bagian akhir halaman digambarkan dengan fragmen `opt`, karena hanya dijalankan apabila `Pencari Informasi` memilih wilayah tertentu.
+
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC01 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC01_Skenario_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01]</i>
+<i>Gambar 3.1.1 Sequence Diagram UC01 - Skenario Normal</i>
 </p>
 
-- **Skenario Alternatif [Nomor]: [Nama Skenario]**
+- **Skenario Alternatif 1: Kasus Ditandai Situasi Darurat**
+
+Skenario alternatif ini adalah kelanjutan dari Langkah 1 dan Langkah 2 pada skenario normal, sehingga alur awal tidak digambar ulang dan digambarkan sebagai diagram tersendiri agar skenario normal tetap mudah dibaca. Setelah `Pencari Informasi` mengklik kelompok kasus yang ditandai sebagai situasi darurat, `KontrolJelajahKasus` memanggil `cekDarurat()` pada `KelompokKasus` dan memperoleh nilai `darurat = true`. Berbeda dengan skenario normal, pada kasus yang ditandai darurat sistem menampilkan peringatan prioritas agar pengguna segera melapor kepada instansi yang berwenang. Peringatan tersebut ditampilkan melalui `tampilkanPeringatanDarurat()` pada `HalamanJelajahKasus` dan muncul pada `popupPeringatanDarurat`.
+
+Ketika `Pencari Informasi` menutup peringatan tersebut melalui `tutupPeringatan()`, `HalamanJelajahKasus` membuka `HalamanRangkumanKasus` dengan memanggil `tampilkanHalaman(idKelompok)`. Setelah itu `KontrolJelajahKasus` menghimpun data rangkuman, langkah penyelesaian, *checklist*, templat, dan artikel pendukung secara identik dengan skenario normal, sehingga halaman rangkuman kasus ditampilkan seperti pada SKPL Subbab 4.4.1.
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-sequence_diagram.png" width="50%">
+<img alt="Sequence Diagram UC01 - Skenario Alternatif 1: Kasus Ditandai Situasi Darurat" src="./assets/diagram/SequenceDiagram_UC01_Skenario_Alternatif_1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar X. Sequence Diagram [UC01] - [Nama skenario alternatif]</i>
+<i>Gambar 3.1.2 Sequence Diagram UC01 - Skenario Alternatif 1: Kasus Ditandai Situasi Darurat</i>
 </p>
 
 ### 3.1.3 Diagram Kelas
 
-Buatlah diagram kelas untuk use case ini yang terdiri atas kelas-kelas dari 3.1.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+Diagram kelas pada subbab ini memuat sebelas kelas yang telah diidentifikasi pada Tabel 3.1. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
 
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh_class-diagram2.jpg" width="35%">
+<img alt="Diagram Kelas Use Case UC01" src="./assets/diagram/ClassDiagram_UC01.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar X. Diagram Kelas [Nama Uce Case]</i>
+<i>Gambar 3.1.3 Diagram Kelas Menelusuri dan Membaca Rangkuman Kasus (UC01)</i>
 </p>
 
-Pada diagram, pastikan:
-- Atribut dituliskan beserta visibilitas dan tipe datanya, misalnya `- email: String`.
-- Operasi dituliskan beserta visibilitas, parameter, dan tipe kembaliannya, misalnya `+ login(email: String, password: String): Boolean`.
-- Relasi antarkelas (asosiasi, agregasi, komposisi, generalisasi, dan dependensi) digambarkan lengkap dengan multiplisitas.
-- Semua operasi yang dipanggil pada sequence diagram 3.1.2 (skenario normal dan alternatif) ada pada kelas yang bersangkutan.
-- Kelas yang sama dengan kelas di use case lain memakai nama, atribut, dan metode yang konsisten.
+Penyesuaian pada tahap perancangan untuk use case ini tercatat pada Daftar Perubahan revisi C, meliputi penambahan atribut `- idKelompokTerpilih: int` dan `- teksDisclaimer: Text` serta operasi `+ tampilkanPeringatanDarurat(): void` pada `HalamanJelajahKasus`, serta penambahan operasi `+ cekDarurat(idKelompok: int): bool` pada `KontrolJelajahKasus`. Kedua operasi tersebut diperlukan untuk dapat menggambar cabang skenario alternatif pada subbab 3.1.2.
 
-## 3.2 Use Case XX
+## 3.2 Use Case Mencari Kasus
 
-Silahkan lanjutkan untuk  *use case* berikutnya dengan content yang sama dengan 3.1
+**ID Use Case:** UC02  
+**Nama Use Case:** Mencari Kasus
+
+Use case ini menyediakan cara alternatif bagi **Pencari Informasi** untuk mencapai kelompok kasus yang sama seperti pada UC01, yaitu dengan melakukan pencarian berdasarkan kata kunci. Alur ini menjadi penting bagi pengguna yang belum mengetahui bidang hukum apa yang relevan dengan kondisi yang sedang dialami, sehingga pengguna dapat mengetik gejala atau istilah hukum secara bebas. Hasil pencarian hanya menampilkan kelompok kasus yang rangkumannya telah berstatus *Disetujui*, dan pada skenario alternatif ketika tidak ditemukan hasil, sistem menampilkan saran bidang hukum lain beserta tautan lembaga bantuan hukum agar pengguna tidak terjebak pada halaman kosong.
+
+### 3.2.1 Identifikasi Kelas
+
+Tabel 3.2. Identifikasi Kelas Use Case UC02
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanPencarianKataKunci` | C15 - `HalamanPencarianKataKunci` |
+| 2 | `HalamanRangkumanKasus` | C14 - `HalamanRangkumanKasus` |
+| 3 | `KontrolPencarianKataKunci` | C22 - `KontrolPencarianKataKunci` |
+| 4 | `BidangHukum` | C04 - `BidangHukum` |
+| 5 | `KelompokKasus` | C05 - `KelompokKasus` |
+| 6 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 7 | `LembagaBantuanHukum` | C11 - `LembagaBantuanHukum` |
+
+Enam dari tujuh kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.2. Kelas `HalamanRangkumanKasus` (C14) ditambahkan ke dalam diagram kelas use case ini karena pada Langkah 3 skenario normal pencarian, `Pencari Informasi` diarahkan untuk membuka halaman rangkuman kasus terkait, sehingga kelas tersebut ikut terlibat pada alur use case. Penambahan ini dicatat pada Daftar Perubahan revisi C dan tidak menambahkan kelas baru pada sistem secara keseluruhan.
+
+### 3.2.2 Sequence Diagram
+
+Sequence diagram di bawah ini merealisasikan kedua skenario yang telah ditetapkan pada SKPL Subbab 4.4.2. Alur pemrosesan mengikuti aturan MVC, yaitu `HalamanPencarianKataKunci` meneruskan permintaan pencarian kepada `KontrolPencarianKataKunci`, dan *controller* tersebut yang kemudian menelusuri kelompok kasus serta rangkuman kasus untuk melakukan pencocokan kata kunci.
+
+- **Skenario Normal**
+
+Pada Langkah 1, `Pencari Informasi` mengetik kata kunci pada `kolomPencarian`. Pencocokan kata kunci terhadap judul kasus, kalimat gejala, isi rangkuman, dan istilah hukum resmi baru dijalankan ketika pencarian dikirim pada Langkah 2, sehingga pesan pada diagram diberi keterangan bahwa pencocokan dijalankan saat tombol `tombolCari` ditekan.
+
+Pada Langkah 2, `Pencari Informasi` menekan `klikCari(kataKunci)`, lalu `HalamanPencarianKataKunci` meneruskan permintaan tersebut kepada `KontrolPencarianKataKunci` melalui `cariKasus(kataKunci)`. `KontrolPencarianKataKunci` memeriksa setiap kelompok kasus dengan terlebih dahulu mengambil rangkumannya melalui `ambilRangkuman()` dan memastikan status persetujuannya melalui `cekDisetujui()`. Pencocokan kata kunci dijalankan di dalam fragmen `opt` berlabel `[disetujui = true]` karena hanya konten yang telah disetujui yang diperhitungkan (KF02, KF06). Pencocokan pada `KelompokKasus` mengembalikan `cocokJudul`, sedangkan pencocokan pada `RangkumanKasus` mengembalikan `cocokIsi`; kelompok kasus masuk ke hasil apabila salah satu dari keduanya bernilai `true`. Hasil pencarian kemudian dikembalikan ke halaman dan ditampilkan pada `daftarHasil`.
+
+Pada Langkah 3, `Pencari Informasi` mengklik salah satu hasil pencarian melalui `klikHasil(idKelompok)`. Karena proses membuka halaman rangkuman kasus pada use case ini identik dengan skenario normal UC01 pada Langkah 3, bagian tersebut digambarkan dengan fragmen `ref` yang menunjuk pada Sequence Diagram UC01 Skenario Normal, sehingga detail alurnya tidak digambar ulang.
+
+<p align="center">
+<img alt="Sequence Diagram UC02 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC02_Skenario_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.2.1 Sequence Diagram UC02 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil**
+
+Skenario alternatif terjadi ketika kata kunci yang dikirim tidak cocok dengan kelompok kasus mana pun. Bagian pencocokan kata kunci pada skenario normal digambarkan dengan fragmen `ref` karena alurnya identik, sehingga pada diagram ini hanya digambar dua outcome yang muncul, yaitu hasil pencarian yang kosong beserta saran bidang hukum lain, dan direktori lembaga bantuan hukum untuk wilayah yang dipilih.
+
+`KontrolPencarianKataKunci` mengembalikan hasil pencarian kosong, kemudian `HalamanPencarianKataKunci` meminta saran bidang hukum lain kepada `KontrolPencarianKataKunci` melalui `sarankanBidangLain()`. `KontrolPencarianKataKunci` memeriksa status aktif setiap `BidangHukum` dengan memanggil `cekAktif()`, dan hanya bidang hukum yang aktif yang disampaikan sebagai saran. Halaman kemudian menampilkan `pesanTidakDitemukan` beserta `saranBidangLain` dan `sectionLBH` sebagai pesan sopan bahwa kasus belum tersedia.
+
+Selanjutnya, `Pencari Informasi` dapat memilih wilayah pada `dropdownWilayah`. Bagian tersebut digambarkan dengan fragmen `opt` karena hanya dijalankan apabila pengguna memilih wilayah tertentu, dan berakhir pada `KontrolPencarianKataKunci` memanggil `cocokkanWilayah(wilayah)` pada setiap `LembagaBantuanHukum` agar direktori LBH yang sesuai dengan wilayah tersebut ditampilkan.
+
+<p align="center">
+<img alt="Sequence Diagram UC02 - Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil" src="./assets/diagram/SequenceDiagram_UC02_Skenario_Alternatif_1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.2.2 Sequence Diagram UC02 - Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil</i>
+</p>
+
+### 3.2.3 Diagram Kelas
+
+Diagram kelas pada subbab ini memuat tujuh kelas yang telah diidentifikasi pada Tabel 3.2. **Setiap kelas pada diagram wajib menampilkan atribut dan metode/operasi langsung di dalam kotak kelasnya**, sehingga tidak perlu membuat tabel daftar atribut dan metode per kelas pada subbab ini. Daftar lengkap atribut dan metode seluruh kelas disajikan pada Tabel 4.1 (Bab 4).
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC02" src="./assets/diagram/ClassDiagram_UC02.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.2.3 Diagram Kelas Mencari Kasus (UC02)</i>
+</p>
+
+Penyesuaian pada tahap perancangan untuk use case ini tercatat pada Daftar Perubahan revisi C, meliputi penambahan atribut `- teksDisclaimer: Text` serta operasi `+ tampilkanHasil(daftarHasil: KelompokKasus [0..*]): void` dan `+ tampilkanTidakDitemukan(saranBidang: BidangHukum [1..*]): void` pada `HalamanPencarianKataKunci`. Kedua operasi tersebut diperlukan untuk dapat menggambar cabang skenario alternatif pada subbab 3.2.2.
 
 ## 3.3 Use Case Menyiapkan Dokumen dengan *Checklist*
 
