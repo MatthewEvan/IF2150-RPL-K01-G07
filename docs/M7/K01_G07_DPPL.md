@@ -473,6 +473,72 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 
 <br>
 
+## 3.5 Use Case Masuk dan Keluar Panel Pengelolaan
+
+**ID Use Case:** UC05
+**Nama Use Case:** Masuk dan Keluar Panel Pengelolaan
+
+### 3.5.1 Identifikasi Kelas
+
+Tabel 3.5. Identifikasi Kelas Use Case UC05
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanLogin` | C16 - `HalamanLogin` |
+| 2 | `KontrolAutentikasi` | C25 - `KontrolAutentikasi` |
+| 3 | `Akun` | C01 - `Akun` |
+| 4 | `Kurator` | C02 - `Kurator` |
+| 5 | `Administrator` | C03 - `Administrator` |
+
+### 3.5.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC05_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.1 Sequence Diagram UC05 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Kredensial Salah**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Kredensial Salah" src="./assets/diagram/SequenceDiagram_UC05_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.2 Sequence Diagram UC05 - Kredensial Salah</i>
+</p>
+
+- **Skenario Alternatif 2: Akses Tanpa Sesi yang Sah**
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Akses Tanpa Sesi yang Sah" src="./assets/diagram/SequenceDiagram_UC05_Alt2.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.3 Sequence Diagram UC05 - Akses Tanpa Sesi yang Sah</i>
+</p>
+
+- **Skenario Alternatif 3: Mengakhiri Sesi Pengelolaan** (keluar atas permintaan pengguna dan sesi yang berakhir otomatis, digambarkan dengan fragmen `alt`)
+
+<p align="center">
+<img alt="Sequence Diagram UC05 - Mengakhiri Sesi Pengelolaan" src="./assets/diagram/SequenceDiagram_UC05_Alt3.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.5.4 Sequence Diagram UC05 - Mengakhiri Sesi Pengelolaan</i>
+</p>
+
+### 3.5.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC05" src="./assets/diagram/ClassDiagram_UC05.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.5.5 Diagram Kelas Masuk dan Keluar Panel Pengelolaan (UC05)</i>
+</p>
+
+<br>
+
 ## 3.6 Use Case Mengelola Konten Rangkuman Kasus
 
 **ID Use Case:** UC06
@@ -627,6 +693,55 @@ Tabel 3.8. Identifikasi Kelas Use Case UC08
 </p>
 <p align="center">
 <i>Gambar 3.29. Diagram Kelas Meninjau dan Memutuskan Konten (UC08)</i>
+</p>
+
+<br>
+
+## 3.9 Use Case Mengelola Akun Kurator
+
+**ID Use Case:** UC09
+**Nama Use Case:** Mengelola Akun Kurator
+
+### 3.9.1 Identifikasi Kelas
+
+Tabel 3.9. Identifikasi Kelas Use Case UC09
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanPengelolaanAkun` | C20 - `HalamanPengelolaanAkun` |
+| 2 | `KontrolPengelolaanAkun` | C29 - `KontrolPengelolaanAkun` |
+| 3 | `KontrolAutentikasi` | C25 - `KontrolAutentikasi` |
+| 4 | `Akun` | C01 - `Akun` |
+| 5 | `Kurator` | C02 - `Kurator` |
+| 6 | `Administrator` | C03 - `Administrator` |
+
+### 3.9.2 Sequence Diagram
+
+- **Skenario Normal**
+
+<p align="center">
+<img alt="Sequence Diagram UC09 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC09_Normal.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.9.1 Sequence Diagram UC09 - Skenario Normal</i>
+</p>
+
+- **Skenario Alternatif 1: Penonaktifan Akun Kurator**
+
+<p align="center">
+<img alt="Sequence Diagram UC09 - Penonaktifan Akun Kurator" src="./assets/diagram/SequenceDiagram_UC09_Alt1.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.9.2 Sequence Diagram UC09 - Penonaktifan Akun Kurator</i>
+</p>
+
+### 3.9.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC09" src="./assets/diagram/ClassDiagram_UC09.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.9.3 Diagram Kelas Mengelola Akun Kurator (UC09)</i>
 </p>
 
 <br>
