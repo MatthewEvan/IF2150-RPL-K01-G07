@@ -33,7 +33,7 @@ Dipersiapkan oleh: #PenjagaNilai
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
+| *A* | Penambahan dan penyesuaian atribut serta metode kelas pada use case UC06 (C06, C07, C08, C09, C10, C17, C26) agar realisasi skenario normal dan alternatif dapat digambarkan pada sequence diagram. Tidak ada kelas baru. |
 | *B* |  |
 | *C* |  |
 | ... |  |
@@ -253,7 +253,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Sequence Diagram UC03 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC03_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.3. Sequence Diagram UC03 - Skenario Normal</i>
+<i>Gambar 3.3.1 Sequence Diagram UC03 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Pengguna Memuat Ulang atau Membuka Kembali Halaman**
@@ -262,7 +262,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Sequence Diagram UC03 - Pengguna Memuat Ulang atau Membuka Kembali Halaman" src="./assets/diagram/SequenceDiagram_UC03_Alt1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.4. Sequence Diagram UC03 - Pengguna Memuat Ulang atau Membuka Kembali Halaman</i>
+<i>Gambar 3.3.2 Sequence Diagram UC03 - Pengguna Memuat Ulang atau Membuka Kembali Halaman</i>
 </p>
 
 ### 3.3.3 Diagram Kelas
@@ -271,7 +271,7 @@ Tabel 3.3. Identifikasi Kelas Use Case UC03
 <img alt="Diagram Kelas Use Case UC03" src="./assets/diagram/ClassDiagram_UC03.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar 3.5. Diagram Kelas Menyiapkan Dokumen dengan Checklist (UC03)</i>
+<i>Gambar 3.3.3 Diagram Kelas Menyiapkan Dokumen dengan Checklist (UC03)</i>
 </p>
 
 <br>
@@ -300,7 +300,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 <img alt="Sequence Diagram UC04 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC04_Normal.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.6. Sequence Diagram UC04 - Skenario Normal</i>
+<i>Gambar 3.4.1 Sequence Diagram UC04 - Skenario Normal</i>
 </p>
 
 - **Skenario Alternatif 1: Kasus Belum Memiliki Templat**
@@ -309,7 +309,7 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 <img alt="Sequence Diagram UC04 - Kasus Belum Memiliki Templat" src="./assets/diagram/SequenceDiagram_UC04_Alt1.svg" width="85%">
 </p>
 <p align="center">
-<i>Gambar 3.7. Sequence Diagram UC04 - Kasus Belum Memiliki Templat</i>
+<i>Gambar 3.4.2 Sequence Diagram UC04 - Kasus Belum Memiliki Templat</i>
 </p>
 
 ### 3.4.3 Diagram Kelas
@@ -318,7 +318,60 @@ Tabel 3.4. Identifikasi Kelas Use Case UC04
 <img alt="Diagram Kelas Use Case UC04" src="./assets/diagram/ClassDiagram_UC04.svg" width="95%">
 </p>
 <p align="center">
-<i>Gambar 3.8. Diagram Kelas Mengunduh Templat Dokumen (UC04)</i>
+<i>Gambar 3.4.3 Diagram Kelas Mengunduh Templat Dokumen (UC04)</i>
+</p>
+
+<br>
+
+## 3.6 Use Case Mengelola Konten Rangkuman Kasus
+
+**ID Use Case:** UC06
+**Nama Use Case:** Mengelola Konten Rangkuman Kasus
+
+### 3.6.1 Identifikasi Kelas
+
+Tabel 3.6. Identifikasi Kelas Use Case UC06
+
+| No | Nama Kelas Perancangan | Nama Kelas Analisis Terkait |
+|:--- | :--- | :--- |
+| 1 | `HalamanPenyusunanKonten` | C17 - `HalamanPenyusunanKonten` |
+| 2 | `KontrolPenyusunanKonten` | C26 - `KontrolPenyusunanKonten` |
+| 3 | `Akun` | C01 - `Akun` |
+| 4 | `Kurator` | C02 - `Kurator` |
+| 5 | `RangkumanKasus` | C06 - `RangkumanKasus` |
+| 6 | `LangkahPenyelesaian` | C07 - `LangkahPenyelesaian` |
+| 7 | `Checklist` | C08 - `Checklist` |
+| 8 | `TemplatDokumen` | C09 - `TemplatDokumen` |
+| 9 | `Artikel` | C10 - `Artikel` |
+| 10 | `RiwayatStatus` | C12 - `RiwayatStatus` |
+
+### 3.6.2 Sequence Diagram
+
+- **Skenario Normal** (termasuk Skenario Alternatif 1: Berkas Templat Tidak Valid dan Skenario Alternatif 2: Isian Wajib Belum Lengkap, yang digambarkan dengan fragmen `alt`)
+
+<p align="center">
+<img alt="Sequence Diagram UC06 - Skenario Normal, Alternatif 1, dan Alternatif 2" src="./assets/diagram/SeqDiagram_UC06_Normal_Alt1_Alt2.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.6.1 Sequence Diagram UC06 - Skenario Normal, Alternatif 1, dan Alternatif 2</i>
+</p>
+
+- **Skenario Alternatif 3: Kurator Mencoba Menayangkan Sendiri**
+
+<p align="center">
+<img alt="Sequence Diagram UC06 - Kurator Mencoba Menayangkan Sendiri" src="./assets/diagram/SeqDiagram_UC06_Alt3.svg" width="85%">
+</p>
+<p align="center">
+<i>Gambar 3.6.2 Sequence Diagram UC06 - Kurator Mencoba Menayangkan Sendiri</i>
+</p>
+
+### 3.6.3 Diagram Kelas
+
+<p align="center">
+<img alt="Diagram Kelas Use Case UC06" src="./assets/diagram/ClassDiagram_UC06.svg" width="95%">
+</p>
+<p align="center">
+<i>Gambar 3.6.3 Diagram Kelas Mengelola Konten Rangkuman Kasus (UC06)</i>
 </p>
 
 <br>
