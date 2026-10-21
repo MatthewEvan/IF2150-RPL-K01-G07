@@ -1,0 +1,69 @@
+@startuml
+title Diagram Kelas Use Case UC09 - Mengelola Akun Kurator
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+class HalamanPengelolaanAkun <<boundary>> {
+  - tabelDaftarKurator: Table
+  - formulirAkun: Form
+  - inputEmail: TextField
+  - inputKataSandi: PasswordField
+  - tombolDaftarkan: Button
+  - tombolSimpan: Button
+  - tombolNonaktifkan: Button
+  - tombolKeluar: Button
+  --
+  + tampilkanHalaman(): void
+  + klikDaftarkan(email: string, kataSandi: string): void
+  + klikSimpanPerubahan(idAkun: int, email: string): void
+  + klikNonaktifkan(idAkun: int): void
+}
+
+class KontrolPengelolaanAkun <<control>> {
+  + ambilDaftarKurator(idAdministrator: int): Kurator [0..*]
+  + daftarkanKurator(email: string, kataSandi: string, idAdministrator: int): Kurator
+  + perbaruiKurator(idAkun: int, emailBaru: string): void
+  + nonaktifkanKurator(idAkun: int): void
+  - cekEmailUnik(email: string): bool
+}
+
+class KontrolAutentikasi <<control>> {
+  + putusSesi(idAkun: int): void
+}
+
+class Akun <<entity>> {
+  - idAkun: int
+  - email: string
+  - kataSandiHash: string
+  - peran: string
+  --
+  - hashKataSandi(kataSandi: string): string
+  + perbaruiEmail(emailBaru: string): void
+}
+
+class Kurator <<entity>> {
+  - jumlahKonten: int
+  - statusAktif: bool
+  - idAdministrator: int
+  --
+  + cekAktif(): bool
+  + nonaktifkan(): void
+}
+
+class Administrator <<entity>> {
+  + ambilKuratorTerdaftar(): Kurator [0..*]
+}
+
+HalamanPengelolaanAkun --> KontrolPengelolaanAkun
+
+KontrolPengelolaanAkun ..> KontrolAutentikasi
+KontrolPengelolaanAkun ..> Akun
+KontrolPengelolaanAkun ..> Kurator
+KontrolPengelolaanAkun ..> Administrator
+
+Kurator "0..*" <-- "1" Administrator : mengelola
+
+Kurator --|> Akun
+Administrator --|> Akun
+@enduml

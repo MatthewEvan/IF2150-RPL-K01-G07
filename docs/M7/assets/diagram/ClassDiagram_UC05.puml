@@ -1,0 +1,53 @@
+@startuml
+title Diagram Kelas Use Case UC05 - Masuk dan Keluar Panel Pengelolaan
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+class HalamanLogin <<boundary>> {
+  - inputEmail: TextField
+  - inputKataSandi: PasswordField
+  - tombolMasuk: Button
+  - pesanGalat: Text
+  --
+  + tampilkanHalaman(): void
+  + klikMasuk(email: string, kataSandi: string): void
+  + tampilkanGalat(): void
+}
+
+class KontrolAutentikasi <<control>> {
+  + prosesLogin(email: string, kataSandi: string): bool
+  + arahkanSesuaiPeran(peran: string): void
+  + cekSesi(): bool
+  + logout(): void
+}
+
+class Akun <<entity>> {
+  - idAkun: int
+  - email: string
+  - kataSandiHash: string
+  - peran: string
+  --
+  + {static} cariAkun(email: string): Akun
+  + cocokkanKataSandi(kataSandi: string): bool
+  - hashKataSandi(kataSandi: string): string
+  + ambilPeran(): string
+}
+
+class Kurator <<entity>> {
+  - statusAktif: bool
+  --
+  + cekAktif(): bool
+}
+
+class Administrator <<entity>> {
+}
+
+HalamanLogin --> KontrolAutentikasi
+
+KontrolAutentikasi ..> Akun
+KontrolAutentikasi ..> Kurator
+
+Kurator --|> Akun
+Administrator --|> Akun
+@enduml
