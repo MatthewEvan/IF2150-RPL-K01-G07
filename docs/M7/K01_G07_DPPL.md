@@ -351,14 +351,6 @@ Sequence diagram di bawah ini merealisasikan kedua skenario yang telah ditetapka
 
 - **Skenario Normal**
 
-Skenario normal dibagi menjadi enam langkah sebagaimana didefinisikan pada SKPL Subbab 4.4.1. Pada Langkah 1, `HalamanJelajahKasus` meminta daftar bidang hukum kepada `KontrolJelajahKasus`, kemudian `KontrolJelajahKasus` memanggil `cekAktif()` pada setiap objek `BidangHukum` agar hanya bidang hukum berstatus aktif yang diteruskan ke halaman, sekaligus menampilkan jumlah kelompok kasus pada masing-masing bidang (KF01, KF02).
-
-Pada Langkah 2, `Pencari Informasi` mengklik salah satu kartu bidang hukum melalui `klikBidangHukum(idBidang)`. `KontrolJelajahKasus` kemudian mengambil kelompok kasus milik bidang tersebut dan, untuk setiap kelompok kasus, mengambil rangkumannya serta memeriksa status persetujuannya melalui `cekDisetujui()`. Hanya kelompok kasus yang rangkumannya berstatus *Disetujui* yang ditampilkan, lengkap dengan judul dalam bahasa sehari-hari dan istilah hukum resmi sebagai keterangan pelengkap.
-
-Pada Langkah 3, `Pencari Informasi` mengklik kelompok kasus yang dipilih. `KontrolJelajahKasus` memeriksa apakah kelompok kasus tersebut ditandai sebagai situasi darurat melalui `cekDarurat(idKelompok)`. Karena pada skenario normal kasus yang dipilih tidak ditandai darurat, `darurat` bernilai `false` sehingga peringatan prioritas tidak ditampilkan dan alur langsung dilanjutkan ke halaman rangkuman.
-
-Langkah 4 sampai 6 merupakan penyajian halaman rangkuman yang datanya telah dimuat pada Langkah 3. `KontrolJelajahKasus` menghimpun seluruh bagian rangkuman melalui `RangkumanKasus`: daftar langkah penyelesaian beserta penanda tenggat melalui `punyaTenggat()`, *checklist* dokumen beserta jumlah dokumen melalui `hitungJumlahDokumen()`, daftar templat dokumen, serta daftar artikel pendukung beserta tautan ke sumber hukum resmi. Halaman rangkuman kemudian ditampilkan secara berurutan memuat bagian hak dan pertimbangan, bagian langkah penyelesaian bernomor, dan bagian akhir halaman yang memuat artikel pendukung, nama Kurator, tanggal peninjauan, direktori Lembaga Bantuan Hukum, serta *disclaimer*. Pencarian dan penambahan daftar Lembaga Bantuan Hukum terdekat pada bagian akhir halaman digambarkan dengan fragmen `opt`, karena hanya dijalankan apabila `Pencari Informasi` memilih wilayah tertentu.
-
 <p align="center">
 <img alt="Sequence Diagram UC01 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC01_Skenario_Normal.svg" width="85%">
 </p>
@@ -367,10 +359,6 @@ Langkah 4 sampai 6 merupakan penyajian halaman rangkuman yang datanya telah dimu
 </p>
 
 - **Skenario Alternatif 1: Kasus Ditandai Situasi Darurat**
-
-Skenario alternatif ini adalah kelanjutan dari Langkah 1 dan Langkah 2 pada skenario normal, sehingga alur awal tidak digambar ulang dan digambarkan sebagai diagram tersendiri agar skenario normal tetap mudah dibaca. Setelah `Pencari Informasi` mengklik kelompok kasus yang ditandai sebagai situasi darurat, `KontrolJelajahKasus` memanggil `cekDarurat()` pada `KelompokKasus` dan memperoleh nilai `darurat = true`. Berbeda dengan skenario normal, pada kasus yang ditandai darurat sistem menampilkan peringatan prioritas agar pengguna segera melapor kepada instansi yang berwenang. Peringatan tersebut ditampilkan melalui `tampilkanPeringatanDarurat()` pada `HalamanJelajahKasus` dan muncul pada `popupPeringatanDarurat`.
-
-Ketika `Pencari Informasi` menutup peringatan tersebut melalui `tutupPeringatan()`, `HalamanJelajahKasus` membuka `HalamanRangkumanKasus` dengan memanggil `tampilkanHalaman(idKelompok)`. Setelah itu `KontrolJelajahKasus` menghimpun data rangkuman, langkah penyelesaian, *checklist*, templat, dan artikel pendukung secara identik dengan skenario normal, sehingga halaman rangkuman kasus ditampilkan seperti pada SKPL Subbab 4.4.1.
 
 <p align="center">
 <img alt="Sequence Diagram UC01 - Skenario Alternatif 1: Kasus Ditandai Situasi Darurat" src="./assets/diagram/SequenceDiagram_UC01_Skenario_Alternatif_1.svg" width="85%">
@@ -397,8 +385,6 @@ Penyesuaian pada tahap perancangan untuk use case ini tercatat pada Daftar Perub
 **ID Use Case:** UC02  
 **Nama Use Case:** Mencari Kasus
 
-Use case ini menyediakan cara alternatif bagi **Pencari Informasi** untuk mencapai kelompok kasus yang sama seperti pada UC01, yaitu dengan melakukan pencarian berdasarkan kata kunci. Alur ini menjadi penting bagi pengguna yang belum mengetahui bidang hukum apa yang relevan dengan kondisi yang sedang dialami, sehingga pengguna dapat mengetik gejala atau istilah hukum secara bebas. Hasil pencarian hanya menampilkan kelompok kasus yang rangkumannya telah berstatus *Disetujui*, dan pada skenario alternatif ketika tidak ditemukan hasil, sistem menampilkan saran bidang hukum lain beserta tautan lembaga bantuan hukum agar pengguna tidak terjebak pada halaman kosong.
-
 ### 3.2.1 Identifikasi Kelas
 
 Tabel 3.2. Identifikasi Kelas Use Case UC02
@@ -417,15 +403,7 @@ Enam dari tujuh kelas di atas sudah teridentifikasi pada SKPL Subbab 5.2.2. Kela
 
 ### 3.2.2 Sequence Diagram
 
-Sequence diagram di bawah ini merealisasikan kedua skenario yang telah ditetapkan pada SKPL Subbab 4.4.2. Alur pemrosesan mengikuti aturan MVC, yaitu `HalamanPencarianKataKunci` meneruskan permintaan pencarian kepada `KontrolPencarianKataKunci`, dan *controller* tersebut yang kemudian menelusuri kelompok kasus serta rangkuman kasus untuk melakukan pencocokan kata kunci.
-
 - **Skenario Normal**
-
-Pada Langkah 1, `Pencari Informasi` mengetik kata kunci pada `kolomPencarian`. Pencocokan kata kunci terhadap judul kasus, kalimat gejala, isi rangkuman, dan istilah hukum resmi baru dijalankan ketika pencarian dikirim pada Langkah 2, sehingga pesan pada diagram diberi keterangan bahwa pencocokan dijalankan saat tombol `tombolCari` ditekan.
-
-Pada Langkah 2, `Pencari Informasi` menekan `klikCari(kataKunci)`, lalu `HalamanPencarianKataKunci` meneruskan permintaan tersebut kepada `KontrolPencarianKataKunci` melalui `cariKasus(kataKunci)`. `KontrolPencarianKataKunci` memeriksa setiap kelompok kasus dengan terlebih dahulu mengambil rangkumannya melalui `ambilRangkuman()` dan memastikan status persetujuannya melalui `cekDisetujui()`. Pencocokan kata kunci dijalankan di dalam fragmen `opt` berlabel `[disetujui = true]` karena hanya konten yang telah disetujui yang diperhitungkan (KF02, KF06). Pencocokan pada `KelompokKasus` mengembalikan `cocokJudul`, sedangkan pencocokan pada `RangkumanKasus` mengembalikan `cocokIsi`; kelompok kasus masuk ke hasil apabila salah satu dari keduanya bernilai `true`. Hasil pencarian kemudian dikembalikan ke halaman dan ditampilkan pada `daftarHasil`.
-
-Pada Langkah 3, `Pencari Informasi` mengklik salah satu hasil pencarian melalui `klikHasil(idKelompok)`. Karena proses membuka halaman rangkuman kasus pada use case ini identik dengan skenario normal UC01 pada Langkah 3, bagian tersebut digambarkan dengan fragmen `ref` yang menunjuk pada Sequence Diagram UC01 Skenario Normal, sehingga detail alurnya tidak digambar ulang.
 
 <p align="center">
 <img alt="Sequence Diagram UC02 - Skenario Normal" src="./assets/diagram/SequenceDiagram_UC02_Skenario_Normal.svg" width="85%">
@@ -435,12 +413,6 @@ Pada Langkah 3, `Pencari Informasi` mengklik salah satu hasil pencarian melalui 
 </p>
 
 - **Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil**
-
-Skenario alternatif terjadi ketika kata kunci yang dikirim tidak cocok dengan kelompok kasus mana pun. Bagian pencocokan kata kunci pada skenario normal digambarkan dengan fragmen `ref` karena alurnya identik, sehingga pada diagram ini hanya digambar dua outcome yang muncul, yaitu hasil pencarian yang kosong beserta saran bidang hukum lain, dan direktori lembaga bantuan hukum untuk wilayah yang dipilih.
-
-`KontrolPencarianKataKunci` mengembalikan hasil pencarian kosong, kemudian `HalamanPencarianKataKunci` meminta saran bidang hukum lain kepada `KontrolPencarianKataKunci` melalui `sarankanBidangLain()`. `KontrolPencarianKataKunci` memeriksa status aktif setiap `BidangHukum` dengan memanggil `cekAktif()`, dan hanya bidang hukum yang aktif yang disampaikan sebagai saran. Halaman kemudian menampilkan `pesanTidakDitemukan` beserta `saranBidangLain` dan `sectionLBH` sebagai pesan sopan bahwa kasus belum tersedia.
-
-Selanjutnya, `Pencari Informasi` dapat memilih wilayah pada `dropdownWilayah`. Bagian tersebut digambarkan dengan fragmen `opt` karena hanya dijalankan apabila pengguna memilih wilayah tertentu, dan berakhir pada `KontrolPencarianKataKunci` memanggil `cocokkanWilayah(wilayah)` pada setiap `LembagaBantuanHukum` agar direktori LBH yang sesuai dengan wilayah tersebut ditampilkan.
 
 <p align="center">
 <img alt="Sequence Diagram UC02 - Skenario Alternatif 1: Pencarian Tidak Menemukan Hasil" src="./assets/diagram/SequenceDiagram_UC02_Skenario_Alternatif_1.svg" width="85%">
