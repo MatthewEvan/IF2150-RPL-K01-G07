@@ -2645,12 +2645,42 @@ Tabel 6.Y. Rancangan Antarmuka Keseluruhan
 
 # BAB 7: Matriks Kerunutan
 
-Petakan kelas perancangan dengan use case yang terkait. Gunakan **BAB 6 Traceability pada dokumen SKPL** sebagai acuan keterkaitan kelas analisis dan use case, lalu sesuaikan dengan realisasi use case dan kelas perancangan pada BAB 3–BAB 5 DPPL.
+Matriks kerunutan pada Tabel 7.1 memetakan setiap kelas perancangan (`C01` hingga `C29`) terhadap *use case* terkait (`UC01` hingga `UC09`) pada perangkat lunak **PahamHukum**. Pemetaan ini disusun dengan mengacu pada **BAB 6 Traceability pada dokumen SKPL** serta disesuaikan dengan hasil realisasi *use case* dan perancangan rinci kelas pada BAB 3 hingga BAB 5 dokumen DPPL ini. Terdapat dua penyesuaian keterkaitan kelas terhadap *use case* dibandingkan SKPL:
+1. Kelas `C14 - HalamanRangkumanKasus`, yang pada SKPL dipetakan ke `UC01`, `UC03`, dan `UC04`, kini juga dipetakan ke `UC02 - Mencari Kasus` karena alur pemilihan hasil pencarian pada `UC02` (Subbab 3.2 dan Subbab 5.15) mengarahkan Pencari Informasi untuk membuka halaman rangkuman kasus terkait.
+2. Kelas `C25 - KontrolAutentikasi`, yang pada SKPL dipetakan ke `UC05`, kini juga dipetakan ke `UC09 - Mengelola Akun Kurator` karena skenario penonaktifan akun Kurator pada `UC09` (Subbab 3.9, Subbab 5.25, dan Subbab 5.29 melalui operasi `putusSesi(idAkun)` pada `Algo-039` dan `Algo-053`) menuntut pemutusan sesi aktif Kurator secara seketika melalui `KontrolAutentikasi`.
+
+Seluruh 29 kelas perancangan terpetakan ke sekurang-kurangnya satu *use case* dan kesembilan *use case* pada SKPL telah terwakili seluruhnya, sehingga ketertelusuran antara kebutuhan fungsional, realisasi *use case*, dan perancangan rinci kelas terjaga secara utuh.
 
 Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 
 | Kelas | Use Case Terkait |
 | :--- | :--- |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case; tuliskan seluruh use case terkait]* |
-| *[ID kelas - Nama kelas]* | *[ID UC - Nama use case]* |
-| *...* | *...* |
+| C01 - `Akun` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC06 - Mengelola Konten Rangkuman Kasus<br>UC08 - Meninjau dan Memutuskan Konten<br>UC09 - Mengelola Akun Kurator |
+| C02 - `Kurator` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC06 - Mengelola Konten Rangkuman Kasus<br>UC07 - Memantau Status dan Revisi Konten<br>UC09 - Mengelola Akun Kurator |
+| C03 - `Administrator` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC08 - Meninjau dan Memutuskan Konten<br>UC09 - Mengelola Akun Kurator |
+| C04 - `BidangHukum` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus |
+| C05 - `KelompokKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus |
+| C06 - `RangkumanKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus<br>UC03 - Menyiapkan Dokumen dengan *Checklist*<br>UC04 - Mengunduh Templat Dokumen<br>UC06 - Mengelola Konten Rangkuman Kasus<br>UC07 - Memantau Status dan Revisi Konten<br>UC08 - Meninjau dan Memutuskan Konten |
+| C07 - `LangkahPenyelesaian` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C08 - `Checklist` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC03 - Menyiapkan Dokumen dengan *Checklist*<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C09 - `TemplatDokumen` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC04 - Mengunduh Templat Dokumen<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C10 - `Artikel` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC06 - Mengelola Konten Rangkuman Kasus |
+| C11 - `LembagaBantuanHukum` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus |
+| C12 - `RiwayatStatus` | UC06 - Mengelola Konten Rangkuman Kasus<br>UC08 - Meninjau dan Memutuskan Konten |
+| C13 - `HalamanJelajahKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus |
+| C14 - `HalamanRangkumanKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus<br>UC02 - Mencari Kasus<br>UC03 - Menyiapkan Dokumen dengan *Checklist*<br>UC04 - Mengunduh Templat Dokumen |
+| C15 - `HalamanPencarianKataKunci` | UC02 - Mencari Kasus |
+| C16 - `HalamanLogin` | UC05 - Masuk dan Keluar Panel Pengelolaan |
+| C17 - `HalamanPenyusunanKonten` | UC06 - Mengelola Konten Rangkuman Kasus |
+| C18 - `HalamanDaftarKontenKurator` | UC07 - Memantau Status dan Revisi Konten |
+| C19 - `HalamanModerasiKonten` | UC08 - Meninjau dan Memutuskan Konten |
+| C20 - `HalamanPengelolaanAkun` | UC09 - Mengelola Akun Kurator |
+| C21 - `KontrolJelajahKasus` | UC01 - Menelusuri dan Membaca Rangkuman Kasus |
+| C22 - `KontrolPencarianKataKunci` | UC02 - Mencari Kasus |
+| C23 - `KontrolChecklist` | UC03 - Menyiapkan Dokumen dengan *Checklist* |
+| C24 - `KontrolUnduhTemplat` | UC04 - Mengunduh Templat Dokumen |
+| C25 - `KontrolAutentikasi` | UC05 - Masuk dan Keluar Panel Pengelolaan<br>UC09 - Mengelola Akun Kurator |
+| C26 - `KontrolPenyusunanKonten` | UC06 - Mengelola Konten Rangkuman Kasus |
+| C27 - `KontrolPelacakanKonten` | UC07 - Memantau Status dan Revisi Konten |
+| C28 - `KontrolModerasiKonten` | UC08 - Meninjau dan Memutuskan Konten |
+| C29 - `KontrolPengelolaanAkun` | UC09 - Mengelola Akun Kurator |
