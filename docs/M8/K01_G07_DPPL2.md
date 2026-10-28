@@ -8,7 +8,9 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 <br>
 
 ## PahamHukum
-### *[Logo Perangkat Lunak]*
+<p align="left">
+<img alt="Logo PahamHukum" src="./assets/PahamHukum_Logo.png" width="50%">
+</p>
 
 ### Untuk: Mikhael Andrian Yonatan
 
