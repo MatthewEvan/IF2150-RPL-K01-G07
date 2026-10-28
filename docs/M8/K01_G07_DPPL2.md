@@ -2901,3 +2901,6 @@ Tabel 7.1. Matriks Kerunutan Kelas terhadap Use Case
 | C27 - `KontrolPelacakanKonten` | UC07 - Memantau Status dan Revisi Konten |
 | C28 - `KontrolModerasiKonten` | UC08 - Meninjau dan Memutuskan Konten |
 | C29 - `KontrolPengelolaanAkun` | UC09 - Mengelola Akun Kurator |
+
+# Lampiran
+1. Link Figma Desain UI : https://www.figma.com/design/okeVOHowokiVjQfzjxbhat/PahamHukum?node-id=19-134&t=XQe7M3KD6xxoQM59-1 

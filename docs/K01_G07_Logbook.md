@@ -29,6 +29,7 @@
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -161,5 +162,22 @@
 | 21-10-2026 | Raditya Wibian Sastaka | Pengerjaan Bab 4: Diagram Kelas Keseluruhan | 3 | Done | Menunggu finalisasi seluruh sequence diagram di Bab 3 |
 | 21-10-2026 | Rivan Cahyadi | Pengerjaan Bab 5: Matriks Kerunutan | 2.5 | Done | Menunggu finalisasi kelas perancangan di Bab 4 |
 | 21-10-2026 | Rivan Cahyadi | Mengisi dan melengkapi Logbook serta AI-Usage untuk Milestone 7 | 1.5 | Done | - |
+
+### Milestone 8
+**Periode:** 25 Oktober 2026 - 28 Oktober 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* | 
+| :--- | :--- | :--- | :--- | :--- | :--- | 
+| 25-10-2026 | Matthew Evan Kurniawan | Merevisi BAB 1 mengenai pengenalan dokumen DPPL2 karena ada beberapa atribut tambahan | 1 | Done | - |
+| 25-10-2026 | Matthew Evan Kurniawan | Memindahkan data untuk BAB 2 hingga BAB 4 dari DPPL M7 dan mengecek konsistensi ketika ada yang kurang | 1.5 | Done | - |
+| 26-10-2026 | Semua Anggota | Berdiskusi mengenai tampilan yang akan digunakan untuk PahamHukum kedepannya dan menentukan algoritma apa saja yang harus dikerjakan | 2 | Done | - |
+| 26-10-2026 | Raditya Wibian Sastaka | Menyusun Bab 5 untuk algoritma dalam pseudocode dan query SQL | 6 | Done | - |
+| 26-10-2026 | Rivan, Wesley, Michael | Menyelesaikan Bab 5 yang masih belum diisi algoritma dan query SQL nya | 2.5 | Done | - |
+| 27-10-2026 | Matthew, Rivan, Michael | Mengikuti Asistensi RPL | 0.5 | Done | - |
+| 27-10-2026 | Rivan Cahyadi | Mengerjakan BAB 7 Matriks Kerunutan | 1 | Done | - |
+| 27-10-2026 | Matthew Evan Kurniawan | Mengerjakan UI untuk BAB 6 (4 tampilan) | 3 | Done | - |
+| 28-10-2026 | Matthew Evan Kurniawan | Mengerjakan UI untuk interface sisanya | 3.5 | Done | - |
+| 28-10-2026 | Wesley, Michael, Rivan | Mengisi Tabel Komponen untuk Kelengkapan BAB 6 | 2 | Done | - |
+| 28-10-2026 | Matthew Evan Kurniawan | Mengisi Form Asistensi, Logbook dan AI Usage | 1 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
