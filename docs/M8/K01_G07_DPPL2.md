@@ -2619,7 +2619,17 @@ Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+| I-01-01 | *Hyperlink* / Logo | `"PahamHukum"`, `"Jelajahi situasi"` | Mengarahkan pengguna ke layar Beranda (`I-01`) dan memuat daftar bidang hukum aktif melalui `tampilkanHalaman()` (`Algo-028`, `Algo-009`). |
+| I-01-02 | *Hyperlink* | `"Cari kasus"` | Mengarahkan pengguna dari *header* atau *footer* menuju layar Pencarian Kata Kunci (`I-03`). |
+| I-01-03 | *Button* / *Hyperlink* | `"Masuk"` (*header*), `"Masuk pengelola"` (*footer*) | Mengarahkan Kurator atau Administrator menuju layar Login Pengelola (`I-04`) melalui `HalamanLogin.tampilkanHalaman()`. |
+| I-01-04 | *Icon Button* | Ikon *Hamburger Menu* (`≡`) | Membuka menu navigasi (`"Jelajahi situasi"`, `"Cari kasus"`, dan `"Masuk"`) pada tampilan perangkat ponsel. |
+| I-01-05 | *Input Field* (`TextField`) | *Placeholder*: `"Contoh: saya diberhentikan tanpa surat"` | Menerima masukan kata kunci atau kalimat situasi hukum sehari-hari dari Pencari Informasi untuk pencarian cepat. |
+| I-01-06 | *Icon Button* | Ikon panah kanan (`→`) pada kolom pencarian | Mengirimkan kata kunci pada `I-01-05` menuju layar Pencarian Kata Kunci (`I-03`) dan memicu operasi `klikCari(kataKunci)` (`Algo-032`, `Algo-012`, `Algo-013`). |
+| I-01-07 | *Card* (`kartuBidangHukum`) | `"Pekerjaan — 4 situasi"`, `"Konsumen — 3 situasi"` | Saat diklik, menjalankan `klikBidangHukum(idBidang)` yang memanggil `ambilDaftarKelompok(idBidang)` (`Algo-029`, `Algo-010`) untuk menampilkan daftar kelompok kasus berstatus `Disetujui` pada bidang hukum terpilih di layar `I-01` (KF03). |
+| I-01-08 | *Card* / *Button* (`kartuKelompokKasus` reguler) | `"Saya diberhentikan tanpa surat — Lihat langkahnya →"`, `"Gaji saya dipotong tanpa alasan — Lihat langkahnya →"`, `"Kontrak kerja saya tidak diperpanjang — Lihat langkahnya →"` | Saat diklik, menjalankan `klikKelompokKasus(idKelompok)` yang memeriksa status darurat (`cekDarurat(idKelompok)` = `false`), mengambil data rangkuman melalui `ambilRangkuman(idKelompok)` (`Algo-030`, `Algo-011`), dan mengarahkan pengguna ke layar Rangkuman Kasus (`I-02`) (KF05). |
+| I-01-09 | *Card* / *Button* (`kartuKelompokKasus` darurat) | `"PEKERJAAN · DARURAT — Saya diancam atau dipukul di tempat kerja — Lihat bantuan →"` | Saat diklik, menjalankan `klikKelompokKasus(idKelompok)`. Karena `cekDarurat(idKelompok)` bernilai `true`, sistem menjalankan `tampilkanPeringatanDarurat()` untuk menampilkan *modal* peringatan darurat (`popupPeringatanDarurat`, Gambar 6.2) pada layar `I-01` sebelum membuka rangkuman (KF21). |
+| I-01-10 | *Button* (pada *Modal* Peringatan Darurat) | `"Telepon 112"`, `"Telepon polisi 110"` | Membuka tautan panggilan telepon darurat (`tel:112` atau `tel:110`) pada perangkat pengguna untuk segera menghubungi layanan darurat atau kepolisian (KF21). |
+| I-01-11 | *Button* (`tombolTutupPeringatan` pada *Modal* Peringatan Darurat) | `"Tutup dan lanjut membaca"` | Menjalankan `tutupPeringatan()` untuk menutup *modal* peringatan darurat (`popupPeringatanDarurat`), memanggil `ambilRangkuman(idKelompok)` (`Algo-030`, `Algo-011`), dan mengarahkan pengguna ke layar Rangkuman Kasus (`I-02`). |
 
 
 ## 6.2 Rancangan Antarmuka I-02
@@ -2639,7 +2649,18 @@ Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+| I-02-01 | *Hyperlink* / Logo | `"PahamHukum"`, `"Jelajahi situasi"` | Mengarahkan pengguna kembali ke layar Beranda (`I-01`) dan memuat daftar bidang hukum aktif (`Algo-028`). |
+| I-02-02 | *Hyperlink* | `"Cari kasus"` | Mengarahkan pengguna dari *header* atau *footer* menuju layar Pencarian Kata Kunci (`I-03`). |
+| I-02-03 | *Button* / *Hyperlink* | `"Masuk"` (*header*), `"Masuk pengelola"` (*footer*) | Mengarahkan Kurator atau Administrator menuju layar Login Pengelola (`I-04`). |
+| I-02-04 | *Icon Button* | Ikon *Hamburger Menu* (`≡`) | Membuka menu navigasi (`"Jelajahi situasi"`, `"Cari kasus"`, dan `"Masuk"`) pada tampilan perangkat ponsel. |
+| I-02-05 | *Icon Button* | Ikon panah kembali (`←`) | Mengembalikan pengguna ke layar sebelumnya, yaitu layar Beranda (`I-01`) atau layar Pencarian Kata Kunci (`I-03`). |
+| I-02-06 | *Icon Button* | Ikon bagikan (*Share*) | Menyalin atau membagikan tautan URL halaman rangkuman kasus saat ini (`I-02`) melalui fitur peramban perangkat. |
+| I-02-07 | *Button* (*Anchor Chip* / *Tab*) | `"1 Inti masalah"`, `"2 Hak kamu"`, `"3 Langkah"`, `"4 Pertimbangan"`, `"5 Dokumen"`, `"6 Templat"`, `"7 Bacaan"` | Menggulirkan (*scroll*) tampilan layar `I-02` secara langsung menuju bagian (*section*) rangkuman kasus yang dipilih (`sectionIntiMasalah` hingga `sectionArtikel`). |
+| I-02-08 | *Checkbox* (`checkboxDokumen`) | `"Kontrak kerja (PKWT atau PKWTT)"`, `"Slip gaji 3 bulan terakhir"`, `"Surat PHK atau bukti pemberitahuan"`, `"Bukti percakapan dengan atasan · jika ada"` | Saat dicentang atau dilepas centangnya, menjalankan `centangDokumen(indeks)` untuk memperbarui progres pada `labelKelengkapan` melalui `hitungKelengkapan(jumlahDicentang, jumlahTotal)` (`Algo-034`) serta menyimpan status centang ke `localStorage` peramban melalui `simpanStatusCentang()` (`Algo-026`, dipulihkan saat pemuatan halaman oleh `Algo-027`) tanpa mengirim data ke server (KF13, KF14, KNF06). |
+| I-02-09 | *Button* (`tombolUnduh`) | `"Unduh"` (pada kartu `"Surat penolakan PHK"` dan `"Surat ajakan perundingan"`) | Menjalankan `klikTombolUnduh(idTemplat)` yang memanggil `unduhTemplat(idRangkuman, idTemplat)` (`Algo-035`) dan `unduh()` (`Algo-023`) untuk mengunduh berkas templat versi terbaru ke perangkat pengguna tanpa perlu mendaftar akun (KF15, KF16). |
+| I-02-10 | *Hyperlink* | `"UU No. 13 Tahun 2003 tentang Ketenagakerjaan"`, `"PP No. 35 Tahun 2021 tentang PKWT, Alih Daya, Waktu Kerja, dan PHK"`, `"Apa itu perundingan bipartit?"` | Membuka tautan sumber hukum resmi eksternal (seperti JDIH BPK) atau artikel bacaan pendukung yang diperoleh melalui `ambilTautan()` (KF18). |
+| I-02-11 | *Dropdown* / *Select* (`dropdownWilayah`) | Pilihan wilayah (contoh terpilih: `"DKI Jakarta"`) | Saat nilai wilayah diubah, menjalankan `pilihWilayah(wilayah)` yang memanggil `ambilDaftarLBH(wilayah)` (`Algo-031`) untuk menyaring dan menampilkan daftar Lembaga Bantuan Hukum sesuai wilayah layanan yang dipilih pada layar `I-02` (KF20). |
+| I-02-12 | *Card* / *Hyperlink* | `"LBH Jakarta"`, `"Dinas Tenaga Kerja setempat"` | Mengarahkan pengguna ke tautan informasi atau kontak Lembaga Bantuan Hukum (`tautan` pada `LembagaBantuanHukum`) yang melayani wilayah terpilih (KF20). |
 
 
 ## 6.3 Rancangan Antarmuka I-03
