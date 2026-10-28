@@ -14,7 +14,7 @@ DESKRIPSI PERANCANGAN PERANGKAT LUNAK (DPPL)
 
 ### Untuk: Mikhael Andrian Yonatan
 
-Dipersiapkan oleh:
+Dipersiapkan oleh: *#PenjagaNilai*
 | Informasi | Keterangan |
 | --- | --- |
 | Kelas | K01 |
@@ -33,18 +33,11 @@ Dipersiapkan oleh:
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
-| *B* |  |
-| *C* |  |
+| A | Penetapan bahasa pemrograman sisi server pada subbab 2.1 menjadi Node.js (TypeScript/JavaScript), sebelumnya masih berupa pilihan Python atau Node.js. |
+| B | Pembaruan BAB 1: definisi DPPL diperbarui serta ditambahkan istilah, aturan penomoran (Algo-XXX, Q-XXX, I-XX), dan referensi DPPL sebelumnya, menyesuaikan penambahan BAB 5 dan BAB 6. |
 | ... |  |
 
 ---
-
-<br>
-
-> **Petunjuk pengerjaan:** *[Silahkan hapus bagian ini setelah selesai mengerjakan]*
->
-> Dokumen ini melanjutkan **Deskripsi Perancangan Perangkat Lunak**. Gunakan nama, ID, kebutuhan, dan use case yang konsisten dengan kedua dokumen tersebut. Contoh pola ID baru di bawah dapat disesuaikan dengan kesepakatan kelompok, ID yang sudah ada tetap dipertahankan.
 
 <br>
 
@@ -54,7 +47,7 @@ Dipersiapkan oleh:
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Deskripsi Perancangan Perangkat Lunak (DPPL) disusun untuk menjelaskan rancangan perangkat lunak PahamHukum yang akan diimplementasikan. Dokumen ini merupakan kelanjutan dari Spesifikasi Kebutuhan Perangkat Lunak (SKPL) dan Arsitektur Perangkat Lunak (APL), dan DPPL pada tahap sebelumnya, dengan mengolah kebutuhan dan arsitektur menjadi rancangan yang lebih rinci. Perincian tersebut mencakup realisasi tiap use case ke dalam sequence diagram dan diagram kelas, perincian tiap kelas beserta operasi, atribut, algoritma, dan query pentingnya, serta rancangan antarmuka tiap layar. Dokumen ini penting. Dokumen ini penting bagi pengembang sebagai referensi alur saat menuliskan kode, bagi desainer sebagai landasan fitur dan tampilan yang dibutuhkan, dan bagi penguji sebagai dasar penyusunan skenario pengujian (*testing*).
+Deskripsi Perancangan Perangkat Lunak (DPPL) disusun untuk menjelaskan rancangan perangkat lunak PahamHukum yang akan diimplementasikan. Dokumen ini merupakan kelanjutan dari Spesifikasi Kebutuhan Perangkat Lunak (SKPL) dan Arsitektur Perangkat Lunak (APL), dan DPPL pada tahap sebelumnya, dengan mengolah kebutuhan dan arsitektur menjadi rancangan yang lebih rinci. Perincian tersebut mencakup realisasi tiap use case ke dalam sequence diagram dan diagram kelas, perincian tiap kelas beserta operasi, atribut, algoritma, dan query pentingnya, serta rancangan antarmuka tiap layar. Dokumen ini penting bagi pengembang sebagai referensi alur saat menuliskan kode, bagi desainer sebagai landasan fitur dan tampilan yang dibutuhkan, dan bagi penguji sebagai dasar penyusunan skenario pengujian (*testing*).
 
 ## 1.2 Lingkup Masalah
 PahamHukum adalah platform literasi hukum berbasis web yang menjembatani masyarakat awam dengan informasi hukum. Informasi pada sistem disusun berdasarkan situasi sehari-hari dalam bentuk rangkuman kasus. Rangkuman kasus memuat inti masalah, hak, langkah penyelesaian, poin pertimbangan, checklist dokumen, templat surat yang dapat diunduh, dan artikel pendukung. Pencari Informasi dapat menggunakan seluruh fitur publik tanpa akun, sedangkan Kurator menyusun konten dan Administrator meninjau konten sebelum ditayangkan sekaligus mengelola akun Kurator. PahamHukum tidak bertindak sebagai penasihat hukum resmi, melainkan sebagai penuntun langkah awal sebelum masyarakat berinteraksi dengan lembaga hukum formal.
@@ -85,7 +78,6 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | **Prototipe** | Rancangan awal antarmuka dari perangkat lunak sebelum diimplementasikan |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya, jangan membuat pola baru di dokumen ini.
 
 Tabel 1.4. Aturan Penomoran
 
@@ -96,9 +88,9 @@ Tabel 1.4. Aturan Penomoran
 | Aktor | AKTXX | XX adalah nomor urut dari 01 hingga 03, mengikuti SKPL |
 | Use Case | UCXX | XX adalah nomor urut dari 01 hingga 09, mengikuti SKPL |
 | Kelas | CXX | XX adalah nomor urut dari 01 hingga 29, mengikuti SKPL |
-| Algoritma	| Algo-XXX | XXX adalah nomor urut algoritma pada BAB 5, dimulai dari 001 |
-| Query | Q-XXX	| XXX adalah nomor urut query pada BAB 5, dimulai dari 001 |
-| Antarmuka	| I-XX | XX adalah nomor urut layar pada BAB 6, dimulai dari 01 |
+| Algoritma | Algo-XXX | XXX adalah nomor urut algoritma pada BAB 5, dimulai dari 001 |
+| Query | Q-XXX | XXX adalah nomor urut query pada BAB 5, dimulai dari 001 |
+| Antarmuka | I-XX | XX adalah nomor urut layar pada BAB 6, dimulai dari 01 |
 
 ## 1.5 Referensi
 1. K01_G07_SKPL, Spesifikasi Kebutuhan Perangkat Lunak (SKPL) PahamHukum, IF2150 Rekayasa Perangkat Lunak, Institut Teknologi Bandung, 2026
@@ -139,7 +131,7 @@ Tabel 2.1.2. Spesifikasi Rancangan Lingkungan Implementasi
 | **DBMS** | PostgreSQL atau MySQL (Basis Data Relasional) | Menyimpan seluruh entitas *Model* secara persisten, meliputi data otorisasi (`Akun`, `Kurator`, `Administrator`), struktur katalog (`BidangHukum`, `KelompokKasus`), konten hukum (`RangkumanKasus`, `LangkahPenyelesaian`, `Checklist`, `TemplatDokumen`, `Artikel`, `LembagaBantuanHukum`), serta log permanen (`RiwayatStatus` sesuai KNF09). |
 | ***Development Tools*** | - **IDE / Code Editor:** Visual Studio Code<br>- **Version Control:** Git dan GitHub<br>- **Pemodelan UML & Desain:** PlantUML, Draw.io, dan StarUML<br>- **Pengujian & Inspeksi:** Browser Developer Tools (Chrome/Firefox DevTools) | Digunakan untuk penulisan kode sumber, kolaborasi repositori kelompok, penyusunan diagram arsitektur dan *sequence/class diagram*, serta pengujian responsivitas antarmuka dan efisiensi ukuran halaman ($\le$ 350 KB pada KNF02). |
 | ***Filing System*** | - **Sisi Server:** Sistem berkas direktori server (*Server-side File System*)<br>- **Sisi Klien:** *Browser Local Storage* (*Web Storage API*) | Sistem berkas server menyimpan berkas fisik templat dokumen berformat `.pdf` dan `.docx` (maksimal 5 MB sesuai KF26) dengan dukungan *rollback* versi (KNF08). *Local Storage* peramban menyimpan status centang *checklist* secara lokal di perangkat pengguna tanpa pernah dikirim ke server (KF14, KNF06). |
-| **Bahasa Pemrograman** | - **Sisi Klien (*Front-End / View*):** HTML5, CSS3, dan JavaScript / TypeScript<br>- **Sisi Server (*Back-End / Controller & Model*):** Python / Node.js (TypeScript/JavaScript) dengan *hash* *bcrypt* (*cost factor* $\ge$ 10 sesuai KNF10)<br>- **Basis Data:** SQL (*Structured Query Language*) | HTML5, CSS3, dan JavaScript merender antarmuka publik dan panel pengelola (termasuk *single-page form* KNF12, peninjauan satu layar KNF13, dan manipulasi `localStorage`). Bahasa sisi server menjalankan logika *Controller* dan *Model* dalam satu proses aplikasi, sedangkan SQL mengelola kueri pada DBMS relasional. |
+| **Bahasa Pemrograman** | - **Sisi Klien (*Front-End / View*):** HTML5, CSS3, dan JavaScript / TypeScript<br>- **Sisi Server (*Back-End / Controller & Model*):** Node.js (TypeScript/JavaScript) dengan *hash* *bcrypt* (*cost factor* $\ge$ 10 sesuai KNF10)<br>- **Basis Data:** SQL (*Structured Query Language*) | HTML5, CSS3, dan JavaScript merender antarmuka publik dan panel pengelola (termasuk *single-page form* KNF12, peninjauan satu layar KNF13, dan manipulasi `localStorage`). Bahasa sisi server menjalankan logika *Controller* dan *Model* dalam satu proses aplikasi, sedangkan SQL mengelola kueri pada DBMS relasional. |
 
 PahamHukum berjalan sebagai aplikasi web yang dilayani dari satu web server pada *cloud hosting* gratis atau berbiaya rendah. Kondisi ini selaras dengan pola arsitektur MVC karena *Model*, *View*, dan *Controller* dapat dipasang dalam satu proses aplikasi tanpa layanan tambahan. Klien yang beragam (berbeda perangkat, peramban, dan sistem operasi) hanya menerima *View* yang dirender oleh server, sehingga perbedaan perangkat cukup ditangani di lapisan *View*. DBMS relasional dan penyimpanan berkas di sisi server hanya diakses melalui *Model*, sehingga *View* tidak pernah menyentuh data secara langsung dan pergantian antara PostgreSQL atau MySQL tidak memengaruhi *Controller* maupun *View*. Selain itu, batas koneksi minimal 1 Mbps dengan target pemuatan beranda paling lama 3 detik (KNF01) menuntut halaman yang ringan; pemisahan *View* dari logika bisnis memudahkan ukuran halaman dijaga tetap kecil karena *Controller* hanya mengambil data yang diperlukan.
 
@@ -2602,44 +2594,187 @@ PROSEDUR nonaktifkanKurator(idAkun)
 
 # BAB 6: Perancangan Antarmuka
 
-## 6.1 Rancangan Antarmuka [ID Layar 1]
+## 6.1 Rancangan Antarmuka I-01
 
-Masukkan versi awal prototipe antarmuka, dimana untuk setiap antarmuka/layar, tuliskan spesifikasi rinci objek yang ditampilkan dan reaksi sistem terhadap interaksi pengguna.
+**Antarmuka:** I-01  
+**Nama Layar:** Beranda
 
-**Antarmuka:** *[ID layar]*  
-**Nama Layar:** *[Nama layar]*
-
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-01 Beranda - Desktop" src="./assets/ui/I-01_BerandaDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-01 Beranda - Ponsel" src="./assets/ui/I-01_BerandaPonsel.png" width="20%" align="top">
+</div>
 <p align="center">
-<img alt="Contoh Logical View pada P/L E-Commerce" src="./assets/diagram/contoh-design.png" width="50%">
-</p>
-<p align="center">
-<i>Gambar 6.1. Rancangan Antarmuka [ID Layar] - [Nama Layar]</i>
+<i>Gambar 6.1. Rancangan Antarmuka I-01 - Beranda (desktop dan ponsel)</i>
 </p>
 
-Tabel 6.1. Spesifikasi Objek Antarmuka [ID Layar]
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-01 Beranda Peringatan Darurat - Desktop" src="./assets/ui/I-01_BerandaDesktop_Darurat.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-01 Beranda Peringatan Darurat - Ponsel" src="./assets/ui/I-01_BerandaPonsel_Darurat.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.2. Rancangan Antarmuka I-01 - Beranda, keadaan peringatan darurat (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.1. Spesifikasi Objek Antarmuka I-01
 
 | Id_Objek | Jenis | Konten | Keterangan |
 | :--- | :--- | :--- | :--- |
-| *[ID objek]* | *[Jenis objek, misalnya Button, RTF Box, dll]* | *[String yang tampil pada layar]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
-| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem atau nama file terkait beserta deskripsi ringkasnya]* |
-| *...* | *...* | *...* | *...* |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
 
 
-## 6.X Rancangan Antarmuka [ID Layar X]
+## 6.2 Rancangan Antarmuka I-02
 
-*[Ulangi pola 6.1 untuk layar berikutnya sampai semua layar teridentifikasi]*
+**Antarmuka:** I-02  
+**Nama Layar:** Rangkuman Kasus
 
-## 6.Y Rancangan Antarmuka Keseluruhan
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-02 Rangkuman Kasus - Desktop" src="./assets/ui/I-02_RangkumanKasusDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-02 Rangkuman Kasus - Ponsel" src="./assets/ui/I-02_RangkumanKasusPonsel.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.3. Rancangan Antarmuka I-02 - Rangkuman Kasus (desktop dan ponsel)</i>
+</p>
 
-Tuliskan daftar gambar seluruh antarmuka. Berikan ID unik untuk setiap tampilan dan gunakan ID yang sama pada subbab perancangan antarmuka masing-masing.
+Tabel 6.2. Spesifikasi Objek Antarmuka I-02
 
-Tabel 6.Y. Rancangan Antarmuka Keseluruhan
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+
+## 6.3 Rancangan Antarmuka I-03
+
+**Antarmuka:** I-03  
+**Nama Layar:** Pencarian Kata Kunci
+
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-03 Pencarian Kata Kunci - Desktop" src="./assets/ui/I-03_PencarianDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-03 Pencarian Kata Kunci - Ponsel" src="./assets/ui/I-03_PencarianPonsel.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.4. Rancangan Antarmuka I-03 - Pencarian Kata Kunci (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.3. Spesifikasi Objek Antarmuka I-03
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+
+## 6.4 Rancangan Antarmuka I-04
+
+**Antarmuka:** I-04  
+**Nama Layar:** Login Pengelola
+
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-04 Login Pengelola - Desktop" src="./assets/ui/I-04_LoginDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-04 Login Pengelola - Ponsel" src="./assets/ui/I-04_LoginPonsel.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.5. Rancangan Antarmuka I-04 - Login Pengelola (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.4. Spesifikasi Objek Antarmuka I-04
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+
+## 6.5 Rancangan Antarmuka I-05
+
+**Antarmuka:** I-05  
+**Nama Layar:** Penyusunan Konten
+
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-05 Penyusunan Konten - Desktop" src="./assets/ui/I-05_PenyusunanKontenDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-05 Penyusunan Konten - Ponsel" src="./assets/ui/I-05_PenyusunanKontenMobile.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.6. Rancangan Antarmuka I-05 - Penyusunan Konten (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.5. Spesifikasi Objek Antarmuka I-05
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+
+## 6.6 Rancangan Antarmuka I-06
+
+**Antarmuka:** I-06  
+**Nama Layar:** Daftar Konten Kurator
+
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-06 Daftar Konten Kurator - Desktop" src="./assets/ui/I-06_DaftarKontenKuratorDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-06 Daftar Konten Kurator - Ponsel" src="./assets/ui/I-06_DaftarKontenKuratorMobile.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.7. Rancangan Antarmuka I-06 - Daftar Konten Kurator (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.6. Spesifikasi Objek Antarmuka I-06
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+
+## 6.7 Rancangan Antarmuka I-07
+
+**Antarmuka:** I-07  
+**Nama Layar:** Moderasi Konten
+
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-07 Moderasi Konten - Desktop" src="./assets/ui/I-07_ModerasiKontenDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-07 Moderasi Konten - Ponsel" src="./assets/ui/I-07_ModerasiKontenMobile.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.8. Rancangan Antarmuka I-07 - Moderasi Konten (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.7. Spesifikasi Objek Antarmuka I-07
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+
+## 6.8 Rancangan Antarmuka I-08
+
+**Antarmuka:** I-08  
+**Nama Layar:** Pengelolaan Akun Kurator
+
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 16px;">
+<img alt="Rancangan Antarmuka I-08 Pengelolaan Akun Kurator - Desktop" src="./assets/ui/I-08_PengelolaanAkunDesktop.png" width="70%" align="top">
+<img alt="Rancangan Antarmuka I-08 Pengelolaan Akun Kurator - Ponsel" src="./assets/ui/I-08_PengelolaanAkunMobile.png" width="20%" align="top">
+</div>
+<p align="center">
+<i>Gambar 6.9. Rancangan Antarmuka I-08 - Pengelolaan Akun Kurator (desktop dan ponsel)</i>
+</p>
+
+Tabel 6.8. Spesifikasi Objek Antarmuka I-08
+
+| Id_Objek | Jenis | Konten | Keterangan |
+| :--- | :--- | :--- | :--- |
+| *[ID objek]* | *[Jenis objek]* | *[Konten yang ditampilkan]* | *[Reaksi sistem, layar tujuan, tautan, atau ID algoritma yang dijalankan]* |
+
+## 6.9 Rancangan Antarmuka Keseluruhan
+
+Tabel 6.9. Rancangan Antarmuka Keseluruhan
 
 | No | Tampilan Antarmuka |
 | :--- | :--- |
-| *[I-01]* | <img src="./assets/diagram/contoh-design.png" alt="Contoh Desain" width="400"> |
-| *[I-02]* | *[Sisipkan gambar antarmuka I-02]* |
-| *[I-XX]* | *[Sisipkan gambar antarmuka berikutnya]* |
+| I-01 | <img src="./assets/ui/I-01_BerandaDesktop.png" alt="I-01 Beranda" width="400"> |
+| I-02 | <img src="./assets/ui/I-02_RangkumanKasusDesktop.png" alt="I-02 Rangkuman Kasus" width="400"> |
+| I-03 | <img src="./assets/ui/I-03_PencarianDesktop.png" alt="I-03 Pencarian Kata Kunci" width="400"> |
+| I-04 | <img src="./assets/ui/I-04_LoginDesktop.png" alt="I-04 Login Pengelola" width="400"> |
+| I-05 | <img src="./assets/ui/I-05_PenyusunanKontenDesktop.png" alt="I-05 Penyusunan Konten" width="400"> |
+| I-06 | <img src="./assets/ui/I-06_DaftarKontenKuratorDesktop.png" alt="I-06 Daftar Konten Kurator" width="400"> |
+| I-07 | <img src="./assets/ui/I-07_ModerasiKontenDesktop.png" alt="I-07 Moderasi Konten" width="400"> |
+| I-08 | <img src="./assets/ui/I-08_PengelolaanAkunDesktop.png" alt="I-08 Pengelolaan Akun Kurator" width="400"> |
 
 <br>
 
