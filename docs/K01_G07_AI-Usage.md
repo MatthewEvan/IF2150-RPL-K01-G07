@@ -29,6 +29,7 @@
 * [Milestone 5](#milestone-5)
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
+* [Milestone 8](#milestone-8)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 ---
@@ -83,6 +84,13 @@ Silakan catat penggunaan AI yang berdampak signifikan pada pengerjaan tugas (mis
 | Claude Opus 5.5 | Menjelaskan kaidah penggambaran skenario alternatif pada sequence diagram (penggunaan fragmen alt vs pemisahan diagram) dan alur Boundary-Control-Entity | "Bagaimana aturan penggambaran skenario alternatif pada sequence diagram DPPL? Kapan sebaiknya pakai fragmen alt dan kapan harus dipisah jadi diagram baru?" | Kami mencocokkan penjelasan AI dengan catatan asistensi M7. Skenario alternatif sederhana dengan alur awal yang sama digabungkan menggunakan alt, sedangkan skenario alternatif dengan alur berbeda digambarkan pada diagram terpisah. |
 | Claude Opus 5.5 | Mengecek konsistensi pemanggilan operasi pada sequence diagram dengan atribut dan metode pada diagram kelas per use case | "Coba cek apakah operasi yang dipanggil pada sequence diagram skenario normal dan alternatif UC03 dan UC04 sudah lengkap dan ada di dalam kotak kelas masing-masing." | Kami mengecek kembali daftar metode hasil analisis AI terhadap dokumen SKPL Bab 5. Beberapa visibilitas, parameter, dan return type yang belum tepat kami perbaiki manual agar sesuai dengan spesifikasi perancangan. |
 | Gemini 5 Argon | Membantu mengecek kelengkapan dan struktur perancangan arsitektur BAB 2 (lingkungan implementasi, MVC, dan view arsitektur) agar selaras dengan dokumen APL | "Apakah pemetaan komponen MVC dan spesifikasi lingkungan implementasi (OS, DBMS, tools, filing system, bahasa) di BAB 2 ini sudah konsisten dengan dokumen APL dan SKPL?" | Kami membaca saran AI, membuang usulan penambahan teknologi yang tidak ada di SKPL, dan menyesuaikan tabel lingkungan operasi serta pemetaan komponen agar merujuk secara konsisten ke dokumen APL. |
+
+### Milestone 8
+| Tool AI | Tujuan Penggunaan | Contoh Prompt Utama | Modifikasi & Validasi Manusia |
+| :--- | :--- | :--- | :--- |
+| Claude Opus 5.5 | Memeriksa kepastian dokumen K01_G07_DPPL2.md terhadap revisi yang diberikan asisten mengenai penulisan query SQL dan pseudocode | "Aku memiliki catatan asistensi dimana query SQL tidak langsung dimasukkan dalam pseudocode algoritma, bantu cek apakah ada yang tidak sengaja dimasukkan" | Kami mencocokan pseudocode pada BAB 5 dengan apa yang di point out oleh AI saat ada query yang tidak sengaja termasukkan ke pseudocode, atau justru lupa dimasukkan ke tabel query SQL nya |
+| Claude Opus 5.5 | Mengecek konsistensi antara DPPL dan DPPL2 saat memindahkan BAB 1 hingga BAB 4 yang masih dipakai di DPPL2 | "Pada M8, kami harus memindahkan BAB 1 dan BAB 4 yang sama-sama dipakai di M7 (DPPL), bantu kami mengecek apakah sudah konsisten atau ada perubahan signifikan" | Kami mengecek kembali saat AI point out ada inkonsistensi baik dari cara penulisan atau ide yang justru melenceng dari DPPL, dan kami melakukan evaluasi kembali secara manual |
+| Claude Opus 5.5 | Mengecek kelengkapan gambar yang digunakan pada DPPL2, karena banyaknya grafik baik class dan sequence diagram beserta gambar UI | "Apakah masih ada bagian gambar yang belum dimasukkan atau penempatannya kurang sesuai, coba point out untuk kami" | Kami membaca apa yang AI sebutkan dan mengoreksinya langsung karena ada beberapa yang terbalik link to image nya dan ada juga yang terlewat |
 
 ---
 ### Pernyataan Integritas dan Persetujuan
