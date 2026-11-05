@@ -1,12 +1,19 @@
-import FormLogin, { type HasilLogin } from "@/components/login/FormLogin";
+import FormLogin from "@/components/login/FormLogin";
+import { prosesLogin } from "@/lib/controllers/kontrolAutentikasi";
 
-// Proses login yang sebenarnya dikerjakan pada #38.
-async function aksiSementara(): Promise<HasilLogin> {
-  "use server";
-  return { galat: "Email atau kata sandi salah." };
-}
+const PESAN_ALASAN: Record<string, string> = {
+  "sesi-berakhir":
+    "Sesi Anda berakhir karena tidak ada aktivitas. Silakan masuk kembali.",
+  "akun-nonaktif": "Akun Anda dinonaktifkan. Hubungi Administrator.",
+};
 
-export default function HalamanLogin() {
+export default async function HalamanLogin({
+  searchParams,
+}: PageProps<"/masuk">) {
+  const { alasan } = await searchParams;
+  const pesanAwal =
+    typeof alasan === "string" ? PESAN_ALASAN[alasan] : undefined;
+
   return (
     <main className="flex flex-1 flex-col items-center px-5 py-8 sm:py-16">
       <section className="w-full max-w-110 rounded-xl border border-line bg-surface-raised p-5 shadow-sm">
@@ -45,7 +52,7 @@ export default function HalamanLogin() {
           </div>
         </div>
 
-        <FormLogin aksi={aksiSementara} />
+        <FormLogin aksi={prosesLogin} pesanAwal={pesanAwal} />
       </section>
 
       <p className="mt-6 flex items-start gap-2 text-sm text-ink-muted">
