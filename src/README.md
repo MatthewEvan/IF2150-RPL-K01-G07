@@ -115,10 +115,21 @@ Perbedaan dari DPPL yang perlu dicatat di laporan B.1:
 - `jumlah_konten` ditambah oleh trigger basis data, bukan oleh Kurator.
 - `jumlahKelompokKasus` pada `BidangHukum` dihitung saat query (Q-021), bukan disimpan.
 
+## Pengujian
+
+Test berada di `tests/` dan dijalankan dengan Vitest dari folder `src/`:
+
+```bash
+npm test
+```
+
+Test autentikasi dan pengelolaan akun meniru Supabase, sehingga tidak memerlukan Docker maupun `.env.local`.
+
 ## Perintah Lain
 
 | Perintah         | Kegunaan                       |
 | :--------------- | :----------------------------- |
+| `npm test`       | Menjalankan pengujian          |
 | `npm run lint`   | Memeriksa kode dengan ESLint   |
 | `npm run format` | Merapikan kode dengan Prettier |
 | `npm run build`  | Membuat build produksi         |
