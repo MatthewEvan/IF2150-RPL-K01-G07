@@ -1,5 +1,6 @@
 import type { KuratorTerdaftar } from "@/lib/models/kurator";
 import LencanaStatusAkun from "./LencanaStatusAkun";
+import TombolStatusKurator from "./TombolStatusKurator";
 
 const GAYA_KEPALA =
   "px-4 py-3 text-left text-xs font-semibold tracking-wider text-ink-muted uppercase";
@@ -21,7 +22,8 @@ export default function DaftarKurator({
           <tr>
             <th className={`${GAYA_KEPALA} rounded-l-md`}>Email</th>
             <th className={GAYA_KEPALA}>Konten</th>
-            <th className={`${GAYA_KEPALA} rounded-r-md`}>Status</th>
+            <th className={GAYA_KEPALA}>Status</th>
+            <th className={`${GAYA_KEPALA} rounded-r-md`}>Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +36,9 @@ export default function DaftarKurator({
               <td className="px-4 py-4">{kurator.jumlahKonten}</td>
               <td className="px-4 py-4">
                 <LencanaStatusAkun aktif={kurator.statusAktif} />
+              </td>
+              <td className="px-4 py-3">
+                <TombolStatusKurator kurator={kurator} />
               </td>
             </tr>
           ))}
@@ -59,6 +64,9 @@ export default function DaftarKurator({
                 </dd>
               </div>
             </dl>
+            <div className="mt-3">
+              <TombolStatusKurator kurator={kurator} />
+            </div>
           </li>
         ))}
       </ul>

@@ -71,3 +71,20 @@ export async function simpanKuratorBaru(
     throw galatKurator;
   }
 }
+
+/** Q-004 dan kebalikannya. Mengembalikan false jika Kurator tidak ditemukan. */
+export async function aturStatusKurator(
+  supabase: SupabaseClient,
+  idAkun: string,
+  idAdministrator: string,
+  statusAktif: boolean,
+) {
+  const { data, error } = await supabase
+    .from("kurator")
+    .update({ status_aktif: statusAktif })
+    .eq("id_akun", idAkun)
+    .eq("id_administrator", idAdministrator)
+    .select("id_akun");
+  if (error) throw error;
+  return data.length > 0;
+}
