@@ -33,6 +33,7 @@ Struktur kode mengikuti pola MVC pada DPPL.
 | `lib/models/`      | Model      | Akses data tiap entitas            |
 | `lib/supabase/`    | Pendukung  | Client Supabase server dan browser |
 | `supabase/`        | Pendukung  | Migrasi dan seed basis data        |
+| `tests/`           | Pengujian  | Berkas pengujian otomatis (Vitest) |
 
 ## Peta Rute
 
@@ -115,10 +116,29 @@ Perbedaan dari DPPL yang perlu dicatat di laporan B.1:
 - `jumlah_konten` ditambah oleh trigger basis data, bukan oleh Kurator.
 - `jumlahKelompokKasus` pada `BidangHukum` dihitung saat query (Q-021), bukan disimpan.
 
+## Pengujian
+
+Pengujian otomatis menggunakan **Vitest** (dengan lingkungan `jsdom` dan `@testing-library/react`).
+
+### Menjalankan Test
+
+Jalankan perintah berikut dari folder `src/`:
+
+```bash
+npm test
+```
+
+### Menulis Test
+
+- Letakkan berkas pengujian di dalam folder `src/tests/` dengan akhiran `.test.ts` atau `.test.tsx` (misalnya `tests/moderasi.test.ts` atau `tests/autentikasi.test.ts`).
+- Gunakan alias `@/` untuk mengimpor modul dari `src/` (misalnya `import { ... } from "@/lib/controllers/..."`).
+- Susun pengujian menggunakan blok `describe`, `it`, dan `expect` dari `vitest` dengan deskripsi berbahasa Indonesia yang menjelaskan perilaku yang diuji. Lihat `src/tests/contoh.test.ts` sebagai acuan struktur dan penamaan.
+
 ## Perintah Lain
 
-| Perintah         | Kegunaan                       |
-| :--------------- | :----------------------------- |
-| `npm run lint`   | Memeriksa kode dengan ESLint   |
-| `npm run format` | Merapikan kode dengan Prettier |
-| `npm run build`  | Membuat build produksi         |
+| Perintah         | Kegunaan                        |
+| :--------------- | :------------------------------ |
+| `npm test`       | Menjalankan seluruh unit test   |
+| `npm run lint`   | Memeriksa kode dengan ESLint    |
+| `npm run format` | Merapikan kode dengan Prettier  |
+| `npm run build`  | Membuat build produksi          |
