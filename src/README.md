@@ -34,6 +34,44 @@ Struktur kode mengikuti pola MVC pada DPPL.
 | `lib/supabase/`    | Pendukung  | Client Supabase server dan browser |
 | `supabase/`        | Pendukung  | Migrasi dan seed basis data        |
 
+## Komponen UI
+
+Komponen dasar ada di `components/ui/` dan memakai token dari `@theme` pada
+`app/globals.css`. Jangan menulis nilai warna atau jarak manual di dalam
+komponen; gunakan kelas token seperti `bg-brand`, `text-ink-muted`, dan
+`rounded-pill`.
+
+Semua komponen ditampilkan di halaman pratinjau. Halaman ini hanya untuk
+pengembangan dan **dihapus sebelum rilis**.
+
+```bash
+npm run dev
+```
+
+Buka <http://localhost:3000/pratinjau-komponen>.
+
+| Komponen   | Berkas         | Props                                                                                                                                                                                                          |
+| :--------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`   | `Button.tsx`   | `varian`: `"primary"` \| `"secondary"` \| `"danger"` \| `"ghost"` (bawaan `primary`), `ukuran`: `"md"` \| `"sm"` \| `"ikon"` (bawaan `md`), `ikonKiri`, `ikonKanan`, serta atribut `<button>`.                 |
+| `Badge`    | `Badge.tsx`    | `status`: `"Draft"` \| `"Diajukan"` \| `"Perlu Revisi"` \| `"Disetujui"`, `peran`: `"Kurator"` \| `"Administrator"`, `nada`: `"netral"` \| `"info"` \| `"sukses"` \| `"peringatan"` \| `"bahaya"`, `children`. |
+| `Input`    | `Input.tsx`    | `label` (wajib), `petunjuk`, `galat`, `wajib`, serta atribut `<input>`. `id` dibuat otomatis bila tidak diisi.                                                                                                 |
+| `Textarea` | `Textarea.tsx` | `label` (wajib), `petunjuk`, `galat`, `wajib`, `rows` (bawaan `4`), serta atribut `<textarea>`.                                                                                                                |
+| `Select`   | `Select.tsx`   | `label` (wajib), `petunjuk`, `galat`, `wajib`, serta atribut `<select>`. Isi `<option>` lewat `children`.                                                                                                      |
+| `Card`     | `Card.tsx`     | `judul`, `aksi`, `padat` (bawaan `false`), `children`, serta atribut `<div>`.                                                                                                                                  |
+| `Callout`  | `Callout.tsx`  | `jenis`: `"info"` \| `"peringatan"` \| `"bahaya"` (bawaan `info`), `judul`, `children` (wajib).                                                                                                                |
+| `Table`    | `Table.tsx`    | `kolom` (`{ kunci, judul, sel?, rata? }`), `data`, `kunciBaris`, `pesanKosong`, `keterangan`. Pada layar sempit tabel berubah menjadi daftar kartu.                                                            |
+
+Catatan pemakaian:
+
+- `Button` berbentuk pill. Untuk `ukuran="ikon"`, sertakan `aria-label` karena
+  tombol tidak punya teks.
+- `Badge` dengan `status` atau `peran` otomatis memakai warna yang sesuai;
+  `nada` dipakai untuk lencana bebas.
+- `Input`, `Textarea`, dan `Select` sudah menangani `htmlFor`, `aria-invalid`,
+  dan `aria-describedby`. Hubungkan galat validasi lewat prop `galat`.
+- `Table` menerima `sel` untuk mengubah tampilan satu kolom, misalnya
+  menampilkan `Badge` status.
+
 ## Peta Rute
 
 | Rute                         | Layar | Halaman                |
