@@ -10,6 +10,7 @@ import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Table, { type KolomTabel } from "@/components/ui/Table";
 import Textarea from "@/components/ui/Textarea";
+import TombolTautan from "@/components/ui/TombolTautan";
 
 /**
  * Halaman pratinjau komponen untuk pengembangan S1-E01.
@@ -104,10 +105,14 @@ const KOLOM_KONTEN: KolomTabel<BarisKonten>[] = [
     kunci: "id",
     judul: "Aksi",
     rata: "kanan",
-    sel: () => (
-      <Button varian="secondary" ukuran="sm">
+    sel: (baris) => (
+      <TombolTautan
+        href={`/panel/kurator/konten/${baris.id}`}
+        varian="secondary"
+        ukuran="sm"
+      >
         Perbaiki konten
-      </Button>
+      </TombolTautan>
     ),
   },
 ];
@@ -336,6 +341,70 @@ export default function HalamanPratinjauKomponen() {
       </Bagian>
 
       <Bagian
+        judul="TombolTautan"
+        keterangan="Aksi pindah halaman memakai Link, dengan varian dan ukuran yang sama seperti Button."
+      >
+        <BarisContoh judul="Varian">
+          <TombolTautan href="/panel/kurator/konten/baru" varian="primary">
+            Tulis konten baru
+          </TombolTautan>
+          <TombolTautan href="/panel/kurator/konten" varian="secondary">
+            Lihat semua konten
+          </TombolTautan>
+          <TombolTautan href="/masuk" varian="danger">
+            Keluar
+          </TombolTautan>
+          <TombolTautan href="/" varian="ghost">
+            Kembali ke beranda
+          </TombolTautan>
+        </BarisContoh>
+
+        <BarisContoh judul="Ukuran">
+          <TombolTautan href="/cari" ukuran="md">
+            Ukuran md
+          </TombolTautan>
+          <TombolTautan href="/cari" ukuran="sm">
+            Ukuran sm
+          </TombolTautan>
+          <TombolTautan
+            href="/panel/kurator/konten/baru"
+            ukuran="ikon"
+            aria-label="Tulis konten baru"
+          >
+            <IkonPensil />
+          </TombolTautan>
+        </BarisContoh>
+
+        <BarisContoh judul="Dengan ikon">
+          <TombolTautan
+            href="/panel/kurator/konten/baru"
+            varian="primary"
+            ikonKiri={<IkonPensil />}
+          >
+            Tulis konten baru
+          </TombolTautan>
+          <TombolTautan
+            href="/kasus/1"
+            varian="secondary"
+            ikonKiri={<IkonUnduh />}
+          >
+            Unduh templat
+          </TombolTautan>
+        </BarisContoh>
+
+        <BarisContoh judul="Nonaktif">
+          <TombolTautan
+            href="/panel/kurator/konten/baru"
+            varian="primary"
+            aria-disabled="true"
+            tabIndex={-1}
+          >
+            Tulis konten (nonaktif)
+          </TombolTautan>
+        </BarisContoh>
+      </Bagian>
+
+      <Bagian
         judul="Badge"
         keterangan="Label status konten dan peran pengguna. Teks status mengikuti SKPL."
       >
@@ -443,12 +512,16 @@ export default function HalamanPratinjauKomponen() {
               setelah tayang akan masuk ke antrean tinjauan kembali.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Button varian="secondary" ukuran="sm">
+              <TombolTautan href="/kasus/1" varian="secondary" ukuran="sm">
                 Lihat halaman
-              </Button>
-              <Button varian="ghost" ukuran="sm">
+              </TombolTautan>
+              <TombolTautan
+                href="/panel/kurator/konten/1"
+                varian="ghost"
+                ukuran="sm"
+              >
                 Perbaiki konten
-              </Button>
+              </TombolTautan>
             </div>
           </Card>
 

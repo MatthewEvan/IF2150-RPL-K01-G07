@@ -50,21 +50,32 @@ npm run dev
 
 Buka <http://localhost:3000/pratinjau-komponen>.
 
-| Komponen   | Berkas         | Props                                                                                                                                                                                                          |
-| :--------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button`   | `Button.tsx`   | `varian`: `"primary"` \| `"secondary"` \| `"danger"` \| `"ghost"` (bawaan `primary`), `ukuran`: `"md"` \| `"sm"` \| `"ikon"` (bawaan `md`), `ikonKiri`, `ikonKanan`, serta atribut `<button>`.                 |
-| `Badge`    | `Badge.tsx`    | `status`: `"Draft"` \| `"Diajukan"` \| `"Perlu Revisi"` \| `"Disetujui"`, `peran`: `"Kurator"` \| `"Administrator"`, `nada`: `"netral"` \| `"info"` \| `"sukses"` \| `"peringatan"` \| `"bahaya"`, `children`. |
-| `Input`    | `Input.tsx`    | `label` (wajib), `petunjuk`, `galat`, `wajib`, serta atribut `<input>`. `id` dibuat otomatis bila tidak diisi.                                                                                                 |
-| `Textarea` | `Textarea.tsx` | `label` (wajib), `petunjuk`, `galat`, `wajib`, `rows` (bawaan `4`), serta atribut `<textarea>`.                                                                                                                |
-| `Select`   | `Select.tsx`   | `label` (wajib), `petunjuk`, `galat`, `wajib`, serta atribut `<select>`. Isi `<option>` lewat `children`.                                                                                                      |
-| `Card`     | `Card.tsx`     | `judul`, `aksi`, `padat` (bawaan `false`), `children`, serta atribut `<div>`.                                                                                                                                  |
-| `Callout`  | `Callout.tsx`  | `jenis`: `"info"` \| `"peringatan"` \| `"bahaya"` (bawaan `info`), `judul`, `children` (wajib).                                                                                                                |
-| `Table`    | `Table.tsx`    | `kolom` (`{ kunci, judul, sel?, rata? }`), `data`, `kunciBaris`, `pesanKosong`, `keterangan`. Pada layar sempit tabel berubah menjadi daftar kartu.                                                            |
+| Komponen       | Berkas             | Props                                                                                                                                                                                                          |
+| :------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`       | `Button.tsx`       | `varian`: `"primary"` \| `"secondary"` \| `"danger"` \| `"ghost"` (bawaan `primary`), `ukuran`: `"md"` \| `"sm"` \| `"ikon"` (bawaan `md`), `ikonKiri`, `ikonKanan`, serta atribut `<button>`.                 |
+| `TombolTautan` | `TombolTautan.tsx` | `href` (wajib), `varian`, `ukuran`, `ikonKiri`, `ikonKanan`, serta atribut `<Link>`/`<a>`. Varian dan ukuran sama dengan `Button`.                                                                             |
+| `Badge`        | `Badge.tsx`        | `status`: `"Draft"` \| `"Diajukan"` \| `"Perlu Revisi"` \| `"Disetujui"`, `peran`: `"Kurator"` \| `"Administrator"`, `nada`: `"netral"` \| `"info"` \| `"sukses"` \| `"peringatan"` \| `"bahaya"`, `children`. |
+| `Input`        | `Input.tsx`        | `label` (wajib), `petunjuk`, `galat`, `wajib`, serta atribut `<input>`. `id` dibuat otomatis bila tidak diisi.                                                                                                 |
+| `Textarea`     | `Textarea.tsx`     | `label` (wajib), `petunjuk`, `galat`, `wajib`, `rows` (bawaan `4`), serta atribut `<textarea>`.                                                                                                                |
+| `Select`       | `Select.tsx`       | `label` (wajib), `petunjuk`, `galat`, `wajib`, serta atribut `<select>`. Isi `<option>` lewat `children`.                                                                                                      |
+| `Card`         | `Card.tsx`         | `judul`, `aksi`, `padat` (bawaan `false`), `children`, serta atribut `<div>`.                                                                                                                                  |
+| `Callout`      | `Callout.tsx`      | `jenis`: `"info"` \| `"peringatan"` \| `"bahaya"` (bawaan `info`), `judul`, `children` (wajib).                                                                                                                |
+| `Table`        | `Table.tsx`        | `kolom` (`{ kunci, judul, sel?, rata? }`), `data`, `kunciBaris`, `pesanKosong`, `keterangan`. Pada layar sempit tabel berubah menjadi daftar kartu.                                                            |
 
 Catatan pemakaian:
 
 - `Button` berbentuk pill. Untuk `ukuran="ikon"`, sertakan `aria-label` karena
   tombol tidak punya teks.
+- `TombolTautan` dipakai untuk aksi yang **berpindah halaman**, misalnya
+  “Tulis konten” dan “Perbaiki konten”. Jangan memakai `Button` dengan
+  `router.push` untuk navigasi. Untuk `ukuran="ikon"`, sertakan `aria-label`.
+- `Button` memakai `type="button"` sebagai bawaan. **Tombol pengirim formulir
+  wajib memakai `type="submit"`.**
+- Penanda `wajib` pada `Input`, `Textarea`, dan `Select` **hanya menampilkan
+  tanda bintang merah**; jangan menambahkan teks “wajib”.
+- `TombolTautan` tidak punya keadaan `disabled` bawaan. Bila perlu nonaktif,
+  pakai `aria-disabled="true"` dan `tabIndex={-1}`. Untuk benar-benar
+  mencegah navigasi, jangan render `Link`; tampilkan `Button disabled`.
 - `Badge` dengan `status` atau `peran` otomatis memakai warna yang sesuai;
   `nada` dipakai untuk lencana bebas.
 - `Input`, `Textarea`, dan `Select` sudah menangani `htmlFor`, `aria-invalid`,
