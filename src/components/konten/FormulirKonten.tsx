@@ -7,7 +7,7 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
-import type { PilihanKelompok } from "@/lib/models/pilihanKelompok";
+import type { PilihanKelompok } from "@/lib/models/kelompokKasus";
 import PanelStatusKonten from "./PanelStatusKonten";
 
 type FormulirKontenProps = {

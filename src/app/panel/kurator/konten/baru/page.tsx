@@ -1,5 +1,5 @@
 import FormulirKonten from "@/components/konten/FormulirKonten";
-import { ambilPilihanKelompok } from "@/lib/models/pilihanKelompok";
+import { ambilPilihanKelompok } from "@/lib/models/kelompokKasus";
 import { buatClientServer } from "@/lib/supabase/server";
 
 async function aksiSementara() {
