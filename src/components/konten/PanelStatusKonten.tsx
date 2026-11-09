@@ -50,15 +50,6 @@ export default function PanelStatusKonten() {
         >
           Ajukan untuk ditinjau
         </Button>
-        <Button
-          type="submit"
-          name="aksi"
-          value="tayangkan"
-          varian="ghost"
-          className="w-full"
-        >
-          Tayangkan langsung
-        </Button>
       </div>
     </aside>
   );
