@@ -1,10 +1,12 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import Button from "@/components/ui/Button";
+import { logout } from "@/lib/controllers/kontrolAutentikasi";
+import { PERAN, type Peran } from "@/lib/models/akun";
 import NavbarDasar from "./NavbarDasar";
 
 const PANEL = {
-  kurator: {
+  [PERAN.KURATOR]: {
     label: "Kurator",
     warnaLencana: "bg-accent-soft text-link",
     tautan: [
@@ -12,7 +14,7 @@ const PANEL = {
       { href: "/panel/kurator/konten/baru", label: "Tulis konten" },
     ],
   },
-  administrator: {
+  [PERAN.ADMINISTRATOR]: {
     label: "Administrator",
     warnaLencana: "bg-surface-sunken text-ink",
     tautan: [
@@ -22,11 +24,8 @@ const PANEL = {
   },
 };
 
-export default function NavbarPanel() {
-  const pathname = usePathname();
-  const panel = pathname.startsWith("/panel/admin")
-    ? PANEL.administrator
-    : PANEL.kurator;
+export default function NavbarPanel({ peran }: { peran: Peran }) {
+  const panel = PANEL[peran];
 
   return (
     <NavbarDasar
@@ -39,12 +38,11 @@ export default function NavbarPanel() {
         </span>
       }
       aksi={
-        <button
-          type="button"
-          className="rounded-pill border border-line-strong px-6 py-2.5 text-sm font-semibold text-brand hover:bg-surface-raised-hover"
-        >
-          Keluar
-        </button>
+        <form action={logout}>
+          <Button type="submit" varian="secondary">
+            Keluar
+          </Button>
+        </form>
       }
     />
   );
