@@ -1,16 +1,23 @@
 import Link from "next/link";
+import { cekDarurat } from "@/lib/controllers/kontrolJelajahKasus";
 import type { KelompokKasus } from "@/lib/models/kelompokKasus";
+import { GAYA_KARTU_KELOMPOK } from "./gayaKartu";
+import KartuKelompokDarurat from "./KartuKelompokDarurat";
 import { IkonBidang, IkonPanahKanan } from "./ikon";
-
-export const GAYA_KARTU_KELOMPOK =
-  "flex h-full w-full flex-col items-start rounded-xl border border-line bg-surface-raised p-5 text-left shadow-sm transition-colors hover:bg-surface-raised-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 type Props = {
   kelompok: KelompokKasus;
   namaBidang: string;
 };
 
-export default function KartuKelompokKasus({ kelompok, namaBidang }: Props) {
+export default async function KartuKelompokKasus({
+  kelompok,
+  namaBidang,
+}: Props) {
+  if (await cekDarurat(kelompok.idKelompok)) {
+    return <KartuKelompokDarurat kelompok={kelompok} namaBidang={namaBidang} />;
+  }
+
   return (
     <Link
       href={`/kasus/${kelompok.idKelompok}`}

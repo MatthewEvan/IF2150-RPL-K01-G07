@@ -1,6 +1,5 @@
 import FormCariBeranda from "@/components/beranda/FormCariBeranda";
 import KartuBidangHukum from "@/components/beranda/KartuBidangHukum";
-import KartuKelompokDarurat from "@/components/beranda/KartuKelompokDarurat";
 import KartuKelompokKasus from "@/components/beranda/KartuKelompokKasus";
 import KotakDisclaimer from "@/components/beranda/KotakDisclaimer";
 import {
@@ -80,17 +79,10 @@ export default async function HalamanJelajahKasus({
           <ul className="mt-5 grid gap-4 md:grid-cols-2">
             {daftarKelompok.map((kelompok) => (
               <li key={kelompok.idKelompok}>
-                {kelompok.penandaDarurat ? (
-                  <KartuKelompokDarurat
-                    kelompok={kelompok}
-                    namaBidang={bidangTerpilih.nama}
-                  />
-                ) : (
-                  <KartuKelompokKasus
-                    kelompok={kelompok}
-                    namaBidang={bidangTerpilih.nama}
-                  />
-                )}
+                <KartuKelompokKasus
+                  kelompok={kelompok}
+                  namaBidang={bidangTerpilih.nama}
+                />
               </li>
             ))}
           </ul>

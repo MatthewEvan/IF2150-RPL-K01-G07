@@ -127,11 +127,11 @@ Untuk membentuk ulang basis data dari nol:
 npx supabase db reset
 ```
 
-Pada proyek Supabase yang di-hosting, jalankan `0001_skema.sql` lalu `seed.sql` di SQL Editor dan matikan pendaftaran mandiri di pengaturan Auth.
+Pada proyek Supabase yang di-hosting, jalankan seluruh berkas di `supabase/migrations/` secara berurutan (`0001_skema.sql`, `0002_penyusunan_konten.sql`, dan seterusnya) lalu `seed.sql` di SQL Editor dan matikan pendaftaran mandiri di pengaturan Auth.
 
 ### Akun Uji
 
-Semua akun bersifat fiktif dan memakai kata sandi `PahamHukum-Uji-123`.
+Semua akun bersifat fiktif dan memakai kata sandi `PahamHukum-Uji-123` pada basis data lokal. Kata sandi akun yang sama di proyek Supabase yang di-hosting dibagikan lewat grup tim.
 
 | Email                              | Peran                   |
 | :--------------------------------- | :---------------------- |
