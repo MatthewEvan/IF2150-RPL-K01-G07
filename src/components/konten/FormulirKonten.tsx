@@ -14,6 +14,7 @@ import {
 } from "@/lib/controllers/kontrolPenyusunanKonten";
 import type { PilihanKelompok } from "@/lib/models/kelompokKasus";
 import type { RangkumanKasus } from "@/lib/models/rangkumanKasus";
+import useJagaSesi from "@/components/panel/useJagaSesi";
 import PanelStatusKonten from "./PanelStatusKonten";
 
 type FormulirKontenProps = {
@@ -44,6 +45,7 @@ export default function FormulirKonten({
   const [galatBuat, setGalatBuat] = useState<string>();
   const [sedangMembuat, mulaiMembuat] = useTransition();
   const [sedangMenyimpan, mulaiMenyimpan] = useTransition();
+  const jagaSesi = useJagaSesi();
 
   const kelompokTerpilih = daftarKelompok.find(
     (kelompok) => String(kelompok.idKelompok) === idKelompok,
@@ -87,7 +89,7 @@ export default function FormulirKonten({
   }
 
   return (
-    <form onSubmit={simpan} className="flex flex-col gap-6">
+    <form onSubmit={simpan} onInput={jagaSesi} className="flex flex-col gap-6">
       <header>
         <p className="text-xs font-semibold tracking-wider text-ink-muted uppercase">
           Penyusunan konten
