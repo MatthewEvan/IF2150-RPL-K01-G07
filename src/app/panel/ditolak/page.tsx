@@ -1,4 +1,4 @@
-import Link from "next/link";
+import TombolTautan from "@/components/ui/TombolTautan";
 
 export default function HalamanAksesDitolak() {
   return (
@@ -7,12 +7,9 @@ export default function HalamanAksesDitolak() {
       <p className="mt-2 text-ink-muted">
         Halaman tersebut tidak tersedia untuk peran akun Anda.
       </p>
-      <Link
-        href="/masuk"
-        className="mt-4 inline-block font-medium text-link underline"
-      >
+      <TombolTautan href="/masuk" varian="secondary" className="mt-4">
         Masuk dengan akun lain
-      </Link>
+      </TombolTautan>
     </section>
   );
 }
