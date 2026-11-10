@@ -1,7 +1,11 @@
 import KartuHasilPencarian from "@/components/pencarian/KartuHasilPencarian";
 import KolomPencarian from "@/components/pencarian/KolomPencarian";
 import KotakDisclaimerPencarian from "@/components/pencarian/KotakDisclaimerPencarian";
-import { cariKasus } from "@/lib/controllers/kontrolPencarianKataKunci";
+import TidakDitemukanPencarian from "@/components/pencarian/TidakDitemukanPencarian";
+import {
+  cariKasus,
+  sarankanBidangLain,
+} from "@/lib/controllers/kontrolPencarianKataKunci";
 
 export default async function HalamanPencarianKataKunci({
   searchParams,
@@ -16,6 +20,8 @@ export default async function HalamanPencarianKataKunci({
         : "";
   const kataKunciRapi = kataKunci.trim();
   const daftarHasil = kataKunciRapi ? await cariKasus(kataKunciRapi) : [];
+  const saranBidang =
+    kataKunciRapi && daftarHasil.length === 0 ? await sarankanBidangLain() : [];
 
   return (
     <main className="mx-auto flex w-full max-w-180 flex-col gap-6 px-5 pt-4 pb-12 md:pt-8 md:pb-16">
@@ -41,7 +47,7 @@ export default async function HalamanPencarianKataKunci({
           <p className="text-sm text-ink-muted">
             {daftarHasil.length} situasi cocok dengan “{kataKunciRapi}”
           </p>
-          {daftarHasil.length > 0 && (
+          {daftarHasil.length > 0 ? (
             <ul className="flex flex-col gap-3">
               {daftarHasil.map((hasil) => (
                 <li key={hasil.idKelompok}>
@@ -49,6 +55,11 @@ export default async function HalamanPencarianKataKunci({
                 </li>
               ))}
             </ul>
+          ) : (
+            <TidakDitemukanPencarian
+              kataKunci={kataKunciRapi}
+              saranBidang={saranBidang}
+            />
           )}
         </section>
       )}

@@ -1,11 +1,16 @@
 import {
+  ambilSemuaBidang,
+  cekAktif,
+  type BidangHukum,
+} from "@/lib/models/bidangHukum";
+import {
   cariKasusDisetujui,
   rapikanKataKunci,
   type HasilPencarianKasus,
 } from "@/lib/models/pencarian";
 import { buatClientServer } from "@/lib/supabase/server";
 
-export type { HasilPencarianKasus };
+export type { BidangHukum, HasilPencarianKasus };
 
 /**
  * C22 KontrolPencarianKataKunci.cariKasus(kataKunci) pada DPPL (Algo-032).
@@ -23,4 +28,15 @@ export async function cariKasus(
 
   const supabase = await buatClientServer();
   return cariKasusDisetujui(supabase, kunci);
+}
+
+/**
+ * C22 KontrolPencarianKataKunci.sarankanBidangLain() pada DPPL (Algo-033).
+ * Mengembalikan seluruh bidang hukum yang aktif (cekAktif() === true)
+ * sebagai saran ketika pencarian kata kunci tidak menemukan hasil (KF07).
+ */
+export async function sarankanBidangLain(): Promise<BidangHukum[]> {
+  const supabase = await buatClientServer();
+  const daftarBidang = await ambilSemuaBidang(supabase);
+  return daftarBidang.filter(cekAktif);
 }
