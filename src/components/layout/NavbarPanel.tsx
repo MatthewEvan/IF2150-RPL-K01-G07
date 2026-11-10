@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { logout } from "@/lib/controllers/kontrolAutentikasi";
 import { PERAN, type Peran } from "@/lib/models/akun";
 import NavbarDasar from "./NavbarDasar";
@@ -38,12 +39,9 @@ export default function NavbarPanel({ peran }: { peran: Peran }) {
       }
       aksi={
         <form action={logout}>
-          <button
-            type="submit"
-            className="rounded-pill border border-line-strong px-6 py-2.5 text-sm font-semibold text-brand hover:bg-surface-raised-hover"
-          >
+          <Button type="submit" varian="secondary">
             Keluar
-          </button>
+          </Button>
         </form>
       }
     />

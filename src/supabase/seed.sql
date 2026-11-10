@@ -96,7 +96,7 @@ select setval(pg_get_serial_sequence('public.rangkuman_kasus', 'id_rangkuman'), 
 
 insert into public.langkah_penyelesaian (id_rangkuman, nomor, deskripsi, tujuan, dokumen_diperlukan, tenggat) values
   (1, 1, 'Kirim surat penagihan kepada pemberi kerja.', 'Membuat bukti tertulis penagihan.', '{"Perjanjian kerja","Slip gaji"}', null),
-  (1, 2, 'Ajukan perundingan bipartit.', 'Mencari penyelesaian bersama.', '{"Surat penagihan"}', '2026-12-31'),
+  (1, 2, 'Ajukan perundingan bipartit.', 'Mencari penyelesaian bersama.', '{"Surat penagihan"}', '14 hari kerja setelah surat penagihan dikirim'),
   (2, 1, 'Sampaikan keluhan tertulis kepada penjual.', 'Memberi kesempatan penyelesaian.', '{"Bukti pembelian","Foto barang"}', null),
   (3, 1, 'Hubungi layanan darurat terdekat.', 'Memastikan keselamatan korban.', '{"Kartu identitas"}', null),
   (4, 1, 'Minta rincian hak akhir kepada pemberi kerja.', 'Mengetahui perhitungan yang dipakai.', '{"Surat pemberhentian"}', null),
