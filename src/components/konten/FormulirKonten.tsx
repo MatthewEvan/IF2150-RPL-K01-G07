@@ -59,7 +59,7 @@ export default function FormulirKonten({
     ? rangkuman.daftarArtikel
     : ARTIKEL_KOSONG;
 
-  let keterangan = "Pilih kelompok kasus untuk mulai menyusun draf";
+  let keterangan = "Pilih kelompok kasus, lalu klik Mulai menulis";
   if (rangkuman && !bisaDiubah) {
     keterangan = `Konten berstatus ${status} tidak bisa diubah`;
   } else if (hasil?.berhasil) {
@@ -70,10 +70,14 @@ export default function FormulirKonten({
 
   function pilihKelompok(nilai: string) {
     setIdKelompok(nilai);
-    if (rangkuman || !nilai) return;
+    setGalatBuat(undefined);
+  }
+
+  function mulaiMenulis() {
+    if (rangkuman || !idKelompok) return;
     setGalatBuat(undefined);
     mulaiMembuat(async () => {
-      const hasilBuat = await buatDraf(Number(nilai));
+      const hasilBuat = await buatDraf(Number(idKelompok));
       if (hasilBuat) setGalatBuat(hasilBuat.galat);
     });
   }
@@ -108,31 +112,37 @@ export default function FormulirKonten({
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="flex flex-col gap-4">
           <Card judul="Kasus">
-            <Select
-              label="Kelompok kasus"
-              name="idKelompok"
-              wajib
-              value={idKelompok}
-              onChange={(event) => pilihKelompok(event.target.value)}
-              disabled={Boolean(rangkuman) || sedangMembuat}
-              petunjuk={
-                rangkuman
-                  ? "Kelompok kasus tidak bisa diganti setelah draf dibuat."
-                  : sedangMembuat
-                    ? "Membuat draf…"
-                    : undefined
-              }
-              galat={galatBuat}
-            >
-              <option value="" disabled>
-                Pilih kelompok kasus
-              </option>
-              {daftarKelompok.map((kelompok) => (
-                <option key={kelompok.idKelompok} value={kelompok.idKelompok}>
-                  {kelompok.namaBidang} · {kelompok.judulUmum}
+            <div className="flex flex-col gap-4">
+              <Select
+                label="Kelompok kasus"
+                name="idKelompok"
+                wajib
+                value={idKelompok}
+                onChange={(event) => pilihKelompok(event.target.value)}
+                disabled={Boolean(rangkuman) || sedangMembuat}
+                petunjuk="Kelompok kasus tidak bisa diganti setelah draf dibuat."
+                galat={galatBuat}
+              >
+                <option value="" disabled>
+                  Pilih kelompok kasus
                 </option>
-              ))}
-            </Select>
+                {daftarKelompok.map((kelompok) => (
+                  <option key={kelompok.idKelompok} value={kelompok.idKelompok}>
+                    {kelompok.namaBidang} · {kelompok.judulUmum}
+                  </option>
+                ))}
+              </Select>
+              {rangkuman ? null : (
+                <Button
+                  type="button"
+                  className="self-start"
+                  onClick={mulaiMenulis}
+                  disabled={!idKelompok || sedangMembuat}
+                >
+                  {sedangMembuat ? "Membuat draf…" : "Mulai menulis"}
+                </Button>
+              )}
+            </div>
           </Card>
 
           <fieldset
