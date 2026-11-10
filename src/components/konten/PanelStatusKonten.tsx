@@ -1,5 +1,12 @@
-import Badge from "@/components/ui/Badge";
+import Badge, { type StatusKonten } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+
+type PanelStatusKontenProps = {
+  status: StatusKonten;
+  bisaDisimpan: boolean;
+  sedangMenyimpan: boolean;
+  galat?: string;
+};
 
 function IkonKirim() {
   return (
@@ -19,18 +26,28 @@ function IkonKirim() {
   );
 }
 
-export default function PanelStatusKonten() {
+export default function PanelStatusKonten({
+  status,
+  bisaDisimpan,
+  sedangMenyimpan,
+  galat,
+}: PanelStatusKontenProps) {
   return (
     <aside className="flex flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6 shadow-sm lg:sticky lg:top-6">
       <div className="flex flex-col gap-2">
         <p className="text-xs font-semibold tracking-wider text-ink-muted uppercase">
           Status konten
         </p>
-        <Badge status="Draft" className="self-start" />
+        <Badge status={status} className="self-start" />
         <p className="text-sm text-ink-muted">
           Konten baru tampil untuk publik setelah disetujui Administrator.
         </p>
       </div>
+      {galat ? (
+        <p role="alert" className="text-sm font-medium text-danger">
+          {galat}
+        </p>
+      ) : null}
       <div className="flex flex-col gap-2">
         <Button
           type="submit"
@@ -38,8 +55,9 @@ export default function PanelStatusKonten() {
           value="simpan"
           varian="secondary"
           className="w-full"
+          disabled={!bisaDisimpan || sedangMenyimpan}
         >
-          Simpan draf
+          {sedangMenyimpan ? "Menyimpan…" : "Simpan draf"}
         </Button>
         <Button
           type="submit"
@@ -47,6 +65,7 @@ export default function PanelStatusKonten() {
           value="ajukan"
           ikonKiri={<IkonKirim />}
           className="w-full"
+          disabled
         >
           Ajukan untuk ditinjau
         </Button>

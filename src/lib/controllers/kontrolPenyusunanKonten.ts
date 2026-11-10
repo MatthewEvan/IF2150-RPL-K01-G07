@@ -5,13 +5,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { StatusKonten } from "@/components/ui/Badge";
 import { PERAN, cariAkun } from "@/lib/models/akun";
-import { gantiDaftarArtikel } from "@/lib/models/artikel";
-import { gantiChecklist } from "@/lib/models/checklist";
-import { gantiDaftarLangkah } from "@/lib/models/langkahPenyelesaian";
 import {
   ambilRangkumanMilik,
   buatRangkuman,
-  simpanIsiRangkuman,
+  simpanDraf as simpanDrafRangkuman,
 } from "@/lib/models/rangkumanKasus";
 import { simpanRiwayat } from "@/lib/models/riwayatStatus";
 import { buatClientServer } from "@/lib/supabase/server";
@@ -84,15 +81,12 @@ export async function simpanDraf(
     };
   }
 
-  const hasil = bacaDataKonten(dataKonten);
-  if (!hasil.berhasil) return hasil;
-  const { daftarLangkah, daftarDokumen, daftarArtikel, ...isi } = hasil.data;
-
   try {
-    await simpanIsiRangkuman(supabase, idRangkuman, isi);
-    await gantiDaftarLangkah(supabase, idRangkuman, daftarLangkah);
-    await gantiChecklist(supabase, idRangkuman, daftarDokumen);
-    await gantiDaftarArtikel(supabase, idRangkuman, daftarArtikel);
+    await simpanDrafRangkuman(
+      supabase,
+      idRangkuman,
+      bacaDataKonten(dataKonten),
+    );
   } catch {
     return { berhasil: false, galat: "Draf gagal disimpan. Coba lagi." };
   }

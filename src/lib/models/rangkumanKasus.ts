@@ -9,15 +9,18 @@ export type IsiRangkuman = {
   poinPertimbangan: string;
 };
 
-export type RangkumanKasus = IsiRangkuman & {
+export type DataKonten = IsiRangkuman & {
+  daftarLangkah: LangkahPenyelesaian[];
+  daftarDokumen: string[];
+  daftarArtikel: Artikel[];
+};
+
+export type RangkumanKasus = DataKonten & {
   idRangkuman: number;
   idKelompok: number;
   judulUmum: string;
   status: StatusKonten;
   catatanRevisi: string | null;
-  daftarLangkah: LangkahPenyelesaian[];
-  daftarDokumen: string[];
-  daftarArtikel: Artikel[];
 };
 
 type BarisRangkuman = {
@@ -104,18 +107,19 @@ export async function ambilRangkumanMilik(
   };
 }
 
-export async function simpanIsiRangkuman(
+export async function simpanDraf(
   supabase: SupabaseClient,
   idRangkuman: number,
-  isi: IsiRangkuman,
+  data: DataKonten,
 ): Promise<void> {
-  const { error } = await supabase
-    .from("rangkuman_kasus")
-    .update({
-      inti_masalah: isi.intiMasalah,
-      hak: isi.hak,
-      poin_pertimbangan: isi.poinPertimbangan,
-    })
-    .eq("id_rangkuman", idRangkuman);
+  const { error } = await supabase.rpc("simpan_draf", {
+    p_id_rangkuman: idRangkuman,
+    p_inti_masalah: data.intiMasalah,
+    p_hak: data.hak,
+    p_poin_pertimbangan: data.poinPertimbangan,
+    p_langkah: data.daftarLangkah,
+    p_daftar_dokumen: data.daftarDokumen,
+    p_artikel: data.daftarArtikel,
+  });
   if (error) throw error;
 }
