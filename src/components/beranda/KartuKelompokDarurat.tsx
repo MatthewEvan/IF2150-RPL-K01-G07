@@ -4,7 +4,7 @@ import { useRef } from "react";
 import TombolTautan from "@/components/ui/TombolTautan";
 import { gabungGayaTombol } from "@/components/ui/gayaTombol";
 import type { KelompokKasus } from "@/lib/models/kelompokKasus";
-import { GAYA_KARTU_KELOMPOK } from "./KartuKelompokKasus";
+import { GAYA_KARTU_KELOMPOK } from "./gayaKartu";
 import { IkonPanahKanan, IkonTelepon } from "./ikon";
 
 type Props = {

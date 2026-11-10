@@ -6,6 +6,7 @@ import {
 } from "@/lib/models/bidangHukum";
 import {
   ambilKelompokDisetujui,
+  cekDarurat as cekKelompokDarurat,
   type KelompokKasus,
 } from "@/lib/models/kelompokKasus";
 import { buatClientServer } from "@/lib/supabase/server";
@@ -42,4 +43,12 @@ export async function ambilDaftarKelompok(
 ): Promise<KelompokKasus[]> {
   const daftarKelompok = await ambilKelompokTampil();
   return daftarKelompok.filter((kelompok) => kelompok.idBidang === idBidang);
+}
+
+export async function cekDarurat(idKelompok: number): Promise<boolean> {
+  const daftarKelompok = await ambilKelompokTampil();
+  const kelompok = daftarKelompok.find(
+    (item) => item.idKelompok === idKelompok,
+  );
+  return kelompok ? cekKelompokDarurat(kelompok) : false;
 }
