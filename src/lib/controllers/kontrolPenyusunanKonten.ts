@@ -11,6 +11,12 @@ import {
   simpanDraf as simpanDrafRangkuman,
 } from "@/lib/models/rangkumanKasus";
 import { simpanRiwayat } from "@/lib/models/riwayatStatus";
+import {
+  ambilDaftarTemplat,
+  perbaruiVersi,
+  validasiUnggahan,
+  type TemplatDokumen,
+} from "@/lib/models/templatDokumen";
 import { buatClientServer } from "@/lib/supabase/server";
 import { bacaDataKonten, bisaDisunting } from "./aturanPenyusunanKonten";
 
@@ -19,7 +25,13 @@ export type HasilBuatDraf = { galat: string };
 export type HasilSimpanDraf =
   { berhasil: true; waktuSimpan: string } | { berhasil: false; galat: string };
 
+export type HasilLampirkanTemplat =
+  | { berhasil: true; templat: TemplatDokumen }
+  | { berhasil: false; galat: string };
+
 const GALAT_NONAKTIF = "Akun Anda tidak aktif. Hubungi Administrator.";
+const GALAT_UNGGAH =
+  "Berkas harus berformat PDF atau DOCX dan berukuran paling besar 5 MB.";
 
 async function ambilKuratorAktif(supabase: SupabaseClient) {
   const {
@@ -30,6 +42,25 @@ async function ambilKuratorAktif(supabase: SupabaseClient) {
   const akun = await cariAkun(supabase, user.id);
   if (!akun || akun.peran !== PERAN.KURATOR || !akun.statusAktif) return null;
   return akun;
+}
+
+async function periksaKontenBisaDiubah(
+  supabase: SupabaseClient,
+  idRangkuman: number,
+): Promise<string | null> {
+  const kurator = await ambilKuratorAktif(supabase);
+  if (!kurator) return GALAT_NONAKTIF;
+
+  const rangkuman = await ambilRangkumanMilik(
+    supabase,
+    idRangkuman,
+    kurator.idAkun,
+  );
+  if (!rangkuman) return "Konten tidak ditemukan.";
+  if (!bisaDisunting(rangkuman.status)) {
+    return `Konten berstatus ${rangkuman.status} tidak bisa diubah.`;
+  }
+  return null;
 }
 
 async function catatRiwayat(
@@ -63,23 +94,8 @@ export async function simpanDraf(
   dataKonten: FormData,
 ): Promise<HasilSimpanDraf> {
   const supabase = await buatClientServer();
-  const kurator = await ambilKuratorAktif(supabase);
-  if (!kurator) return { berhasil: false, galat: GALAT_NONAKTIF };
-
-  const rangkuman = await ambilRangkumanMilik(
-    supabase,
-    idRangkuman,
-    kurator.idAkun,
-  );
-  if (!rangkuman) {
-    return { berhasil: false, galat: "Konten tidak ditemukan." };
-  }
-  if (!bisaDisunting(rangkuman.status)) {
-    return {
-      berhasil: false,
-      galat: `Konten berstatus ${rangkuman.status} tidak bisa diubah.`,
-    };
-  }
+  const galat = await periksaKontenBisaDiubah(supabase, idRangkuman);
+  if (galat) return { berhasil: false, galat };
 
   try {
     await simpanDrafRangkuman(
@@ -93,4 +109,38 @@ export async function simpanDraf(
 
   revalidatePath(`/panel/kurator/konten/${idRangkuman}`);
   return { berhasil: true, waktuSimpan: new Date().toISOString() };
+}
+
+export async function lampirkanTemplat(
+  idRangkuman: number,
+  data: FormData,
+): Promise<HasilLampirkanTemplat> {
+  const berkas = data.get("templat");
+  if (!(berkas instanceof File) || !validasiUnggahan(berkas)) {
+    return { berhasil: false, galat: GALAT_UNGGAH };
+  }
+
+  const supabase = await buatClientServer();
+  const galat = await periksaKontenBisaDiubah(supabase, idRangkuman);
+  if (galat) return { berhasil: false, galat };
+
+  try {
+    const daftarTemplat = await ambilDaftarTemplat(supabase, idRangkuman);
+    const templatLama =
+      daftarTemplat.find((templat) => templat.namaBerkas === berkas.name) ??
+      null;
+    const templat = await perbaruiVersi(
+      supabase,
+      idRangkuman,
+      templatLama,
+      berkas,
+    );
+    revalidatePath(`/panel/kurator/konten/${idRangkuman}`);
+    return { berhasil: true, templat };
+  } catch {
+    return {
+      berhasil: false,
+      galat: "Templat gagal diunggah. Templat sebelumnya tetap dipakai.",
+    };
+  }
 }
