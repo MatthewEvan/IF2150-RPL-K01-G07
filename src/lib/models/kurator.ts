@@ -1,6 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { StatusKonten } from "@/components/ui/Badge";
 
+export type RiwayatStatusKonten = {
+  status: StatusKonten;
+  /** ISO 8601 waktu perubahan status. */
+  waktu: string;
+};
+
 /** Satu baris pada layar Daftar Konten Kurator (I-06). */
 export type KontenKurator = {
   idRangkuman: number;
@@ -10,6 +16,8 @@ export type KontenKurator = {
   /** ISO 8601 dari riwayat status terakhir; null bila belum ada riwayat. */
   diperbarui: string | null;
   catatanRevisi: string | null;
+  /** Riwayat status dari yang terlama ke yang terbaru. */
+  riwayat: RiwayatStatusKonten[];
 };
 
 type BarisKonten = {
@@ -20,16 +28,32 @@ type BarisKonten = {
     judul_umum: string;
     bidang_hukum: { nama: string } | null;
   } | null;
-  riwayat_status: { waktu: string }[] | null;
+  riwayat_status: RiwayatStatusKonten[] | null;
 };
 
 /** Waktu riwayat terbaru sebagai penanda "diperbarui". */
-function waktuTerbaru(riwayat: { waktu: string }[] | null): string | null {
+function waktuTerbaru(riwayat: RiwayatStatusKonten[] | null): string | null {
   if (!riwayat || riwayat.length === 0) return null;
   return riwayat.reduce(
     (terbaru, baris) => (baris.waktu > terbaru ? baris.waktu : terbaru),
     riwayat[0].waktu,
   );
+}
+
+/** Mengurutkan riwayat dari yang terlama agar terbaca sebagai jejak status. */
+export function urutkanRiwayat(
+  riwayat: RiwayatStatusKonten[],
+): RiwayatStatusKonten[] {
+  return [...riwayat].sort((a, b) => a.waktu.localeCompare(b.waktu));
+}
+
+/** Mengambil maksimal `maks` status terakhir untuk tampilan riwayat singkat. */
+export function ringkasRiwayat(
+  riwayat: RiwayatStatusKonten[],
+  maks = 3,
+): RiwayatStatusKonten[] {
+  if (riwayat.length <= maks) return [...riwayat];
+  return riwayat.slice(riwayat.length - maks);
 }
 
 /** Mockup I-06: "diurutkan dari yang terakhir diperbarui". */
@@ -58,19 +82,23 @@ export async function ambilDaftarKonten(
     .select(
       `id_rangkuman, status, catatan_revisi,
        kelompok_kasus ( judul_umum, bidang_hukum ( nama ) ),
-       riwayat_status ( waktu )`,
+       riwayat_status ( status, waktu )`,
     )
     .eq("id_kurator", idKurator);
   if (error) throw error;
 
-  const daftar = (data as unknown as BarisKonten[]).map((baris) => ({
-    idRangkuman: baris.id_rangkuman,
-    judul: baris.kelompok_kasus?.judul_umum ?? "Tanpa judul",
-    bidang: baris.kelompok_kasus?.bidang_hukum?.nama ?? "—",
-    status: baris.status,
-    diperbarui: waktuTerbaru(baris.riwayat_status),
-    catatanRevisi: baris.catatan_revisi,
-  }));
+  const daftar = (data as unknown as BarisKonten[]).map((baris) => {
+    const riwayat = urutkanRiwayat(baris.riwayat_status ?? []);
+    return {
+      idRangkuman: baris.id_rangkuman,
+      judul: baris.kelompok_kasus?.judul_umum ?? "Tanpa judul",
+      bidang: baris.kelompok_kasus?.bidang_hukum?.nama ?? "—",
+      status: baris.status,
+      diperbarui: waktuTerbaru(riwayat),
+      catatanRevisi: baris.catatan_revisi,
+      riwayat,
+    };
+  });
 
   return urutkanKonten(daftar);
 }
