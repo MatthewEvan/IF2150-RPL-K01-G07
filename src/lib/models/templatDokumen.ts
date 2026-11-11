@@ -128,3 +128,21 @@ export async function perbaruiVersi(
   }
   return keTemplat(data);
 }
+
+export async function hapusTemplat(
+  supabase: SupabaseClient,
+  templat: TemplatDokumen,
+) {
+  const { data, error } = await supabase
+    .from("templat_dokumen")
+    .delete()
+    .eq("id_templat", templat.idTemplat)
+    .eq("id_rangkuman", templat.idRangkuman)
+    .select("id_templat");
+  if (error) throw error;
+  if (data.length === 0) throw new Error("Templat tidak terhapus");
+
+  if (templat.lokasiBerkas) {
+    await supabase.storage.from(BUCKET_TEMPLAT).remove([templat.lokasiBerkas]);
+  }
+}

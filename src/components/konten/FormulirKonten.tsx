@@ -10,6 +10,7 @@ import Textarea from "@/components/ui/Textarea";
 import { bisaDisunting } from "@/lib/controllers/aturanPenyusunanKonten";
 import {
   buatDraf,
+  type HasilHapusTemplat,
   type HasilLampirkanTemplat,
   type HasilSimpanDraf,
 } from "@/lib/controllers/kontrolPenyusunanKonten";
@@ -26,6 +27,7 @@ type FormulirKontenProps = {
   daftarTemplat?: TemplatDokumen[];
   aksiSimpan?: (data: FormData) => Promise<HasilSimpanDraf>;
   aksiLampirkan?: (data: FormData) => Promise<HasilLampirkanTemplat>;
+  aksiHapusTemplat?: (idTemplat: number) => Promise<HasilHapusTemplat>;
 };
 
 const LANGKAH_KOSONG = [{ nomor: 1, deskripsi: "", tujuan: "", tenggat: null }];
@@ -44,6 +46,7 @@ export default function FormulirKonten({
   daftarTemplat = [],
   aksiSimpan,
   aksiLampirkan,
+  aksiHapusTemplat,
 }: FormulirKontenProps) {
   const [idKelompok, setIdKelompok] = useState(
     rangkuman ? String(rangkuman.idKelompok) : "",
@@ -230,6 +233,7 @@ export default function FormulirKonten({
             <KartuTemplat
               daftarTemplat={daftarTemplat}
               aksiLampirkan={aksiLampirkan}
+              aksiHapus={aksiHapusTemplat}
             />
 
             <Card judul="Artikel pendukung">

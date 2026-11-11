@@ -13,6 +13,7 @@ import {
 import { simpanRiwayat } from "@/lib/models/riwayatStatus";
 import {
   ambilDaftarTemplat,
+  hapusTemplat as hapusTemplatDokumen,
   perbaruiVersi,
   validasiUnggahan,
   type TemplatDokumen,
@@ -28,6 +29,9 @@ export type HasilSimpanDraf =
 export type HasilLampirkanTemplat =
   | { berhasil: true; templat: TemplatDokumen }
   | { berhasil: false; galat: string };
+
+export type HasilHapusTemplat =
+  { berhasil: true } | { berhasil: false; galat: string };
 
 const GALAT_NONAKTIF = "Akun Anda tidak aktif. Hubungi Administrator.";
 const GALAT_UNGGAH =
@@ -143,4 +147,27 @@ export async function lampirkanTemplat(
       galat: "Templat gagal diunggah. Templat sebelumnya tetap dipakai.",
     };
   }
+}
+
+export async function hapusTemplat(
+  idRangkuman: number,
+  idTemplat: number,
+): Promise<HasilHapusTemplat> {
+  const supabase = await buatClientServer();
+  const galat = await periksaKontenBisaDiubah(supabase, idRangkuman);
+  if (galat) return { berhasil: false, galat };
+
+  try {
+    const daftarTemplat = await ambilDaftarTemplat(supabase, idRangkuman);
+    const templat = daftarTemplat.find(
+      (templat) => templat.idTemplat === idTemplat,
+    );
+    if (!templat) return { berhasil: false, galat: "Templat tidak ditemukan." };
+    await hapusTemplatDokumen(supabase, templat);
+  } catch {
+    return { berhasil: false, galat: "Templat gagal dihapus. Coba lagi." };
+  }
+
+  revalidatePath(`/panel/kurator/konten/${idRangkuman}`);
+  return { berhasil: true };
 }

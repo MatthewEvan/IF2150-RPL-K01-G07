@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import FormulirKonten from "@/components/konten/FormulirKonten";
 import {
+  hapusTemplat,
   lampirkanTemplat,
   simpanDraf,
 } from "@/lib/controllers/kontrolPenyusunanKonten";
@@ -40,6 +41,7 @@ export default async function HalamanSuntingKonten({
       daftarTemplat={daftarTemplat}
       aksiSimpan={simpanDraf.bind(null, idRangkuman)}
       aksiLampirkan={lampirkanTemplat.bind(null, idRangkuman)}
+      aksiHapusTemplat={hapusTemplat.bind(null, idRangkuman)}
     />
   );
 }

@@ -3,7 +3,10 @@
 import { useRef, useState, useTransition } from "react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
-import type { HasilLampirkanTemplat } from "@/lib/controllers/kontrolPenyusunanKonten";
+import type {
+  HasilHapusTemplat,
+  HasilLampirkanTemplat,
+} from "@/lib/controllers/kontrolPenyusunanKonten";
 import {
   validasiUnggahan,
   type TemplatDokumen,
@@ -12,6 +15,7 @@ import {
 type KartuTemplatProps = {
   daftarTemplat: TemplatDokumen[];
   aksiLampirkan?: (data: FormData) => Promise<HasilLampirkanTemplat>;
+  aksiHapus?: (idTemplat: number) => Promise<HasilHapusTemplat>;
 };
 
 const GALAT_UNGGAH =
@@ -38,18 +42,25 @@ function formatTanggal(tanggal: string) {
 export default function KartuTemplat({
   daftarTemplat,
   aksiLampirkan,
+  aksiHapus,
 }: KartuTemplatProps) {
   const inputBerkas = useRef<HTMLInputElement>(null);
   const [daftar, setDaftar] = useState(daftarTemplat);
   const [adaBerkas, setAdaBerkas] = useState(false);
   const [galat, setGalat] = useState<string>();
   const [pesanBerhasil, setPesanBerhasil] = useState<string>();
+  const [idDikonfirmasi, setIdDikonfirmasi] = useState<number | null>(null);
   const [sedangMengunggah, mulaiMengunggah] = useTransition();
+  const [sedangMenghapus, mulaiMenghapus] = useTransition();
+
+  function bersihkanPesan() {
+    setGalat(undefined);
+    setPesanBerhasil(undefined);
+  }
 
   function pilihBerkas() {
     setAdaBerkas(Boolean(inputBerkas.current?.files?.length));
-    setGalat(undefined);
-    setPesanBerhasil(undefined);
+    bersihkanPesan();
   }
 
   function unggah() {
@@ -82,6 +93,27 @@ export default function KartuTemplat({
     });
   }
 
+  function mintaKonfirmasi(idTemplat: number) {
+    bersihkanPesan();
+    setIdDikonfirmasi(idTemplat);
+  }
+
+  function hapus(templat: TemplatDokumen) {
+    if (!aksiHapus) return;
+    mulaiMenghapus(async () => {
+      const hasil = await aksiHapus(templat.idTemplat);
+      setIdDikonfirmasi(null);
+      if (!hasil.berhasil) {
+        setGalat(hasil.galat);
+        return;
+      }
+      setDaftar((sebelumnya) =>
+        sebelumnya.filter((item) => item.idTemplat !== templat.idTemplat),
+      );
+      setPesanBerhasil(`${templat.namaBerkas} dihapus.`);
+    });
+  }
+
   return (
     <Card judul="Templat surat">
       <div className="flex flex-col gap-4">
@@ -92,15 +124,62 @@ export default function KartuTemplat({
             {daftar.map((templat) => (
               <li
                 key={templat.idTemplat}
-                className="rounded-lg border border-line px-4 py-3"
+                className="flex flex-col gap-3 rounded-lg border border-line px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
               >
-                <p className="text-sm font-semibold break-all text-ink">
-                  {templat.namaBerkas}
-                </p>
-                <p className="text-xs text-ink-muted">
-                  {templat.format} · {formatUkuran(templat.ukuran)} · versi{" "}
-                  {templat.versi} · {formatTanggal(templat.tanggalPembaruan)}
-                </p>
+                {idDikonfirmasi === templat.idTemplat ? (
+                  <>
+                    <p className="text-sm break-all text-ink">
+                      Hapus{" "}
+                      <span className="font-semibold">
+                        {templat.namaBerkas}
+                      </span>
+                      ?
+                    </p>
+                    <div className="flex shrink-0 gap-2">
+                      <Button
+                        varian="danger"
+                        ukuran="sm"
+                        onClick={() => hapus(templat)}
+                        disabled={sedangMenghapus}
+                      >
+                        {sedangMenghapus ? "Menghapus…" : "Ya, hapus"}
+                      </Button>
+                      <Button
+                        varian="ghost"
+                        ukuran="sm"
+                        onClick={() => setIdDikonfirmasi(null)}
+                        disabled={sedangMenghapus}
+                      >
+                        Batal
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold break-all text-ink">
+                        {templat.namaBerkas}
+                      </p>
+                      <p className="text-xs text-ink-muted">
+                        {templat.format} · {formatUkuran(templat.ukuran)} ·
+                        versi {templat.versi} ·{" "}
+                        {formatTanggal(templat.tanggalPembaruan)}
+                      </p>
+                    </div>
+                    <Button
+                      varian="ghost"
+                      ukuran="sm"
+                      className="shrink-0 self-start text-danger! hover:bg-danger-soft! sm:self-auto"
+                      onClick={() => mintaKonfirmasi(templat.idTemplat)}
+                      disabled={
+                        !aksiHapus || sedangMenghapus || sedangMengunggah
+                      }
+                      aria-label={`Hapus ${templat.namaBerkas}`}
+                    >
+                      Hapus
+                    </Button>
+                  </>
+                )}
               </li>
             ))}
           </ul>
@@ -127,7 +206,12 @@ export default function KartuTemplat({
               ukuran="sm"
               className="self-start sm:self-auto"
               onClick={unggah}
-              disabled={!aksiLampirkan || !adaBerkas || sedangMengunggah}
+              disabled={
+                !aksiLampirkan ||
+                !adaBerkas ||
+                sedangMengunggah ||
+                sedangMenghapus
+              }
             >
               {sedangMengunggah ? "Mengunggah…" : "Unggah"}
             </Button>
