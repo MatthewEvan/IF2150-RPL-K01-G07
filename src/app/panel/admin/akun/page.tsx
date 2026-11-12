@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import DaftarKurator from "@/components/akun/DaftarKurator";
+import FormTambahKurator from "@/components/akun/FormTambahKurator";
 import { ambilDaftarKurator } from "@/lib/models/kurator";
 import { buatClientServer } from "@/lib/supabase/server";
 
@@ -27,6 +28,14 @@ export default async function HalamanPengelolaanAkun() {
         <section className="rounded-xl border border-line bg-surface-raised p-5 shadow-sm">
           <h2 className="text-lg font-semibold">Kurator terdaftar</h2>
           <DaftarKurator daftar={daftar} />
+        </section>
+
+        <section className="rounded-xl border border-line bg-surface-raised p-5 shadow-sm">
+          <p className="text-xs font-semibold tracking-wider text-ink-muted uppercase">
+            Akun baru
+          </p>
+          <h2 className="mt-1 text-lg font-semibold">Daftarkan kurator</h2>
+          <FormTambahKurator />
         </section>
       </div>
     </>

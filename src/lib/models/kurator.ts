@@ -102,3 +102,47 @@ export async function ambilDaftarKurator(
     }))
     .sort((a, b) => a.email.localeCompare(b.email));
 }
+
+/** Q-028: true jika email belum dipakai akun lain. */
+export async function cekEmailUnik(supabase: SupabaseClient, email: string) {
+  const { count, error } = await supabase
+    .from("akun")
+    .select("id_akun", { count: "exact", head: true })
+    .ilike("email", email.replace(/[\\%_]/g, "\\$&"));
+  if (error) throw error;
+  return count === 0;
+}
+
+/**
+ * Membuat akun Auth lalu profilnya (Q-029, Q-030). Supabase tidak menyediakan
+ * transaksi lintas Auth dan tabel, jadi akun Auth dihapus lagi jika profil gagal.
+ */
+export async function simpanKuratorBaru(
+  supabase: SupabaseClient,
+  email: string,
+  kataSandi: string,
+  idAdministrator: string,
+) {
+  const { data, error } = await supabase.auth.admin.createUser({
+    email,
+    password: kataSandi,
+    email_confirm: true,
+  });
+  if (error) throw error;
+
+  const idAkun = data.user.id;
+  const { error: galatAkun } = await supabase
+    .from("akun")
+    .insert({ id_akun: idAkun, email, peran: "Kurator" });
+  const { error: galatKurator } = galatAkun
+    ? { error: galatAkun }
+    : await supabase
+        .from("kurator")
+        .insert({ id_akun: idAkun, id_administrator: idAdministrator });
+
+  if (galatKurator) {
+    // akun ikut terhapus lewat on delete cascade ke auth.users.
+    await supabase.auth.admin.deleteUser(idAkun);
+    throw galatKurator;
+  }
+}
