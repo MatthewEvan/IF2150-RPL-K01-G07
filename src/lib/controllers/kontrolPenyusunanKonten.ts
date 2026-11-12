@@ -6,9 +6,12 @@ import { redirect } from "next/navigation";
 import type { StatusKonten } from "@/components/ui/Badge";
 import { PERAN, cariAkun } from "@/lib/models/akun";
 import {
+  ajukanRangkuman,
+  ambilIsianKosong,
   ambilRangkumanMilik,
   buatRangkuman,
   simpanDraf as simpanDrafRangkuman,
+  type IsianWajib,
 } from "@/lib/models/rangkumanKasus";
 import { simpanRiwayat } from "@/lib/models/riwayatStatus";
 import {
@@ -32,6 +35,10 @@ export type HasilLampirkanTemplat =
 
 export type HasilHapusTemplat =
   { berhasil: true } | { berhasil: false; galat: string };
+
+export type HasilAjukanKonten =
+  | { berhasil: true }
+  | { berhasil: false; galat: string; isianKosong: IsianWajib[] };
 
 const GALAT_NONAKTIF = "Akun Anda tidak aktif. Hubungi Administrator.";
 const GALAT_UNGGAH =
@@ -113,6 +120,50 @@ export async function simpanDraf(
 
   revalidatePath(`/panel/kurator/konten/${idRangkuman}`);
   return { berhasil: true, waktuSimpan: new Date().toISOString() };
+}
+
+export async function ajukanKonten(
+  idRangkuman: number,
+  dataKonten: FormData,
+): Promise<HasilAjukanKonten> {
+  const supabase = await buatClientServer();
+  const galat = await periksaKontenBisaDiubah(supabase, idRangkuman);
+  if (galat) return { berhasil: false, galat, isianKosong: [] };
+
+  const data = bacaDataKonten(dataKonten);
+  try {
+    await simpanDrafRangkuman(supabase, idRangkuman, data);
+  } catch {
+    return {
+      berhasil: false,
+      galat: "Konten gagal diajukan. Coba lagi.",
+      isianKosong: [],
+    };
+  }
+  revalidatePath(`/panel/kurator/konten/${idRangkuman}`);
+
+  const isianKosong = ambilIsianKosong(data);
+  if (isianKosong.length > 0) {
+    return {
+      berhasil: false,
+      galat: `Draf tersimpan, tetapi ${isianKosong.length} isian wajib belum lengkap. Lengkapi isian yang ditandai sebelum mengajukan.`,
+      isianKosong,
+    };
+  }
+
+  try {
+    await ajukanRangkuman(supabase, idRangkuman);
+  } catch {
+    return {
+      berhasil: false,
+      galat: "Konten gagal diajukan. Coba lagi.",
+      isianKosong: [],
+    };
+  }
+
+  revalidatePath("/panel/kurator/konten");
+  revalidatePath(`/panel/kurator/konten/${idRangkuman}`);
+  return { berhasil: true };
 }
 
 export async function lampirkanTemplat(
