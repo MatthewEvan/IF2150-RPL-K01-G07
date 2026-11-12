@@ -30,7 +30,15 @@ export default async function HalamanPengelolaanAkun() {
           <DaftarKurator daftar={daftar} />
         </section>
 
-        <section className="rounded-xl border border-line bg-surface-raised p-5 shadow-sm">
+        <aside className="rounded-lg bg-accent-soft p-4 lg:col-start-1">
+          <p className="font-semibold">Penonaktifan akun kurator</p>
+          <p className="mt-1">
+            Sesi kurator itu langsung berakhir dan ia tidak bisa masuk lagi.
+            Kontennya tetap tersimpan.
+          </p>
+        </aside>
+
+        <section className="rounded-xl border border-line bg-surface-raised p-5 shadow-sm lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <p className="text-xs font-semibold tracking-wider text-ink-muted uppercase">
             Akun baru
           </p>
