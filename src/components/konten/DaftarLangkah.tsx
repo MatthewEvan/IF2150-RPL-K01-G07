@@ -5,10 +5,13 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import type { LangkahPenyelesaian } from "@/lib/models/langkahPenyelesaian";
 import { IkonHapus, IkonNaik, IkonTambah, IkonTurun } from "./ikon";
+import { JudulWajib, PesanGalat } from "./TandaIsian";
 import useDaftarButir from "./useDaftarButir";
 
 type DaftarLangkahProps = {
+  id: string;
   daftarAwal: LangkahPenyelesaian[];
+  galat?: string;
 };
 
 const LANGKAH_KOSONG: LangkahPenyelesaian = {
@@ -18,7 +21,11 @@ const LANGKAH_KOSONG: LangkahPenyelesaian = {
   tenggat: null,
 };
 
-export default function DaftarLangkah({ daftarAwal }: DaftarLangkahProps) {
+export default function DaftarLangkah({
+  id,
+  daftarAwal,
+  galat,
+}: DaftarLangkahProps) {
   const { wadah, daftar, pengumuman, tambah, hapus, pindahkan } =
     useDaftarButir(
       daftarAwal.length ? daftarAwal : [LANGKAH_KOSONG],
@@ -26,8 +33,14 @@ export default function DaftarLangkah({ daftarAwal }: DaftarLangkahProps) {
     );
 
   return (
-    <Card judul="Langkah penyelesaian">
-      <div ref={wadah} className="flex flex-col gap-4">
+    <Card judul={<JudulWajib teks="Langkah penyelesaian" />}>
+      <div
+        ref={wadah}
+        id={id}
+        aria-describedby={galat ? `${id}-galat` : undefined}
+        className="flex flex-col gap-4"
+      >
+        <PesanGalat id={`${id}-galat`} galat={galat} />
         <ol className="flex flex-col gap-4">
           {daftar.map(({ kunci, isi }, indeks) => {
             const nomor = indeks + 1;

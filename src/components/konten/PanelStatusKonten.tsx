@@ -4,8 +4,11 @@ import Button from "@/components/ui/Button";
 type PanelStatusKontenProps = {
   status: StatusKonten;
   bisaDisimpan: boolean;
+  bisaDiajukan: boolean;
   sedangMenyimpan: boolean;
+  sedangMengajukan: boolean;
   galat?: string;
+  pesanBerhasil?: string;
 };
 
 function IkonKirim() {
@@ -29,9 +32,14 @@ function IkonKirim() {
 export default function PanelStatusKonten({
   status,
   bisaDisimpan,
+  bisaDiajukan,
   sedangMenyimpan,
+  sedangMengajukan,
   galat,
+  pesanBerhasil,
 }: PanelStatusKontenProps) {
+  const sedangBerjalan = sedangMenyimpan || sedangMengajukan;
+
   return (
     <aside className="flex flex-col gap-4 rounded-xl border border-line bg-surface-raised p-6 shadow-sm lg:sticky lg:top-6">
       <div className="flex flex-col gap-2">
@@ -48,6 +56,11 @@ export default function PanelStatusKonten({
           {galat}
         </p>
       ) : null}
+      {pesanBerhasil ? (
+        <p aria-live="polite" className="text-sm font-medium text-success">
+          {pesanBerhasil}
+        </p>
+      ) : null}
       <div className="flex flex-col gap-2">
         <Button
           type="submit"
@@ -55,7 +68,7 @@ export default function PanelStatusKonten({
           value="simpan"
           varian="secondary"
           className="w-full"
-          disabled={!bisaDisimpan || sedangMenyimpan}
+          disabled={!bisaDisimpan || sedangBerjalan}
         >
           {sedangMenyimpan ? "Menyimpan…" : "Simpan draf"}
         </Button>
@@ -65,9 +78,9 @@ export default function PanelStatusKonten({
           value="ajukan"
           ikonKiri={<IkonKirim />}
           className="w-full"
-          disabled
+          disabled={!bisaDiajukan || sedangBerjalan}
         >
-          Ajukan untuk ditinjau
+          {sedangMengajukan ? "Mengajukan…" : "Ajukan untuk ditinjau"}
         </Button>
       </div>
     </aside>

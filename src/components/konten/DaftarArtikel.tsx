@@ -5,23 +5,36 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import type { Artikel } from "@/lib/models/artikel";
 import { IkonHapus, IkonTambah } from "./ikon";
+import { JudulWajib, PesanGalat } from "./TandaIsian";
 import useDaftarButir from "./useDaftarButir";
 
 type DaftarArtikelProps = {
+  id: string;
   daftarAwal: Artikel[];
+  galat?: string;
 };
 
 const ARTIKEL_KOSONG: Artikel = { judul: "", tautanSumber: "" };
 
-export default function DaftarArtikel({ daftarAwal }: DaftarArtikelProps) {
+export default function DaftarArtikel({
+  id,
+  daftarAwal,
+  galat,
+}: DaftarArtikelProps) {
   const { wadah, daftar, pengumuman, tambah, hapus } = useDaftarButir(
     daftarAwal.length ? daftarAwal : [ARTIKEL_KOSONG],
     "Artikel",
   );
 
   return (
-    <Card judul="Artikel pendukung">
-      <div ref={wadah} className="flex flex-col gap-4">
+    <Card judul={<JudulWajib teks="Artikel pendukung" />}>
+      <div
+        ref={wadah}
+        id={id}
+        aria-describedby={galat ? `${id}-galat` : undefined}
+        className="flex flex-col gap-4"
+      >
+        <PesanGalat id={`${id}-galat`} galat={galat} />
         {daftar.length === 0 ? (
           <p className="text-sm text-ink-muted">Belum ada artikel.</p>
         ) : (

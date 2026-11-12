@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import { useEffect, useState, useTransition, type FormEvent } from "react";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -9,12 +9,13 @@ import Textarea from "@/components/ui/Textarea";
 import { bisaDisunting } from "@/lib/controllers/aturanPenyusunanKonten";
 import {
   buatDraf,
+  type HasilAjukanKonten,
   type HasilHapusTemplat,
   type HasilLampirkanTemplat,
   type HasilSimpanDraf,
 } from "@/lib/controllers/kontrolPenyusunanKonten";
 import type { PilihanKelompok } from "@/lib/models/kelompokKasus";
-import type { RangkumanKasus } from "@/lib/models/rangkumanKasus";
+import type { IsianWajib, RangkumanKasus } from "@/lib/models/rangkumanKasus";
 import type { TemplatDokumen } from "@/lib/models/templatDokumen";
 import useJagaSesi from "@/components/panel/useJagaSesi";
 import DaftarArtikel from "./DaftarArtikel";
@@ -27,9 +28,24 @@ type FormulirKontenProps = {
   rangkuman?: RangkumanKasus;
   daftarTemplat?: TemplatDokumen[];
   aksiSimpan?: (data: FormData) => Promise<HasilSimpanDraf>;
+  aksiAjukan?: (data: FormData) => Promise<HasilAjukanKonten>;
   aksiLampirkan?: (data: FormData) => Promise<HasilLampirkanTemplat>;
   aksiHapusTemplat?: (idTemplat: number) => Promise<HasilHapusTemplat>;
 };
+
+const PESAN_ISIAN_KOSONG: Record<IsianWajib, string> = {
+  intiMasalah: "Inti masalah wajib diisi.",
+  hak: "Hak kamu wajib diisi.",
+  poinPertimbangan: "Poin pertimbangan wajib diisi.",
+  langkah: "Isi minimal satu langkah, dan setiap langkah wajib punya isi.",
+  checklist: "Isi minimal satu dokumen yang perlu disiapkan.",
+  artikel:
+    "Tambahkan minimal satu artikel lengkap dengan judul dan tautan sumber.",
+};
+
+function idIsian(isian: IsianWajib) {
+  return `isian-${isian}`;
+}
 
 function formatJam(iso: string) {
   return new Date(iso).toLocaleTimeString("id-ID", {
@@ -43,6 +59,7 @@ export default function FormulirKonten({
   rangkuman,
   daftarTemplat = [],
   aksiSimpan,
+  aksiAjukan,
   aksiLampirkan,
   aksiHapusTemplat,
 }: FormulirKontenProps) {
@@ -53,7 +70,28 @@ export default function FormulirKonten({
   const [galatBuat, setGalatBuat] = useState<string>();
   const [sedangMembuat, mulaiMembuat] = useTransition();
   const [sedangMenyimpan, mulaiMenyimpan] = useTransition();
+  const [hasilAjukan, setHasilAjukan] = useState<HasilAjukanKonten | null>(
+    null,
+  );
+  const [sedangMengajukan, mulaiMengajukan] = useTransition();
   const jagaSesi = useJagaSesi();
+
+  const isianKosong =
+    hasilAjukan && !hasilAjukan.berhasil ? hasilAjukan.isianKosong : [];
+  const galatIsian = (isian: IsianWajib) =>
+    isianKosong.includes(isian) ? PESAN_ISIAN_KOSONG[isian] : undefined;
+
+  useEffect(() => {
+    if (!hasilAjukan || hasilAjukan.berhasil) return;
+    const [isianPertama] = hasilAjukan.isianKosong;
+    if (!isianPertama) return;
+    const wadah = document.getElementById(idIsian(isianPertama));
+    const sasaran = wadah?.matches("input, textarea")
+      ? wadah
+      : (wadah?.querySelector<HTMLElement>("input, textarea") ??
+        wadah?.querySelector<HTMLElement>('[data-aksi="tambah"]'));
+    sasaran?.focus();
+  }, [hasilAjukan]);
 
   const kelompokTerpilih = daftarKelompok.find(
     (kelompok) => String(kelompok.idKelompok) === idKelompok,
@@ -84,17 +122,34 @@ export default function FormulirKonten({
     });
   }
 
-  function simpan(event: FormEvent<HTMLFormElement>) {
+  function kirim(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!aksiSimpan || !bisaDiubah) return;
+    if (!bisaDiubah || sedangMenyimpan || sedangMengajukan) return;
     const data = new FormData(event.currentTarget);
+    const pengirim = (event.nativeEvent as SubmitEvent).submitter;
+
+    if (pengirim?.getAttribute("value") === "ajukan") {
+      if (!aksiAjukan) return;
+      setHasil(null);
+      mulaiMengajukan(async () => {
+        setHasilAjukan(await aksiAjukan(data));
+      });
+      return;
+    }
+
+    if (!aksiSimpan) return;
+    setHasilAjukan(null);
     mulaiMenyimpan(async () => {
       setHasil(await aksiSimpan(data));
     });
   }
 
+  let galatPanel: string | undefined;
+  if (hasilAjukan && !hasilAjukan.berhasil) galatPanel = hasilAjukan.galat;
+  else if (hasil && !hasil.berhasil) galatPanel = hasil.galat;
+
   return (
-    <form onSubmit={simpan} onInput={jagaSesi} className="flex flex-col gap-6">
+    <form onSubmit={kirim} onInput={jagaSesi} className="flex flex-col gap-6">
       <header>
         <p className="text-xs font-semibold tracking-wider text-ink-muted uppercase">
           Penyusunan konten
@@ -153,38 +208,50 @@ export default function FormulirKonten({
             <Card judul="Isi rangkuman">
               <div className="flex flex-col gap-5">
                 <Textarea
+                  id={idIsian("intiMasalah")}
                   label="Inti masalah"
                   name="intiMasalah"
                   petunjuk="2–3 paragraf dengan bahasa sehari-hari."
                   wajib
+                  galat={galatIsian("intiMasalah")}
                   defaultValue={rangkuman?.intiMasalah}
                 />
                 <Textarea
+                  id={idIsian("hak")}
                   label="Hak kamu"
                   name="hak"
                   petunjuk="Satu hak per baris, sertakan dasar hukumnya."
                   wajib
+                  galat={galatIsian("hak")}
                   defaultValue={rangkuman?.hak}
                 />
                 <Textarea
+                  id={idIsian("poinPertimbangan")}
                   label="Poin pertimbangan"
                   name="poinPertimbangan"
                   petunjuk="Perkiraan waktu dan kapan perlu pendamping profesional."
                   wajib
                   rows={3}
+                  galat={galatIsian("poinPertimbangan")}
                   defaultValue={rangkuman?.poinPertimbangan}
                 />
               </div>
             </Card>
 
-            <DaftarLangkah daftarAwal={rangkuman?.daftarLangkah ?? []} />
+            <DaftarLangkah
+              id={idIsian("langkah")}
+              daftarAwal={rangkuman?.daftarLangkah ?? []}
+              galat={galatIsian("langkah")}
+            />
 
             <Card judul="Daftar periksa dokumen">
               <Textarea
+                id={idIsian("checklist")}
                 label="Dokumen yang perlu disiapkan"
                 name="checklist"
                 petunjuk="Satu dokumen per baris."
                 wajib
+                galat={galatIsian("checklist")}
                 defaultValue={rangkuman?.daftarDokumen.join("\n")}
               />
             </Card>
@@ -195,15 +262,26 @@ export default function FormulirKonten({
               aksiHapus={aksiHapusTemplat}
             />
 
-            <DaftarArtikel daftarAwal={rangkuman?.daftarArtikel ?? []} />
+            <DaftarArtikel
+              id={idIsian("artikel")}
+              daftarAwal={rangkuman?.daftarArtikel ?? []}
+              galat={galatIsian("artikel")}
+            />
           </fieldset>
         </div>
 
         <PanelStatusKonten
           status={status}
           bisaDisimpan={bisaDiubah}
+          bisaDiajukan={bisaDiubah && Boolean(aksiAjukan)}
           sedangMenyimpan={sedangMenyimpan}
-          galat={hasil && !hasil.berhasil ? hasil.galat : undefined}
+          sedangMengajukan={sedangMengajukan}
+          galat={galatPanel}
+          pesanBerhasil={
+            hasilAjukan?.berhasil
+              ? "Konten diajukan dan masuk antrean peninjauan Administrator."
+              : undefined
+          }
         />
       </div>
     </form>

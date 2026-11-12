@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import FormulirKonten from "@/components/konten/FormulirKonten";
 import {
+  ajukanKonten,
   hapusTemplat,
   lampirkanTemplat,
   simpanDraf,
@@ -40,6 +41,7 @@ export default async function HalamanSuntingKonten({
       rangkuman={rangkuman}
       daftarTemplat={daftarTemplat}
       aksiSimpan={simpanDraf.bind(null, idRangkuman)}
+      aksiAjukan={ajukanKonten.bind(null, idRangkuman)}
       aksiLampirkan={lampirkanTemplat.bind(null, idRangkuman)}
       aksiHapusTemplat={hapusTemplat.bind(null, idRangkuman)}
     />
