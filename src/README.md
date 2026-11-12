@@ -183,11 +183,13 @@ npm test
 - Gunakan alias `@/` untuk mengimpor modul dari `src/` (misalnya `import { ... } from "@/lib/controllers/..."`).
 - Susun pengujian menggunakan blok `describe`, `it`, dan `expect` dari `vitest` dengan deskripsi berbahasa Indonesia yang menjelaskan perilaku yang diuji. Lihat `src/tests/contoh.test.ts` sebagai acuan struktur dan penamaan.
 
+Test autentikasi dan pengelolaan akun meniru Supabase, sehingga tidak memerlukan Docker maupun `.env.local`.
+
 ## Perintah Lain
 
-| Perintah         | Kegunaan                        |
-| :--------------- | :------------------------------ |
-| `npm test`       | Menjalankan seluruh unit test   |
-| `npm run lint`   | Memeriksa kode dengan ESLint    |
-| `npm run format` | Merapikan kode dengan Prettier  |
-| `npm run build`  | Membuat build produksi          |
+| Perintah         | Kegunaan                       |
+| :--------------- | :----------------------------- |
+| `npm test`       | Menjalankan seluruh unit test  |
+| `npm run lint`   | Memeriksa kode dengan ESLint   |
+| `npm run format` | Merapikan kode dengan Prettier |
+| `npm run build`  | Membuat build produksi         |
