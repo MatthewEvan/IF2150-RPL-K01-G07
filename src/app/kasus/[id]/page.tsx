@@ -66,7 +66,10 @@ export default async function HalamanRangkumanKasus({
       <BagianHak isi={rangkuman.hak} />
       <BagianLangkah daftarLangkah={rangkuman.daftarLangkah} />
       <BagianPertimbangan isi={rangkuman.poinPertimbangan} />
-      <BagianChecklist daftarDokumen={rangkuman.daftarDokumen} />
+      <BagianChecklist
+        idRangkuman={rangkuman.idRangkuman}
+        daftarDokumen={rangkuman.daftarDokumen}
+      />
       <BagianTemplat daftarTemplat={rangkuman.daftarTemplat} />
       <BagianBacaan daftarArtikel={rangkuman.daftarArtikel}>
         <DirektoriLBH
