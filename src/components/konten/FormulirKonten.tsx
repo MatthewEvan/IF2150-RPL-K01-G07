@@ -4,7 +4,6 @@ import { useState, useTransition, type FormEvent } from "react";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
-import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import { bisaDisunting } from "@/lib/controllers/aturanPenyusunanKonten";
@@ -18,6 +17,8 @@ import type { PilihanKelompok } from "@/lib/models/kelompokKasus";
 import type { RangkumanKasus } from "@/lib/models/rangkumanKasus";
 import type { TemplatDokumen } from "@/lib/models/templatDokumen";
 import useJagaSesi from "@/components/panel/useJagaSesi";
+import DaftarArtikel from "./DaftarArtikel";
+import DaftarLangkah from "./DaftarLangkah";
 import KartuTemplat from "./KartuTemplat";
 import PanelStatusKonten from "./PanelStatusKonten";
 
@@ -29,9 +30,6 @@ type FormulirKontenProps = {
   aksiLampirkan?: (data: FormData) => Promise<HasilLampirkanTemplat>;
   aksiHapusTemplat?: (idTemplat: number) => Promise<HasilHapusTemplat>;
 };
-
-const LANGKAH_KOSONG = [{ nomor: 1, deskripsi: "", tujuan: "", tenggat: null }];
-const ARTIKEL_KOSONG = [{ judul: "", tautanSumber: "" }];
 
 function formatJam(iso: string) {
   return new Date(iso).toLocaleTimeString("id-ID", {
@@ -62,12 +60,6 @@ export default function FormulirKonten({
   );
   const status = rangkuman?.status ?? "Draft";
   const bisaDiubah = rangkuman ? bisaDisunting(status) : false;
-  const daftarLangkah = rangkuman?.daftarLangkah.length
-    ? rangkuman.daftarLangkah
-    : LANGKAH_KOSONG;
-  const daftarArtikel = rangkuman?.daftarArtikel.length
-    ? rangkuman.daftarArtikel
-    : ARTIKEL_KOSONG;
 
   let keterangan = "Pilih kelompok kasus, lalu klik Mulai menulis";
   if (rangkuman && !bisaDiubah) {
@@ -185,40 +177,7 @@ export default function FormulirKonten({
               </div>
             </Card>
 
-            <Card judul="Langkah penyelesaian">
-              <div className="flex flex-col gap-5">
-                {daftarLangkah.map((langkah) => (
-                  <div key={langkah.nomor} className="flex flex-col gap-5">
-                    <Input
-                      label={`Langkah ${langkah.nomor}`}
-                      name="langkahDeskripsi"
-                      wajib
-                      defaultValue={langkah.deskripsi}
-                    />
-                    <Input
-                      label={`Keterangan langkah ${langkah.nomor} (opsional)`}
-                      name="langkahTujuan"
-                      petunjuk="Satu kalimat tentang tujuan langkah ini."
-                      defaultValue={langkah.tujuan}
-                    />
-                    <Input
-                      label={`Tenggat langkah ${langkah.nomor} (opsional)`}
-                      name="langkahTenggat"
-                      petunjuk="Contoh: 7 hari kerja setelah surat PHK diterima."
-                      defaultValue={langkah.tenggat ?? ""}
-                    />
-                  </div>
-                ))}
-                <Button
-                  type="button"
-                  varian="ghost"
-                  ukuran="sm"
-                  className="self-start"
-                >
-                  Tambah langkah
-                </Button>
-              </div>
-            </Card>
+            <DaftarLangkah daftarAwal={rangkuman?.daftarLangkah ?? []} />
 
             <Card judul="Daftar periksa dokumen">
               <Textarea
@@ -236,35 +195,7 @@ export default function FormulirKonten({
               aksiHapus={aksiHapusTemplat}
             />
 
-            <Card judul="Artikel pendukung">
-              <div className="flex flex-col gap-5">
-                {daftarArtikel.map((artikel, indeks) => (
-                  <div key={indeks} className="flex flex-col gap-5">
-                    <Input
-                      label={`Judul artikel ${indeks + 1}`}
-                      name="artikelJudul"
-                      defaultValue={artikel.judul}
-                    />
-                    <Input
-                      label={`Tautan sumber resmi ${indeks + 1}`}
-                      name="artikelTautan"
-                      type="url"
-                      placeholder="https://"
-                      petunjuk="Gunakan sumber resmi seperti JDIH."
-                      defaultValue={artikel.tautanSumber}
-                    />
-                  </div>
-                ))}
-                <Button
-                  type="button"
-                  varian="ghost"
-                  ukuran="sm"
-                  className="self-start"
-                >
-                  Tambah artikel
-                </Button>
-              </div>
-            </Card>
+            <DaftarArtikel daftarAwal={rangkuman?.daftarArtikel ?? []} />
           </fieldset>
         </div>
 
