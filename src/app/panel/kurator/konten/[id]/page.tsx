@@ -1,8 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import FormulirKonten from "@/components/konten/FormulirKonten";
-import { simpanDraf } from "@/lib/controllers/kontrolPenyusunanKonten";
+import {
+  hapusTemplat,
+  lampirkanTemplat,
+  simpanDraf,
+} from "@/lib/controllers/kontrolPenyusunanKonten";
 import { ambilPilihanKelompok } from "@/lib/models/kelompokKasus";
 import { ambilRangkumanMilik } from "@/lib/models/rangkumanKasus";
+import { ambilDaftarTemplat } from "@/lib/models/templatDokumen";
 import { buatClientServer } from "@/lib/supabase/server";
 
 type HalamanSuntingKontenProps = {
@@ -27,12 +32,16 @@ export default async function HalamanSuntingKonten({
     ambilPilihanKelompok(supabase),
   ]);
   if (!rangkuman) notFound();
+  const daftarTemplat = await ambilDaftarTemplat(supabase, idRangkuman);
 
   return (
     <FormulirKonten
       daftarKelompok={daftarKelompok}
       rangkuman={rangkuman}
+      daftarTemplat={daftarTemplat}
       aksiSimpan={simpanDraf.bind(null, idRangkuman)}
+      aksiLampirkan={lampirkanTemplat.bind(null, idRangkuman)}
+      aksiHapusTemplat={hapusTemplat.bind(null, idRangkuman)}
     />
   );
 }

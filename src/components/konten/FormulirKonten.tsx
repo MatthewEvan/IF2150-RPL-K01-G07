@@ -10,17 +10,24 @@ import Textarea from "@/components/ui/Textarea";
 import { bisaDisunting } from "@/lib/controllers/aturanPenyusunanKonten";
 import {
   buatDraf,
+  type HasilHapusTemplat,
+  type HasilLampirkanTemplat,
   type HasilSimpanDraf,
 } from "@/lib/controllers/kontrolPenyusunanKonten";
 import type { PilihanKelompok } from "@/lib/models/kelompokKasus";
 import type { RangkumanKasus } from "@/lib/models/rangkumanKasus";
+import type { TemplatDokumen } from "@/lib/models/templatDokumen";
 import useJagaSesi from "@/components/panel/useJagaSesi";
+import KartuTemplat from "./KartuTemplat";
 import PanelStatusKonten from "./PanelStatusKonten";
 
 type FormulirKontenProps = {
   daftarKelompok: PilihanKelompok[];
   rangkuman?: RangkumanKasus;
+  daftarTemplat?: TemplatDokumen[];
   aksiSimpan?: (data: FormData) => Promise<HasilSimpanDraf>;
+  aksiLampirkan?: (data: FormData) => Promise<HasilLampirkanTemplat>;
+  aksiHapusTemplat?: (idTemplat: number) => Promise<HasilHapusTemplat>;
 };
 
 const LANGKAH_KOSONG = [{ nomor: 1, deskripsi: "", tujuan: "", tenggat: null }];
@@ -36,7 +43,10 @@ function formatJam(iso: string) {
 export default function FormulirKonten({
   daftarKelompok,
   rangkuman,
+  daftarTemplat = [],
   aksiSimpan,
+  aksiLampirkan,
+  aksiHapusTemplat,
 }: FormulirKontenProps) {
   const [idKelompok, setIdKelompok] = useState(
     rangkuman ? String(rangkuman.idKelompok) : "",
@@ -86,7 +96,6 @@ export default function FormulirKonten({
     event.preventDefault();
     if (!aksiSimpan || !bisaDiubah) return;
     const data = new FormData(event.currentTarget);
-    data.delete("templat");
     mulaiMenyimpan(async () => {
       setHasil(await aksiSimpan(data));
     });
@@ -221,28 +230,11 @@ export default function FormulirKonten({
               />
             </Card>
 
-            <Card judul="Templat surat">
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="templat"
-                  className="text-sm font-semibold text-ink"
-                >
-                  Berkas templat
-                </label>
-                <input
-                  id="templat"
-                  type="file"
-                  name="templat"
-                  accept=".pdf,.docx"
-                  aria-describedby="templat-petunjuk"
-                  className="text-sm text-ink-muted file:mr-4 file:rounded-pill file:border file:border-line-strong file:bg-surface-raised file:px-4 file:py-2 file:font-semibold file:text-brand hover:file:bg-surface-raised-hover"
-                />
-                <p id="templat-petunjuk" className="text-xs text-ink-muted">
-                  PDF atau DOCX, paling besar 5 MB. Versi lama tersimpan sebagai
-                  riwayat.
-                </p>
-              </div>
-            </Card>
+            <KartuTemplat
+              daftarTemplat={daftarTemplat}
+              aksiLampirkan={aksiLampirkan}
+              aksiHapus={aksiHapusTemplat}
+            />
 
             <Card judul="Artikel pendukung">
               <div className="flex flex-col gap-5">
