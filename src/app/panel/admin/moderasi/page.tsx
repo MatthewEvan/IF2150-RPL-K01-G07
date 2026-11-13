@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import DaftarAntrean from "@/components/moderasi/DaftarAntrean";
+import PanelKeputusan from "@/components/moderasi/PanelKeputusan";
 import PratinjauKonten from "@/components/moderasi/PratinjauKonten";
+import Callout from "@/components/ui/Callout";
 import {
   ambilAntrean,
   ambilKonten,
@@ -21,7 +23,7 @@ export default async function HalamanModerasi({
   const akun = await cariAkun(supabase, user.id);
   if (!akun || akun.peran !== PERAN.ADMINISTRATOR) redirect("/panel/ditolak");
 
-  const { konten: paramKonten } = await searchParams;
+  const { konten: paramKonten, hasil: paramHasil } = await searchParams;
   const antrean = await ambilAntrean();
 
   const idDiminta =
@@ -30,6 +32,12 @@ export default async function HalamanModerasi({
     ? idDiminta
     : (antrean[0]?.idRangkuman ?? null);
   const konten = idTerpilih === null ? null : await ambilKonten(idTerpilih);
+  const pesanHasil =
+    paramHasil === "disetujui"
+      ? "Konten disetujui dan langsung tayang untuk publik."
+      : paramHasil === "revisi"
+        ? "Konten dikembalikan ke Kurator beserta catatan revisi."
+        : null;
 
   return (
     <>
@@ -43,6 +51,14 @@ export default async function HalamanModerasi({
         Tinjau isi konten yang diajukan Kurator sebelum memberi keputusan.
       </p>
 
+      {pesanHasil && (
+        <div className="mt-6">
+          <Callout jenis="info" judul="Keputusan tersimpan">
+            {pesanHasil}
+          </Callout>
+        </div>
+      )}
+
       {antrean.length === 0 ? (
         <div className="mt-6">
           <DaftarAntrean daftar={[]} idTerpilih={null} />
@@ -50,7 +66,12 @@ export default async function HalamanModerasi({
       ) : (
         <div className="mt-6 grid gap-5 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-start">
           <DaftarAntrean daftar={antrean} idTerpilih={idTerpilih} />
-          {konten && <PratinjauKonten konten={konten} />}
+          {konten && (
+            <div className="flex flex-col gap-5">
+              <PratinjauKonten konten={konten} />
+              <PanelKeputusan idRangkuman={konten.idRangkuman} />
+            </div>
+          )}
         </div>
       )}
     </>
