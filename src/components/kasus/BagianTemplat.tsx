@@ -4,6 +4,7 @@ import { BAGIAN } from "./bagian";
 import { formatTanggal, formatUkuran } from "./format";
 import { IkonDokumen } from "./ikon";
 import KartuBagian from "./KartuBagian";
+import TombolUnduhTemplat from "./TombolUnduhTemplat";
 
 export default function BagianTemplat({
   daftarTemplat,
@@ -42,7 +43,10 @@ export default function BagianTemplat({
                   {formatUkuran(templat.ukuran)}
                 </Badge>
               </div>
-              {/* Tombol unduh (KF16) ditambahkan pada UC04 (S2-C05). */}
+              <TombolUnduhTemplat
+                idTemplat={templat.idTemplat}
+                namaBerkas={templat.namaBerkas}
+              />
             </li>
           ))}
         </ul>
