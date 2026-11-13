@@ -107,6 +107,49 @@ export async function ambilRangkumanMilik(
   };
 }
 
+export const ISIAN_WAJIB = [
+  "intiMasalah",
+  "hak",
+  "poinPertimbangan",
+  "langkah",
+  "checklist",
+  "artikel",
+] as const;
+
+export type IsianWajib = (typeof ISIAN_WAJIB)[number];
+
+function kosong(teks: string | null | undefined) {
+  return !teks?.trim();
+}
+
+export function ambilIsianKosong(data: DataKonten): IsianWajib[] {
+  const isianKosong: Record<IsianWajib, boolean> = {
+    intiMasalah: kosong(data.intiMasalah),
+    hak: kosong(data.hak),
+    poinPertimbangan: kosong(data.poinPertimbangan),
+    langkah:
+      data.daftarLangkah.length === 0 ||
+      data.daftarLangkah.some((langkah) => kosong(langkah.deskripsi)),
+    checklist: data.daftarDokumen.every(kosong),
+    artikel:
+      data.daftarArtikel.length === 0 ||
+      data.daftarArtikel.some(
+        (artikel) => kosong(artikel.judul) || kosong(artikel.tautanSumber),
+      ),
+  };
+  return ISIAN_WAJIB.filter((isian) => isianKosong[isian]);
+}
+
+export async function ajukanRangkuman(
+  supabase: SupabaseClient,
+  idRangkuman: number,
+): Promise<void> {
+  const { error } = await supabase.rpc("ajukan_konten", {
+    p_id_rangkuman: idRangkuman,
+  });
+  if (error) throw error;
+}
+
 export async function simpanDraf(
   supabase: SupabaseClient,
   idRangkuman: number,
