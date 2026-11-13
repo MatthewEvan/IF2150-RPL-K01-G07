@@ -12,7 +12,7 @@ hukum sehari-hari lewat rangkuman yang ditulis Kurator dan ditinjau Administrato
 
 ## Cara Menjalankan
 
-Jalankan perintah berikut dari folder `src/`:
+Prasyarat: Node.js 24, npm, serta Docker untuk basis data lokal. Siapkan basis data dan `.env.local` lebih dulu seperti pada bagian [Basis Data](#basis-data), lalu jalankan perintah berikut dari folder `src/`:
 
 ```bash
 npm install
@@ -43,7 +43,7 @@ komponen; gunakan kelas token seperti `bg-brand`, `text-ink-muted`, dan
 `rounded-pill`.
 
 Semua komponen ditampilkan di halaman pratinjau. Halaman ini hanya untuk
-pengembangan dan **dihapus sebelum rilis**.
+pengembangan dan tidak ditautkan dari navigasi aplikasi.
 
 ```bash
 npm run dev
@@ -98,6 +98,20 @@ Catatan pemakaian:
 | `/panel/admin/moderasi`      | I-07  | Moderasi konten        |
 | `/panel/admin/akun`          | I-08  | Pengelolaan akun       |
 
+## Modul dan Pembagian Anggota
+
+Pekerjaan dibagi ke lima paket sesuai use case pada SKPL. Setiap paket dikerjakan lewat GitHub Issues dan Pull Request yang di-review anggota lain.
+
+| Paket                                      | Penanggung jawab                               | Use case   | Fitur                                                                                                                                                                                                                       | Layar      |
+| :----------------------------------------- | :--------------------------------------------- | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
+| A. Fondasi, autentikasi, dan akun          | Raditya Wibian Sastaka (13525019)              | UC05, UC09 | Inisialisasi Next.js, struktur MVC, skema basis data dengan RLS dan seed, layout global; login dan logout pengelola, proteksi rute panel per peran, batas sesi; daftar, tambah, serta nonaktifkan dan aktifkan akun Kurator | I-04, I-08 |
+| B. Jelajah kasus dan checklist             | Wesley Lianto (13525100)                       | UC01, UC03 | Beranda bidang hukum dan kelompok kasus, peringatan darurat, halaman rangkuman kasus beserta direktori LBH, checklist dokumen yang tersimpan di `localStorage`                                                              | I-01, I-02 |
+| C. Pencarian dan unduh templat             | Rivan Cahyadi (13525007)                       | UC02, UC04 | Setup Vitest, pencarian kata kunci, pesan tidak ditemukan dan saran bidang hukum, unduh templat dokumen, _profiling_ dan optimasi pencarian                                                                                 | I-02, I-03 |
+| D. Penyusunan konten                       | Matthew Evan Kurniawan (13525064)              | UC06       | Formulir penyusunan konten, simpan dan muat draf, isian dinamis langkah dan artikel, unggah dan hapus templat, validasi isian dan pengajuan konten                                                                          | I-05       |
+| E. Komponen dasar, pelacakan, dan moderasi | Christopherus Michael Jafeth Tobing (13525109) | UC07, UC08 | Token _design system_ dan komponen UI dasar, daftar konten Kurator dengan catatan revisi dan riwayat status, antrean peninjauan, setujui atau minta revisi konten                                                           | I-06, I-07 |
+
+Setiap paket juga menulis pengujian untuk kelas _control_-nya di `tests/`.
+
 ## Basis Data
 
 Basis data berjalan lokal dengan Supabase CLI, sehingga tidak perlu akun Supabase pribadi. Prasyarat: Docker sudah berjalan.
@@ -127,7 +141,15 @@ Untuk membentuk ulang basis data dari nol:
 npx supabase db reset
 ```
 
-Pada proyek Supabase yang di-hosting, jalankan seluruh berkas di `supabase/migrations/` secara berurutan (`0001_skema.sql`, `0002_penyusunan_konten.sql`, dan seterusnya) lalu `seed.sql` di SQL Editor dan matikan pendaftaran mandiri di pengaturan Auth.
+Pada proyek Supabase yang di-hosting, jalankan seluruh berkas di `supabase/migrations/` secara berurutan lalu `seed.sql` di SQL Editor, dan matikan pendaftaran mandiri di pengaturan Auth.
+
+| Migrasi                      | Isi                                                                                      |
+| :--------------------------- | :--------------------------------------------------------------------------------------- |
+| `0001_skema.sql`             | 12 tabel, Row Level Security, _trigger_ riwayat permanen dan jumlah konten               |
+| `0002_penyusunan_konten.sql` | Kolom `tenggat` menjadi teks, policy penyuntingan konten, fungsi `simpan_draf`           |
+| `0003_templat_dokumen.sql`   | Kolom `lokasi_berkas`, _bucket_ Storage privat `templat` beserta policy-nya              |
+| `0004_ajukan_konten.sql`     | Fungsi `ajukan_konten` untuk mengajukan konten dan mencatat riwayat dalam satu transaksi |
+| `0005_indeks_pencarian.sql`  | Ekstensi `pg_trgm` dan indeks pencarian kata kunci                                       |
 
 ### Akun Uji
 
@@ -142,28 +164,29 @@ Semua akun bersifat fiktif dan memakai kata sandi `PahamHukum-Uji-123` pada basi
 
 ### Daftar Tabel
 
-Atribut lengkap ada di `supabase/migrations/0001_skema.sql`.
+Atribut lengkap ada di `supabase/migrations/`.
 
-| Tabel                   | Kelas | Atribut utama                                                                |
-| :---------------------- | :---- | :--------------------------------------------------------------------------- |
-| `akun`                  | C01   | `id_akun`, `email`, `peran`                                                  |
-| `kurator`               | C02   | `id_akun`, `jumlah_konten`, `status_aktif`, `id_administrator`               |
-| `administrator`         | C03   | `id_akun`                                                                    |
-| `bidang_hukum`          | C04   | `id_bidang`, `nama`, `status_aktif`                                          |
-| `kelompok_kasus`        | C05   | `id_kelompok`, `id_bidang`, `judul_umum`, `istilah_resmi`, `penanda_darurat` |
-| `rangkuman_kasus`       | C06   | `id_rangkuman`, `id_kelompok`, `id_kurator`, isian konten, `status`          |
-| `langkah_penyelesaian`  | C07   | `id_langkah`, `id_rangkuman`, `nomor`, `deskripsi`, `tujuan`, `tenggat`      |
-| `checklist`             | C08   | `id_checklist`, `id_rangkuman`, `daftar_dokumen`                             |
-| `templat_dokumen`       | C09   | `id_templat`, `id_rangkuman`, `nama_berkas`, `format`, `ukuran`, `versi`     |
-| `artikel`               | C10   | `id_artikel`, `id_rangkuman`, `judul`, `tautan_sumber`                       |
-| `lembaga_bantuan_hukum` | C11   | `id_lbh`, `nama`, `wilayah`, `tautan`                                        |
-| `riwayat_status`        | C12   | `id_riwayat`, `id_rangkuman`, `id_pelaku`, `status`, `waktu`                 |
+| Tabel                   | Kelas | Atribut utama                                                                                                  |
+| :---------------------- | :---- | :------------------------------------------------------------------------------------------------------------- |
+| `akun`                  | C01   | `id_akun`, `email`, `peran`                                                                                    |
+| `kurator`               | C02   | `id_akun`, `jumlah_konten`, `status_aktif`, `id_administrator`                                                 |
+| `administrator`         | C03   | `id_akun`                                                                                                      |
+| `bidang_hukum`          | C04   | `id_bidang`, `nama`, `status_aktif`                                                                            |
+| `kelompok_kasus`        | C05   | `id_kelompok`, `id_bidang`, `judul_umum`, `istilah_resmi`, `penanda_darurat`                                   |
+| `rangkuman_kasus`       | C06   | `id_rangkuman`, `id_kelompok`, `id_kurator`, isian konten, `status`                                            |
+| `langkah_penyelesaian`  | C07   | `id_langkah`, `id_rangkuman`, `nomor`, `deskripsi`, `tujuan`, `tenggat`                                        |
+| `checklist`             | C08   | `id_checklist`, `id_rangkuman`, `daftar_dokumen`                                                               |
+| `templat_dokumen`       | C09   | `id_templat`, `id_rangkuman`, `nama_berkas`, `format`, `ukuran`, `versi`, `tanggal_pembaruan`, `lokasi_berkas` |
+| `artikel`               | C10   | `id_artikel`, `id_rangkuman`, `judul`, `tautan_sumber`                                                         |
+| `lembaga_bantuan_hukum` | C11   | `id_lbh`, `nama`, `wilayah`, `tautan`                                                                          |
+| `riwayat_status`        | C12   | `id_riwayat`, `id_rangkuman`, `id_pelaku`, `status`, `waktu`                                                   |
 
-Perbedaan dari DPPL yang perlu dicatat di laporan B.1:
+Perbedaan skema dari DPPL (selengkapnya di laporan `docs/M9/K01_G07_Implementasi.md` bagian B.1):
 
 - `id_akun` bertipe UUID dan mengikuti `auth.users`, serta kolom `kata_sandi_hash` tidak ada karena kata sandi disimpan Supabase Auth.
 - `jumlah_konten` ditambah oleh trigger basis data, bukan oleh Kurator.
 - `jumlahKelompokKasus` pada `BidangHukum` dihitung saat query (Q-021), bukan disimpan.
+- `tenggat` pada `langkah_penyelesaian` bertipe teks, dan `templat_dokumen` memiliki kolom tambahan `lokasi_berkas`.
 
 ## Pengujian
 
@@ -183,7 +206,7 @@ npm test
 - Gunakan alias `@/` untuk mengimpor modul dari `src/` (misalnya `import { ... } from "@/lib/controllers/..."`).
 - Susun pengujian menggunakan blok `describe`, `it`, dan `expect` dari `vitest` dengan deskripsi berbahasa Indonesia yang menjelaskan perilaku yang diuji. Lihat `src/tests/contoh.test.ts` sebagai acuan struktur dan penamaan.
 
-Test autentikasi dan pengelolaan akun meniru Supabase, sehingga tidak memerlukan Docker maupun `.env.local`.
+Seluruh test meniru Supabase dengan `vi.mock`, sehingga tidak memerlukan Docker maupun `.env.local`. Saat ini terdapat 13 berkas dan 158 test yang mencakup autentikasi, pengelolaan akun, jelajah kasus, checklist, penyusunan konten, pelacakan, dan moderasi konten.
 
 ## Perintah Lain
 

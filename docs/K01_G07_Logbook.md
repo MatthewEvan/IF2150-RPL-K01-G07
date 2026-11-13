@@ -30,6 +30,7 @@
 * [Milestone 6](#milestone-6)
 * [Milestone 7](#milestone-7)
 * [Milestone 8](#milestone-8)
+* [Milestone 9](#milestone-9)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -179,5 +180,56 @@
 | 28-10-2026 | Matthew Evan Kurniawan | Mengerjakan UI untuk interface sisanya | 3.5 | Done | - |
 | 28-10-2026 | Wesley, Michael, Rivan | Mengisi Tabel Komponen untuk Kelengkapan BAB 6 | 2 | Done | - |
 | 28-10-2026 | Matthew Evan Kurniawan | Mengisi Form Asistensi, Logbook dan AI Usage | 1 | Done | - |
+
+### Milestone 9
+**Periode:** 2 November 2026 - 13 November 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 02-11-2026 | Semua Anggota | Mengikuti asistensi Milestone 9 pukul 19.00 | 0.5 | Done | - |
+| 05-11-2026 | Matthew Evan Kurniawan | Menyusun issue Sprint 1 sampai Sprint 3 di GitHub Issues beserta penanggung jawab, reviewer, batasan, dan kriteria selesai, lalu menyiapkan board GitHub Projects | 3 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S1-A01: Inisialisasi proyek Next.js di `src/` (PR #76, di-merge 06-11) | 1 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S1-A02: Menyusun struktur folder MVC dan client Supabase server serta browser (PR #77, di-merge 06-11) | 1 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S1-A03: Membuat skema basis data, Row Level Security, dan seed data fiktif (PR #78, di-merge 06-11) | 3 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S1-A04: Membuat layout global, navbar publik dan panel, serta footer (PR #79, di-merge 06-11) | 2 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S2-A05: Membuat halaman login pengelola I-04 (PR #80, di-merge 09-11) | 2 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S2-A07: Menampilkan daftar akun Kurator pada I-08 (PR #82, di-merge 12-11) | 2 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S2-A08: Menambahkan pendaftaran akun Kurator (PR #83, di-merge 12-11) | 2 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S2-A09: Menambahkan fitur nonaktifkan dan aktifkan akun Kurator (PR #84, di-merge 12-11) | 1.5 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S3-A10: Menambahkan pengujian autentikasi dan pengelolaan akun (PR #85, di-merge 12-11) | 2 | Done | - |
+| 05-11-2026 | Raditya Wibian Sastaka | S2-A06: Menambahkan login, logout, dan proteksi rute panel per peran (PR #81, di-merge 09-11) | 3 | Done | - |
+| 06-11-2026 | Matthew Evan Kurniawan | Me-review dan merge PR #76, #77, #78, dan #79 | 0.5 | Done | - |
+| 07-11-2026 | Rivan Cahyadi | S1-C01: Setup Vitest dan contoh pengujian (PR #86, di-merge 07-11) | 1 | Done | - |
+| 07-11-2026 | Christopherus Michael Jafeth Tobing | S1-E01: Membuat token design system di Tailwind dan komponen dasar UI (PR #87, di-merge 08-11) | 3 | Done | - |
+| 08-11-2026 | Wesley Lianto | S2-B01: Membuat beranda I-01 berisi daftar bidang hukum dan kelompok kasus Disetujui (PR #89, di-merge 09-11) | 3 | Done | - |
+| 08-11-2026 | Matthew Evan Kurniawan | Me-review dan merge PR #86 dan #87 | 0.5 | Done | - |
+| 09-11-2026 | Rivan Cahyadi | S2-C02: Membuat query dan kontrol pencarian kata kunci (PR #88, di-merge 09-11) | 2 | Done | - |
+| 09-11-2026 | Christopherus Michael Jafeth Tobing | S2-E02: Membuat daftar konten Kurator pada I-06 (PR #91, di-merge 09-11) | 3 | Done | - |
+| 09-11-2026 | Matthew Evan Kurniawan | S2-D01: Membuat formulir penyusunan konten satu halaman I-05 (PR #93, di-merge 10-11) | 3 | Done | - |
+| 09-11-2026 | Matthew Evan Kurniawan | Me-review dan merge PR #80, #81, #88, dan #89 | 1 | Done | - |
+| 10-11-2026 | Matthew Evan Kurniawan | S2-D02: Menyimpan dan memuat draf konten (PR #96, di-merge 10-11) | 3 | Done | - |
+| 10-11-2026 | Wesley Lianto | S2-B02: Menampilkan peringatan darurat sebelum rangkuman pada beranda (PR #90, di-merge 10-11) | 1.5 | Done | PR sempat ditandai konflik karena branch dibuat dari branch S2-B01 yang belum di-merge. Diselesaikan dengan membuat ulang branch dari `dev` terbaru. |
+| 10-11-2026 | Rivan Cahyadi | S2-C03: Membuat halaman hasil pencarian I-03 (PR #92, di-merge 10-11) | 2.5 | Done | - |
+| 10-11-2026 | Rivan Cahyadi | S2-C04: Menampilkan pesan tidak ditemukan dan saran bidang hukum (PR #94, di-merge 10-11) | 2 | Done | - |
+| 10-11-2026 | Christopherus Michael Jafeth Tobing | S2-E04: Membuat antrean peninjauan konten I-07 (PR #95, di-merge 10-11) | 3 | Done | - |
+| 10-11-2026 | Christopherus Michael Jafeth Tobing | S2-E03: Menampilkan catatan revisi dan riwayat status konten (PR #98, di-merge 13-11) | 2.5 | Done | - |
+| 10-11-2026 | Raditya Wibian Sastaka | Me-review dan merge PR #90, #91, #92, #93, #94, #95, dan #96 | 1.5 | Done | - |
+| 11-11-2026 | Matthew Evan Kurniawan | S2-D04: Mengunggah templat dokumen ke Supabase Storage (PR #97, di-merge 13-11) | 4 | Done | - |
+| 11-11-2026 | Wesley Lianto | S2-B03: Membuat halaman rangkuman kasus I-02 beserta direktori LBH per wilayah (PR #100, di-merge 13-11) | 5 | Done | - |
+| 11-11-2026 | Wesley Lianto | S2-B04: Membuat checklist dokumen interaktif yang tersimpan di localStorage (PR #101, di-merge 13-11) | 2.5 | Done | Menunggu PR S2-B03 di-merge sebelum branch diperbarui dari `dev`. |
+| 11-11-2026 | Christopherus Michael Jafeth Tobing | S2-E05: Menambahkan keputusan moderasi, yaitu setujui atau minta revisi konten (PR #99, di-merge 13-11) | 3 | Done | - |
+| 11-11-2026 | Christopherus Michael Jafeth Tobing | S3-E06: Menambahkan pengujian kontrol moderasi konten (PR #107, di-merge 13-11) | 2 | Done | - |
+| 12-11-2026 | Matthew Evan Kurniawan | S2-D03: Membuat isian dinamis langkah penyelesaian dan artikel (PR #102, di-merge 13-11) | 2.5 | Done | - |
+| 12-11-2026 | Matthew Evan Kurniawan | S2-D05: Menambahkan validasi isian dan pengajuan konten untuk ditinjau (PR #103, di-merge 13-11) | 2.5 | Done | - |
+| 12-11-2026 | Matthew Evan Kurniawan | S3-D06: Menambahkan pengujian KontrolPenyusunanKonten (PR #104, di-merge 13-11) | 2 | Done | - |
+| 12-11-2026 | Matthew Evan Kurniawan | Me-review dan merge PR #82, #83, #84, dan #85 | 1 | Done | - |
+| 13-11-2026 | Wesley Lianto | S3-B05: Menambahkan pengujian KontrolJelajahKasus dan KontrolChecklist (PR #105, di-merge 13-11) | 2 | Done | - |
+| 13-11-2026 | Rivan Cahyadi | S2-C05: Menambahkan unduh templat dokumen pada rangkuman kasus (PR #106, di-merge 13-11) | 2 | Done | - |
+| 13-11-2026 | Rivan Cahyadi | S3-C06: Mengoptimasi kueri pencarian dengan indeks pg_trgm (PR #108, di-merge 13-11) | 2 | Done | - |
+| 13-11-2026 | Rivan Cahyadi | Me-review dan merge PR #97, #100, #102, #103, dan #104 | 1 | Done | - |
+| 13-11-2026 | Matthew Evan Kurniawan | Me-review dan merge PR #98, #99, #101, #105, #106, #107, dan #108 | 1.5 | Done | - |
+| 13-11-2026 | Matthew, Wesley | Menggabungkan `dev` ke `main` lewat PR #109 (dibuat Matthew, di-review dan di-merge Wesley) | 0.5 | Done | - |
+| 13-11-2026 | Matthew Evan Kurniawan | Menyusun dokumen Milestone 9: laporan implementasi (B.1 sampai B.5), `src/README.md`, dan Form Asistensi | 4 | Done | - |
+| 13-11-2026 | Wesley Lianto | Menyusun Logbook dan AI-Usage Milestone 9 | 1 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
