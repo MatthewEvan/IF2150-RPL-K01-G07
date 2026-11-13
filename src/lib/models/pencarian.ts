@@ -26,18 +26,35 @@ type BarisPencarian = {
   poin_pertimbangan: string | null;
   status: string;
   kelompok_kasus: {
-    id_kelompok: number;
     id_bidang: number;
     judul_umum: string;
     istilah_resmi: string;
     penanda_darurat: boolean;
     bidang_hukum: {
-      id_bidang: number;
       nama: string;
-      status_aktif: boolean;
     } | null;
   } | null;
 };
+
+/**
+ * Hanya mengambil kolom yang diperlukan untuk pencocokan kata kunci (KF06) dan
+ * tampilan kartu hasil pencarian I-03 (mengurangi ukuran payload per baris).
+ */
+const KOLOM_PENCARIAN = `
+  id_rangkuman, id_kelompok, inti_masalah, hak, poin_pertimbangan, status,
+  kelompok_kasus!inner (
+    id_bidang, judul_umum, istilah_resmi, penanda_darurat,
+    bidang_hukum!inner ( nama )
+  )
+`;
+
+function buatPolaIlikeAman(kunci: string): string | null {
+  if (/[,()"'\\]/.test(kunci)) {
+    return null;
+  }
+  const lolos = kunci.replace(/[%_]/g, "\\$&");
+  return `%${lolos}%`;
+}
 
 /**
  * Merapikan kata kunci menjadi huruf kecil dan menghapus spasi di kedua tepi
@@ -123,18 +140,38 @@ export async function cariKasusDisetujui(
     return [];
   }
 
-  const { data, error } = await supabase
+  const pola = buatPolaIlikeAman(kunci);
+  let kueri = supabase
     .from("rangkuman_kasus")
-    .select(
-      `id_rangkuman, id_kelompok, inti_masalah, hak, poin_pertimbangan, status,
-       kelompok_kasus!inner (
-         id_kelompok, id_bidang, judul_umum, istilah_resmi, penanda_darurat,
-         bidang_hukum!inner ( id_bidang, nama, status_aktif )
-       )`,
-    )
+    .select(KOLOM_PENCARIAN)
     .eq("status", "Disetujui")
-    .eq("kelompok_kasus.bidang_hukum.status_aktif", true)
-    .order("id_kelompok", { ascending: true });
+    .eq("kelompok_kasus.bidang_hukum.status_aktif", true);
+
+  if (pola) {
+    const { data: dataKelompok, error: galatKelompok } = await supabase
+      .from("kelompok_kasus")
+      .select("id_kelompok")
+      .or(`judul_umum.ilike.${pola},istilah_resmi.ilike.${pola}`);
+
+    if (galatKelompok) throw galatKelompok;
+
+    const idKelompokCocok = (dataKelompok ?? []).map(
+      (baris: { id_kelompok: number }) => baris.id_kelompok,
+    );
+
+    const syaratOr = [
+      `inti_masalah.ilike.${pola}`,
+      `hak.ilike.${pola}`,
+      `poin_pertimbangan.ilike.${pola}`,
+      ...(idKelompokCocok.length > 0
+        ? [`id_kelompok.in.(${idKelompokCocok.join(",")})`]
+        : []),
+    ].join(",");
+
+    kueri = kueri.or(syaratOr);
+  }
+
+  const { data, error } = await kueri.order("id_kelompok", { ascending: true });
 
   if (error) throw error;
 
@@ -145,7 +182,7 @@ export async function cariKasusDisetujui(
     const kelompok = baris.kelompok_kasus;
     const bidang = kelompok?.bidang_hukum;
 
-    if (!kelompok || !bidang || !bidang.status_aktif) {
+    if (!kelompok || !bidang) {
       continue;
     }
 
@@ -173,7 +210,7 @@ export async function cariKasusDisetujui(
     if (cocokKelompok || cocokRangkuman) {
       hasil.push({
         idRangkuman: baris.id_rangkuman,
-        idKelompok: kelompok.id_kelompok,
+        idKelompok: baris.id_kelompok,
         idBidang: kelompok.id_bidang,
         namaBidang: bidang.nama,
         judulUmum: kelompok.judul_umum,
