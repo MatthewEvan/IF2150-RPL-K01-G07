@@ -146,3 +146,56 @@ export async function hapusTemplat(
     await supabase.storage.from(BUCKET_TEMPLAT).remove([templat.lokasiBerkas]);
   }
 }
+
+/**
+ * Mengambil satu templat dokumen berdasarkan idTemplat (dan opsional idRangkuman)
+ * hanya jika rangkuman induknya berstatus Disetujui (KF02, KF15, Algo-035).
+ */
+export async function ambilTemplatDisetujui(
+  supabase: SupabaseClient,
+  idTemplat: number,
+  idRangkuman?: number,
+): Promise<TemplatDokumen | null> {
+  let kueri = supabase
+    .from("templat_dokumen")
+    .select(`${KOLOM_TEMPLAT}, rangkuman_kasus!inner ( status )`)
+    .eq("id_templat", idTemplat)
+    .eq("rangkuman_kasus.status", "Disetujui");
+
+  if (idRangkuman !== undefined) {
+    kueri = kueri.eq("id_rangkuman", idRangkuman);
+  }
+
+  const { data, error } = await kueri.maybeSingle<BarisTemplat>();
+  if (error) throw error;
+  if (!data) return null;
+  return keTemplat(data);
+}
+
+/**
+ * C09 TemplatDokumen.unduh() pada DPPL (Algo-023).
+ * Menghasilkan signed URL unduhan dari bucket privat Supabase Storage untuk
+ * berkas templat versi terbaru. Mengembalikan null bila lokasi berkas kosong
+ * atau berkas tidak ditemukan di Storage (KF16).
+ */
+export async function unduh(
+  supabase: SupabaseClient,
+  templat: Pick<TemplatDokumen, "lokasiBerkas" | "namaBerkas">,
+  masaBerlakuDetik = 60,
+): Promise<string | null> {
+  if (!templat.lokasiBerkas) {
+    return null;
+  }
+
+  const { data, error } = await supabase.storage
+    .from(BUCKET_TEMPLAT)
+    .createSignedUrl(templat.lokasiBerkas, masaBerlakuDetik, {
+      download: templat.namaBerkas,
+    });
+
+  if (error || !data?.signedUrl) {
+    return null;
+  }
+
+  return data.signedUrl;
+}
