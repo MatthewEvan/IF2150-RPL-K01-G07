@@ -1,0 +1,193 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { StatusKonten } from "@/components/ui/Badge";
+
+export type RiwayatStatusKonten = {
+  status: StatusKonten;
+  /** ISO 8601 waktu perubahan status. */
+  waktu: string;
+};
+
+/** Satu baris pada layar Daftar Konten Kurator (I-06). */
+export type KontenKurator = {
+  idRangkuman: number;
+  judul: string;
+  bidang: string;
+  status: StatusKonten;
+  /** ISO 8601 dari riwayat status terakhir; null bila belum ada riwayat. */
+  diperbarui: string | null;
+  catatanRevisi: string | null;
+  /** Riwayat status dari yang terlama ke yang terbaru. */
+  riwayat: RiwayatStatusKonten[];
+};
+
+type BarisKonten = {
+  id_rangkuman: number;
+  status: StatusKonten;
+  catatan_revisi: string | null;
+  kelompok_kasus: {
+    judul_umum: string;
+    bidang_hukum: { nama: string } | null;
+  } | null;
+  riwayat_status: RiwayatStatusKonten[] | null;
+};
+
+/** Waktu riwayat terbaru sebagai penanda "diperbarui". */
+function waktuTerbaru(riwayat: RiwayatStatusKonten[] | null): string | null {
+  if (!riwayat || riwayat.length === 0) return null;
+  return riwayat.reduce(
+    (terbaru, baris) => (baris.waktu > terbaru ? baris.waktu : terbaru),
+    riwayat[0].waktu,
+  );
+}
+
+/** Mengurutkan riwayat dari yang terlama agar terbaca sebagai jejak status. */
+export function urutkanRiwayat(
+  riwayat: RiwayatStatusKonten[],
+): RiwayatStatusKonten[] {
+  return [...riwayat].sort((a, b) => a.waktu.localeCompare(b.waktu));
+}
+
+/** Mengambil maksimal `maks` status terakhir untuk tampilan riwayat singkat. */
+export function ringkasRiwayat(
+  riwayat: RiwayatStatusKonten[],
+  maks = 3,
+): RiwayatStatusKonten[] {
+  if (riwayat.length <= maks) return [...riwayat];
+  return riwayat.slice(riwayat.length - maks);
+}
+
+/** Mockup I-06: "diurutkan dari yang terakhir diperbarui". */
+export function urutkanKonten(daftar: KontenKurator[]): KontenKurator[] {
+  return [...daftar].sort((a, b) => {
+    if (a.diperbarui === b.diperbarui) return b.idRangkuman - a.idRangkuman;
+    if (a.diperbarui === null) return 1;
+    if (b.diperbarui === null) return -1;
+    return b.diperbarui.localeCompare(a.diperbarui);
+  });
+}
+
+/**
+ * Q-005 diperluas: judul dan bidang ikut diambil agar tabel I-06 bisa
+ * menampilkan "Judul situasi" dan "Bidang" tanpa query tambahan.
+ *
+ * Filter `id_kurator` wajib karena RLS juga membuka konten berstatus
+ * Disetujui milik Kurator lain untuk semua pengguna.
+ */
+export async function ambilDaftarKonten(
+  supabase: SupabaseClient,
+  idKurator: string,
+): Promise<KontenKurator[]> {
+  const { data, error } = await supabase
+    .from("rangkuman_kasus")
+    .select(
+      `id_rangkuman, status, catatan_revisi,
+       kelompok_kasus ( judul_umum, bidang_hukum ( nama ) ),
+       riwayat_status ( status, waktu )`,
+    )
+    .eq("id_kurator", idKurator);
+  if (error) throw error;
+
+  const daftar = (data as unknown as BarisKonten[]).map((baris) => {
+    const riwayat = urutkanRiwayat(baris.riwayat_status ?? []);
+    return {
+      idRangkuman: baris.id_rangkuman,
+      judul: baris.kelompok_kasus?.judul_umum ?? "Tanpa judul",
+      bidang: baris.kelompok_kasus?.bidang_hukum?.nama ?? "—",
+      status: baris.status,
+      diperbarui: waktuTerbaru(riwayat),
+      catatanRevisi: baris.catatan_revisi,
+      riwayat,
+    };
+  });
+
+  return urutkanKonten(daftar);
+}
+
+export type KuratorTerdaftar = {
+  idAkun: string;
+  email: string;
+  statusAktif: boolean;
+  jumlahKonten: number;
+};
+
+/** Q-006: Kurator yang didaftarkan seorang Administrator, urut menurut email. */
+export async function ambilDaftarKurator(
+  supabase: SupabaseClient,
+  idAdministrator: string,
+): Promise<KuratorTerdaftar[]> {
+  const { data, error } = await supabase
+    .from("kurator")
+    .select("id_akun, status_aktif, jumlah_konten, akun(email)")
+    .eq("id_administrator", idAdministrator);
+  if (error) throw error;
+
+  return data
+    .map((baris) => ({
+      idAkun: baris.id_akun,
+      email: (baris.akun as unknown as { email: string }).email,
+      statusAktif: baris.status_aktif,
+      jumlahKonten: baris.jumlah_konten,
+    }))
+    .sort((a, b) => a.email.localeCompare(b.email));
+}
+
+/** Q-028: true jika email belum dipakai akun lain. */
+export async function cekEmailUnik(supabase: SupabaseClient, email: string) {
+  const { count, error } = await supabase
+    .from("akun")
+    .select("id_akun", { count: "exact", head: true })
+    .ilike("email", email.replace(/[\\%_]/g, "\\$&"));
+  if (error) throw error;
+  return count === 0;
+}
+
+/**
+ * Membuat akun Auth lalu profilnya (Q-029, Q-030). Supabase tidak menyediakan
+ * transaksi lintas Auth dan tabel, jadi akun Auth dihapus lagi jika profil gagal.
+ */
+export async function simpanKuratorBaru(
+  supabase: SupabaseClient,
+  email: string,
+  kataSandi: string,
+  idAdministrator: string,
+) {
+  const { data, error } = await supabase.auth.admin.createUser({
+    email,
+    password: kataSandi,
+    email_confirm: true,
+  });
+  if (error) throw error;
+
+  const idAkun = data.user.id;
+  const { error: galatAkun } = await supabase
+    .from("akun")
+    .insert({ id_akun: idAkun, email, peran: "Kurator" });
+  const { error: galatKurator } = galatAkun
+    ? { error: galatAkun }
+    : await supabase
+        .from("kurator")
+        .insert({ id_akun: idAkun, id_administrator: idAdministrator });
+
+  if (galatKurator) {
+    // akun ikut terhapus lewat on delete cascade ke auth.users.
+    await supabase.auth.admin.deleteUser(idAkun);
+    throw galatKurator;
+  }
+}
+
+/** Q-004 dan kebalikannya. Mengembalikan false jika Kurator tidak ditemukan. */
+export async function aturStatusKurator(
+  supabase: SupabaseClient,
+  idAkun: string,
+  idAdministrator: string,
+  statusAktif: boolean,
+) {
+  const { data, error } = await supabase
+    .from("kurator")
+    .update({ status_aktif: statusAktif })
+    .eq("id_akun", idAkun)
+    .eq("id_administrator", idAdministrator)
+    .select("id_akun");
+  if (error) throw error;
+  return data.length > 0;
+}

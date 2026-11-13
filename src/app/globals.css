@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Token design system PahamHukum. */
+@theme {
+  --color-surface: #f2f2ee;
+  --color-surface-raised: #ffffff;
+  --color-surface-raised-hover: #fafaf7;
+  --color-surface-sunken: #eef0f2;
+  --color-line: #d9dee4;
+  --color-line-strong: #7b8a9b;
+  --color-ink: #1c2530;
+  --color-ink-muted: #4a5868;
+  --color-brand: #334e68;
+  --color-brand-strong: #243b53;
+  --color-brand-soft: #e4eaf1;
+  --color-on-brand: #ffffff;
+  --color-accent: #3e7cb1;
+  --color-link: #2b6497;
+  --color-accent-soft: #e3eef8;
+  --color-success: #1f6b4a;
+  --color-success-soft: #e2f1e9;
+  --color-warning: #8a5300;
+  --color-warning-soft: #fcefd6;
+  --color-danger: #a8322b;
+  --color-danger-soft: #fbe8e6;
+  --color-highlight: #fff1bf;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(28, 37, 48, 0.04);
+  --shadow-md: 0 8px 24px rgba(28, 37, 48, 0.08);
+}
+
+@theme inline {
+  --font-sans: var(--font-plus-jakarta-sans);
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
