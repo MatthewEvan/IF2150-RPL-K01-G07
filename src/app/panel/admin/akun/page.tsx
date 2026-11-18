@@ -25,7 +25,7 @@ export default async function HalamanPengelolaanAkun() {
       </p>
 
       <div className="mt-6 grid items-start gap-4 lg:grid-cols-[1fr_300px]">
-        <section className="rounded-xl border border-line bg-surface-raised p-5 shadow-sm">
+        <section className="min-w-0 rounded-xl border border-line bg-surface-raised p-5 shadow-sm">
           <h2 className="text-lg font-semibold">Kurator terdaftar</h2>
           <DaftarKurator daftar={daftar} />
         </section>
