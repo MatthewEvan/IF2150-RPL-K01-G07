@@ -191,3 +191,45 @@ export async function aturStatusKurator(
   if (error) throw error;
   return data.length > 0;
 }
+
+/**
+ * C02 perbaruiEmail (Q-002) untuk Kurator milik Administrator tersebut.
+ * Email diganti di Supabase Auth lalu di tabel akun. Tidak ada transaksi
+ * lintas Auth dan tabel, jadi email Auth dikembalikan jika tabel gagal.
+ * Mengembalikan false jika Kurator bukan milik Administrator tersebut.
+ */
+export async function perbaruiEmailKurator(
+  supabase: SupabaseClient,
+  idAkun: string,
+  idAdministrator: string,
+  emailBaru: string,
+) {
+  const { data: kurator, error: galatKurator } = await supabase
+    .from("kurator")
+    .select("id_akun, akun(email)")
+    .eq("id_akun", idAkun)
+    .eq("id_administrator", idAdministrator)
+    .maybeSingle();
+  if (galatKurator) throw galatKurator;
+  if (!kurator) return false;
+
+  const emailLama = (kurator.akun as unknown as { email: string }).email;
+  const { error: galatAuth } = await supabase.auth.admin.updateUserById(
+    idAkun,
+    { email: emailBaru, email_confirm: true },
+  );
+  if (galatAuth) throw galatAuth;
+
+  const { error: galatAkun } = await supabase
+    .from("akun")
+    .update({ email: emailBaru })
+    .eq("id_akun", idAkun);
+  if (galatAkun) {
+    await supabase.auth.admin.updateUserById(idAkun, {
+      email: emailLama,
+      email_confirm: true,
+    });
+    throw galatAkun;
+  }
+  return true;
+}

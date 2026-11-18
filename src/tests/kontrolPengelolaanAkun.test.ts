@@ -1,13 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   daftarkanKurator,
+  perbaruiKurator,
   ubahStatusKurator,
 } from "@/lib/controllers/kontrolPengelolaanAkun";
-import { validasiAkunBaru } from "@/lib/controllers/validasiAkun";
+import {
+  validasiAkunBaru,
+  validasiEmail,
+} from "@/lib/controllers/validasiAkun";
 import { cariAkun, PERAN } from "@/lib/models/akun";
 import {
   aturStatusKurator,
   cekEmailUnik,
+  perbaruiEmailKurator,
   simpanKuratorBaru,
 } from "@/lib/models/kurator";
 
@@ -25,6 +30,7 @@ vi.mock("@/lib/models/akun", async (asli) => ({
 vi.mock("@/lib/models/kurator", () => ({
   aturStatusKurator: vi.fn(),
   cekEmailUnik: vi.fn(),
+  perbaruiEmailKurator: vi.fn(),
   simpanKuratorBaru: vi.fn(),
 }));
 
@@ -133,5 +139,81 @@ describe("ubahStatusKurator", () => {
       "galat",
     );
     expect(aturStatusKurator).not.toHaveBeenCalled();
+  });
+});
+
+describe("validasiEmail", () => {
+  it.each([[""], ["bukan-email"], ["tanpa@titik"]])(
+    "menolak email %j",
+    (email) => {
+      expect(validasiEmail(email)).not.toBeNull();
+    },
+  );
+
+  it("menerima email yang benar", () => {
+    expect(validasiEmail("baru@contoh.test")).toBeNull();
+  });
+});
+
+describe("perbaruiKurator (KF43)", () => {
+  beforeEach(() => {
+    vi.mocked(perbaruiEmailKurator).mockResolvedValue(true);
+  });
+
+  it("mengganti email dengan huruf kecil tanpa spasi tepi", async () => {
+    const hasil = await perbaruiKurator("k1", "  Baru@Contoh.Test ");
+
+    expect(hasil.sukses).toContain("baru@contoh.test");
+    expect(perbaruiEmailKurator).toHaveBeenCalledWith(
+      {},
+      "k1",
+      "a1",
+      "baru@contoh.test",
+    );
+  });
+
+  it.each([[""], ["bukan-email"]])(
+    "menolak email %j sebelum memeriksa basis data",
+    async (email) => {
+      await expect(perbaruiKurator("k1", email)).resolves.toHaveProperty(
+        "galat",
+      );
+      expect(cekEmailUnik).not.toHaveBeenCalled();
+      expect(perbaruiEmailKurator).not.toHaveBeenCalled();
+    },
+  );
+
+  it("menolak email yang sudah dipakai akun lain", async () => {
+    vi.mocked(cekEmailUnik).mockResolvedValue(false);
+
+    await expect(perbaruiKurator("k1", "ada@contoh.test")).resolves.toEqual({
+      galat: "Email sudah terdaftar.",
+    });
+    expect(perbaruiEmailKurator).not.toHaveBeenCalled();
+  });
+
+  it("menolak Kurator yang bukan milik Administrator tersebut", async () => {
+    vi.mocked(perbaruiEmailKurator).mockResolvedValue(false);
+
+    await expect(perbaruiKurator("x", "baru@contoh.test")).resolves.toEqual({
+      galat: "Akun kurator tidak ditemukan.",
+    });
+  });
+
+  it("melaporkan galat jika penyimpanan gagal", async () => {
+    vi.mocked(perbaruiEmailKurator).mockRejectedValueOnce(new Error("gagal"));
+
+    await expect(
+      perbaruiKurator("k1", "baru@contoh.test"),
+    ).resolves.toHaveProperty("galat");
+  });
+
+  it("menolak pemanggil yang bukan Administrator", async () => {
+    vi.mocked(cariAkun).mockResolvedValue({ ...ADMIN, peran: PERAN.KURATOR });
+
+    await expect(
+      perbaruiKurator("k1", "baru@contoh.test"),
+    ).resolves.toHaveProperty("galat");
+    expect(perbaruiEmailKurator).not.toHaveBeenCalled();
   });
 });

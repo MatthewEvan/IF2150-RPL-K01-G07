@@ -10,3 +10,10 @@ export function validasiAkunBaru(email: string, kataSandi: string) {
   }
   return null;
 }
+
+/** Validasi email untuk perubahan akun; null jika formatnya benar. */
+export function validasiEmail(email: string) {
+  if (!email) return "Email wajib diisi.";
+  if (!POLA_EMAIL.test(email)) return "Format email tidak valid.";
+  return null;
+}
