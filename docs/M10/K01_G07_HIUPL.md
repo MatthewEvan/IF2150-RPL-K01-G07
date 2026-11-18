@@ -7,24 +7,26 @@ HASIL IMPLEMENTASI DAN UJI PERANGKAT LUNAK (HIUPL)
 </h1>
 <br>
 
-## *Nama Perangkat Lunak*
-### *[Logo Perangkat Lunak]*
+## PahamHukum
+<p align="left">
+<img alt="Logo PahamHukum" src="./assets/PahamHukum_Logo.png" width="50%">
+</p>
 
-### Untuk: *[Nama Asisten]*
+### Untuk: Mikhael Andrian Yonatan
 
-Dipersiapkan oleh:
+Dipersiapkan oleh: *#PenjagaNilai*
 | Informasi | Keterangan |
 | --- | --- |
-| Kelas | *\[Kelas\]* |
-| Kelompok | *\[Nomor Kelompok\]*  |
+| Kelas | K01 |
+| Kelompok | G07 |
 
 | NIM | Nama |
 |---|---|
-| *[NIM 1]* | *[Nama Anggota 1]* |
-| *[NIM 2]* | *[Nama Anggota 2]* |
-| *[NIM 3]* | *[Nama Anggota 3]* |
-| *[NIM 4]* | *[Nama Anggota 4]* |
-| *[NIM 5]* | *[Nama Anggota 5]* |
+| 13525007 | Rivan Cahyadi |
+| 13525019 | Raditya Wibian Sastaka |
+| 13525064 | Matthew Evan Kurniawan |
+| 13525100 | Wesley Lianto |
+| 13525109 | Christopherus Michael Jafeth Tobing |
 
 ---
 
@@ -95,22 +97,25 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *...* | *...* |
 
 ## 1.4 Aturan Penomoran
-Tuliskan aturan penomoran (ID) yang digunakan dalam dokumen ini. Gunakan pola ID yang **sama** dengan yang sudah dipakai pada dokumen-dokumen sebelumnya (SKPL, APL, DPPL), kecuali untuk ID pengujian yang baru diperkenalkan pada dokumen ini.
+Dokumen ini memakai pola ID yang sama dengan SKPL, APL, DPPL, dan dokumen Implementasi (Tugas 9). ID pengujian dan ID antarmuka antarkomponen baru diperkenalkan pada dokumen ini.
 
 Tabel 1.4. Aturan Penomoran
 
 | Hal/Bagian | Penomoran | Keterangan |
 | :--- | :--- | :--- |
-| *Kebutuhan Fungsional* | *KFXX* | *Sesuai SKPL* |
-| *Kebutuhan Non-Fungsional* | *KNFXX* | *Sesuai SKPL* |
-| *Use Case* | *UCXX* | *Sesuai SKPL* |
-| *Kelas* | *CXX* | *Sesuai DPPL* |
-| *Antarmuka* | *I-XX* | *Sesuai DPPL* |
-| *Test Case Unit* | *CXX-UTYY* | *XX adalah nomor kelas, YY adalah nomor urut test case unit pada kelas tersebut* |
-| *Test Case Integrasi* | *INT-TCYY* | *YY adalah nomor urut test case integrasi* |
-| *Test Case Use Case* | *UCXX-TCYY* | *XX adalah nomor use case, YY adalah nomor urut test case pada use case tersebut* |
-| *Test Case KNF* | *KNFXX-TCYY* | *XX adalah nomor KNF, YY adalah nomor urut test case pada KNF tersebut* |
-| *...* | *...* | *...* |
+| Kebutuhan Fungsional | KFXX | XX adalah nomor urut dari 01 hingga 44, mengikuti SKPL |
+| Kebutuhan Non-Fungsional | KNFXX | XX adalah nomor urut dari 01 hingga 14, mengikuti SKPL |
+| Aktor | AKTXX | XX adalah nomor urut dari 01 hingga 03, mengikuti SKPL |
+| Use Case | UCXX | XX adalah nomor urut dari 01 hingga 09, mengikuti SKPL |
+| Kelas | CXX | XX adalah nomor urut dari 01 hingga 29, mengikuti DPPL |
+| Algoritma | Algo-XXX | XXX adalah nomor urut algoritma, mengikuti BAB 5 DPPL |
+| Query | Q-XXX | XXX adalah nomor urut query, mengikuti BAB 5 DPPL |
+| Antarmuka (layar) | I-XX | XX adalah nomor urut layar dari 01 hingga 08, mengikuti BAB 6 DPPL |
+| Antarmuka antarkomponen | IA-XX | XX adalah nomor urut batas antarkomponen yang diuji pada Subbab 4.3, dimulai dari 01. Awalan IA dipakai agar tidak tertukar dengan ID layar I-XX. |
+| Test Case Unit | CXX-UTYY | XX adalah nomor kelas, YY adalah nomor urut test case unit pada kelas tersebut, dimulai dari 01 |
+| Test Case Integrasi | INT-TCYY | YY adalah nomor urut test case integrasi, dimulai dari 01 |
+| Test Case Use Case | UCXX-TCYY | XX adalah nomor use case, YY adalah nomor urut test case pada use case tersebut, dimulai dari 01 untuk skenario normal |
+| Test Case KNF | KNFXX-TCYY | XX adalah nomor KNF, YY adalah nomor urut test case pada KNF tersebut, dimulai dari 01 |
 
 ## 1.5 Referensi
 Cantumkan daftar buku, panduan, atau dokumentasi lain yang dirujuk dalam pembuatan dokumen dan pengembangan P/L, **minimal dokumen SKPL, APL, DPPL, dan Implementasi (Tugas 9)**. Tambahkan dokumentasi *framework*/*library*/*testing tool* atau referensi lain apabila digunakan.
