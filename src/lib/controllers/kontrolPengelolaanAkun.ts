@@ -5,11 +5,12 @@ import { cariAkun, PERAN } from "@/lib/models/akun";
 import {
   aturStatusKurator,
   cekEmailUnik,
+  perbaruiEmailKurator,
   simpanKuratorBaru,
 } from "@/lib/models/kurator";
 import { buatClientAdmin } from "@/lib/supabase/admin";
 import { buatClientServer } from "@/lib/supabase/server";
-import { validasiAkunBaru } from "./validasiAkun";
+import { validasiAkunBaru, validasiEmail } from "./validasiAkun";
 
 export type HasilAkun = { galat?: string; sukses?: string };
 
@@ -82,4 +83,39 @@ export async function ubahStatusKurator(
 
   revalidatePath("/panel/admin/akun");
   return {};
+}
+
+/**
+ * C29 perbaruiKurator (Algo-052). Sesi yang sedang berjalan tidak diubah;
+ * email baru dipakai pada login Kurator berikutnya (KF43).
+ */
+export async function perbaruiKurator(
+  idAkun: string,
+  emailBaru: string,
+): Promise<HasilAkun> {
+  const administrator = await ambilAdministrator();
+  if (!administrator) return { galat: GALAT_AKSES };
+
+  const email = emailBaru.trim().toLowerCase();
+  const galat = validasiEmail(email);
+  if (galat) return { galat };
+
+  const supabase = buatClientAdmin();
+  try {
+    if (!(await cekEmailUnik(supabase, email))) {
+      return { galat: "Email sudah terdaftar." };
+    }
+    const berhasil = await perbaruiEmailKurator(
+      supabase,
+      idAkun,
+      administrator.idAkun,
+      email,
+    );
+    if (!berhasil) return { galat: "Akun kurator tidak ditemukan." };
+  } catch {
+    return { galat: "Email gagal diubah. Silakan coba lagi." };
+  }
+
+  revalidatePath("/panel/admin/akun");
+  return { sukses: `Email kurator diubah menjadi ${email}.` };
 }
