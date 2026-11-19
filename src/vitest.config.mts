@@ -13,5 +13,18 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     include: ["tests/**/*.test.{ts,tsx}"],
+    exclude: ["tests/integrasi/**"],
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+      reportsDirectory: "./coverage",
+      include: [
+        "lib/controllers/**/*.ts",
+        "lib/models/**/*.ts",
+        "proxy.ts",
+        "components/konten/aturanDaftarButir.ts",
+        "components/konten/useDaftarButir.ts",
+      ],
+    },
   },
 });
