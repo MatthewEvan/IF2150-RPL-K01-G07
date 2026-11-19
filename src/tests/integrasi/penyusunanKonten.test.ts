@@ -254,6 +254,31 @@ describe("IA-11 RangkumanKasus ke fungsi basis data ajukan_konten dan RiwayatSta
     expect(rangkuman.inti_masalah).toBeNull();
     expect(rangkuman.status).toBe("Draft");
   });
+
+  it("INT-TC39: Kurator tidak dapat menayangkan sendiri drafnya dengan mengubah status menjadi Disetujui (KF35)", async () => {
+    const idRangkuman = await buatDrafBaru(5);
+    await simpanDraf(idRangkuman, formulir(ISIAN_LENGKAP));
+
+    const { data, error } = await kurator1
+      .from("rangkuman_kasus")
+      .update({ status: "Disetujui", tanggal_peninjauan: "2026-11-19" })
+      .eq("id_rangkuman", idRangkuman)
+      .select("status");
+
+    expect(error?.code).toBe("42501");
+    expect(data).toBeNull();
+    const rangkuman = await bacaRangkuman(idRangkuman);
+    expect(rangkuman.status).toBe("Draft");
+    expect(await bacaRiwayat(idRangkuman)).toEqual([
+      { status: "Draft", id_pelaku: ID_KURATOR1 },
+    ]);
+
+    const { data: publik } = await buatClientAnonLokal()
+      .from("rangkuman_kasus")
+      .select("id_rangkuman")
+      .eq("id_rangkuman", idRangkuman);
+    expect(publik).toEqual([]);
+  });
 });
 
 describe("IA-12 TemplatDokumen ke Supabase Storage", () => {
