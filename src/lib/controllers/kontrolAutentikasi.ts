@@ -44,10 +44,10 @@ export async function prosesLogin(
   redirect(BERANDA_PANEL[akun.peran]);
 }
 
-/** C25 logout. */
+/** C25 logout (Algo-038): mengakhiri sesi lalu kembali ke halaman login (KF44). */
 export async function logout() {
   const supabase = await buatClientServer();
   await supabase.auth.signOut();
   (await cookies()).delete(COOKIE_AKTIVITAS);
-  redirect("/");
+  redirect("/masuk");
 }

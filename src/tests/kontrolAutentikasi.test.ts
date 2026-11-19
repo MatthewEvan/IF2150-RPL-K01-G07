@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { prosesLogin } from "@/lib/controllers/kontrolAutentikasi";
+import { logout, prosesLogin } from "@/lib/controllers/kontrolAutentikasi";
 import { cariAkun, PERAN } from "@/lib/models/akun";
 
 const auth = vi.hoisted(() => ({
@@ -7,12 +7,13 @@ const auth = vi.hoisted(() => ({
   signOut: vi.fn(),
 }));
 const cookieSet = vi.hoisted(() => vi.fn());
+const cookieDelete = vi.hoisted(() => vi.fn());
 
 vi.mock("@/lib/supabase/server", () => ({
   buatClientServer: async () => ({ auth }),
 }));
 vi.mock("next/headers", () => ({
-  cookies: async () => ({ set: cookieSet, delete: vi.fn() }),
+  cookies: async () => ({ set: cookieSet, delete: cookieDelete }),
 }));
 // redirect() Next.js menghentikan fungsi dengan melempar galat.
 vi.mock("next/navigation", () => ({
@@ -102,5 +103,15 @@ describe("prosesLogin", () => {
       galat: "Email atau kata sandi salah.",
     });
     expect(auth.signOut).toHaveBeenCalledOnce();
+  });
+});
+
+describe("logout", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("mengakhiri sesi dan mengarahkan ke halaman login (KF44)", async () => {
+    await expect(logout()).rejects.toThrow("REDIRECT:/masuk");
+    expect(auth.signOut).toHaveBeenCalledOnce();
+    expect(cookieDelete).toHaveBeenCalledWith("aktivitas_terakhir");
   });
 });
