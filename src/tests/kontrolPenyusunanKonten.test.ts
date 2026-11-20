@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { StatusKonten } from "@/components/ui/Badge";
+import { revalidatePath } from "next/cache";
 import {
   ajukanKonten,
   buatDraf,
+  hapusTemplat,
   lampirkanTemplat,
   simpanDraf,
 } from "@/lib/controllers/kontrolPenyusunanKonten";
@@ -17,6 +19,7 @@ import {
 import { simpanRiwayat } from "@/lib/models/riwayatStatus";
 import {
   ambilDaftarTemplat,
+  hapusTemplat as hapusTemplatDokumen,
   perbaruiVersi,
   UKURAN_MAKSIMAL_TEMPLAT,
   type TemplatDokumen,
@@ -129,7 +132,7 @@ beforeEach(() => {
 });
 
 describe("simpanDraf", () => {
-  it("tetap menyimpan draf walaupun isian wajib belum lengkap", async () => {
+  it("C26-UT01: tetap menyimpan draf walaupun isian wajib belum lengkap", async () => {
     const hasil = await simpanDraf(
       11,
       formulir({
@@ -162,7 +165,7 @@ describe("simpanDraf", () => {
     );
   });
 
-  it("menolak Kurator yang dinonaktifkan", async () => {
+  it("C26-UT02: menolak Kurator yang dinonaktifkan", async () => {
     vi.mocked(cariAkun).mockResolvedValue({ ...KURATOR, statusAktif: false });
 
     const hasil = await simpanDraf(11, formulir(ISIAN_LENGKAP));
@@ -174,7 +177,7 @@ describe("simpanDraf", () => {
     expect(simpanDrafRangkuman).not.toHaveBeenCalled();
   });
 
-  it("menolak konten milik Kurator lain atau yang tidak ada", async () => {
+  it("C26-UT03: menolak konten milik Kurator lain atau yang tidak ada", async () => {
     vi.mocked(ambilRangkumanMilik).mockResolvedValue(null);
 
     const hasil = await simpanDraf(99, formulir(ISIAN_LENGKAP));
@@ -187,7 +190,7 @@ describe("simpanDraf", () => {
   });
 
   it.each<StatusKonten>(["Diajukan", "Disetujui"])(
-    "menolak perubahan pada konten berstatus %s",
+    "C26-UT04: menolak perubahan pada konten berstatus %s",
     async (status) => {
       vi.mocked(ambilRangkumanMilik).mockResolvedValue(rangkuman(status));
 
@@ -201,7 +204,7 @@ describe("simpanDraf", () => {
     },
   );
 
-  it("menampilkan galat bila penyimpanan gagal", async () => {
+  it("C26-UT05: menampilkan galat bila penyimpanan gagal", async () => {
     vi.mocked(simpanDrafRangkuman).mockRejectedValue(new Error("putus"));
 
     const hasil = await simpanDraf(11, formulir(ISIAN_LENGKAP));
@@ -214,7 +217,7 @@ describe("simpanDraf", () => {
 });
 
 describe("ajukanKonten dengan isian wajib kosong", () => {
-  it("menandai semua isian wajib yang kosong dan tidak mengubah status", async () => {
+  it("C26-UT06: menandai semua isian wajib yang kosong dan tidak mengubah status", async () => {
     const hasil = await ajukanKonten(
       11,
       formulir({
@@ -250,7 +253,7 @@ describe("ajukanKonten dengan isian wajib kosong", () => {
     ["checklist", { checklist: "\n  \n" }],
     ["artikel", { artikelJudul: ["Judul tanpa tautan"], artikelTautan: [""] }],
   ] as const)(
-    "hanya menandai %s bila isian itu saja yang kosong",
+    "C26-UT07: hanya menandai %s bila isian itu saja yang kosong",
     async (isian, ubahan) => {
       const hasil = await ajukanKonten(
         11,
@@ -263,7 +266,7 @@ describe("ajukanKonten dengan isian wajib kosong", () => {
     },
   );
 
-  it("tidak menyimpan atau mengajukan konten yang sudah Diajukan", async () => {
+  it("C26-UT08: tidak menyimpan atau mengajukan konten yang sudah Diajukan", async () => {
     vi.mocked(ambilRangkumanMilik).mockResolvedValue(rangkuman("Diajukan"));
 
     const hasil = await ajukanKonten(11, formulir(ISIAN_LENGKAP));
@@ -280,7 +283,7 @@ describe("ajukanKonten dengan isian wajib kosong", () => {
 
 describe("transisi status dan RiwayatStatus", () => {
   it.each<StatusKonten>(["Draft", "Perlu Revisi"])(
-    "mengajukan konten %s yang lengkap tepat satu kali",
+    "C26-UT09: mengajukan konten %s yang lengkap tepat satu kali",
     async (status) => {
       vi.mocked(ambilRangkumanMilik).mockResolvedValue(rangkuman(status));
 
@@ -296,7 +299,7 @@ describe("transisi status dan RiwayatStatus", () => {
     },
   );
 
-  it("melaporkan galat bila perubahan status dan riwayat gagal", async () => {
+  it("C26-UT10: melaporkan galat bila perubahan status dan riwayat gagal", async () => {
     vi.mocked(ajukanRangkuman).mockRejectedValue(new Error("23514"));
 
     const hasil = await ajukanKonten(11, formulir(ISIAN_LENGKAP));
@@ -308,7 +311,7 @@ describe("transisi status dan RiwayatStatus", () => {
     });
   });
 
-  it("mencatat riwayat Draft atas nama Kurator saat draf dibuat", async () => {
+  it("C26-UT11: mencatat riwayat Draft atas nama Kurator saat draf dibuat", async () => {
     vi.mocked(buatRangkuman).mockResolvedValue(12);
 
     await buatDraf(1);
@@ -323,7 +326,7 @@ describe("transisi status dan RiwayatStatus", () => {
     expect(redirect).toHaveBeenCalledWith("/panel/kurator/konten/12");
   });
 
-  it("tidak membuat draf untuk Kurator nonaktif", async () => {
+  it("C26-UT12: tidak membuat draf untuk Kurator nonaktif", async () => {
     vi.mocked(cariAkun).mockResolvedValue({ ...KURATOR, statusAktif: false });
 
     const hasil = await buatDraf(1);
@@ -341,35 +344,38 @@ describe("lampirkanTemplat", () => {
     ["format PNG", berkas("bukti.png", 1024)],
     ["berkas di atas 5 MB", berkas("besar.pdf", UKURAN_MAKSIMAL_TEMPLAT + 1)],
     ["berkas kosong", berkas("kosong.docx", 0)],
-  ])("menolak %s dengan pesan yang jelas", async (_, isi) => {
+  ])("C26-UT13: menolak %s dengan pesan yang jelas", async (_, isi) => {
     const hasil = await lampirkanTemplat(11, formulirTemplat(isi));
 
     expect(hasil).toEqual({ berhasil: false, galat: GALAT_UNGGAH });
     expect(perbaruiVersi).not.toHaveBeenCalled();
   });
 
-  it("menolak permintaan tanpa berkas", async () => {
+  it("C26-UT14: menolak permintaan tanpa berkas", async () => {
     const hasil = await lampirkanTemplat(11, new FormData());
 
     expect(hasil).toEqual({ berhasil: false, galat: GALAT_UNGGAH });
   });
 
-  it.each(["surat.pdf", "surat.docx"])("menerima %s", async (nama) => {
-    const isi = berkas(nama, 2048);
-    vi.mocked(perbaruiVersi).mockResolvedValue(templat(nama));
+  it.each(["surat.pdf", "surat.docx"])(
+    "C26-UT15: menerima %s",
+    async (nama) => {
+      const isi = berkas(nama, 2048);
+      vi.mocked(perbaruiVersi).mockResolvedValue(templat(nama));
 
-    const hasil = await lampirkanTemplat(11, formulirTemplat(isi));
+      const hasil = await lampirkanTemplat(11, formulirTemplat(isi));
 
-    expect(hasil.berhasil).toBe(true);
-    expect(perbaruiVersi).toHaveBeenCalledWith(
-      { auth: { getUser } },
-      11,
-      null,
-      expect.objectContaining({ name: nama }),
-    );
-  });
+      expect(hasil.berhasil).toBe(true);
+      expect(perbaruiVersi).toHaveBeenCalledWith(
+        { auth: { getUser } },
+        11,
+        null,
+        expect.objectContaining({ name: nama }),
+      );
+    },
+  );
 
-  it("meneruskan templat lama bila nama berkasnya sama", async () => {
+  it("C26-UT16: meneruskan templat lama bila nama berkasnya sama", async () => {
     const lama = templat("surat.pdf", "1");
     vi.mocked(ambilDaftarTemplat).mockResolvedValue([lama]);
     vi.mocked(perbaruiVersi).mockResolvedValue(templat("surat.pdf", "2"));
@@ -388,7 +394,7 @@ describe("lampirkanTemplat", () => {
     );
   });
 
-  it("menolak unggahan ke konten yang sudah Diajukan", async () => {
+  it("C26-UT17: menolak unggahan ke konten yang sudah Diajukan", async () => {
     vi.mocked(ambilRangkumanMilik).mockResolvedValue(rangkuman("Diajukan"));
 
     const hasil = await lampirkanTemplat(
@@ -401,5 +407,78 @@ describe("lampirkanTemplat", () => {
       galat: "Konten berstatus Diajukan tidak bisa diubah.",
     });
     expect(perbaruiVersi).not.toHaveBeenCalled();
+  });
+});
+
+describe("hapusTemplat", () => {
+  it("C26-UT18: menghapus templat milik rangkuman tersebut", async () => {
+    const sasaran = templat("surat.pdf");
+    vi.mocked(ambilDaftarTemplat).mockResolvedValue([sasaran]);
+
+    const hasil = await hapusTemplat(11, sasaran.idTemplat);
+
+    expect(hasil).toEqual({ berhasil: true });
+    expect(ambilDaftarTemplat).toHaveBeenCalledWith({ auth: { getUser } }, 11);
+    expect(hapusTemplatDokumen).toHaveBeenCalledWith(
+      { auth: { getUser } },
+      sasaran,
+    );
+    expect(revalidatePath).toHaveBeenCalledWith("/panel/kurator/konten/11");
+  });
+
+  it("C26-UT19: menolak id templat yang bukan milik rangkuman tersebut", async () => {
+    vi.mocked(ambilDaftarTemplat).mockResolvedValue([templat("surat.pdf")]);
+
+    const hasil = await hapusTemplat(11, 999);
+
+    expect(hasil).toEqual({
+      berhasil: false,
+      galat: "Templat tidak ditemukan.",
+    });
+    expect(hapusTemplatDokumen).not.toHaveBeenCalled();
+    expect(revalidatePath).not.toHaveBeenCalled();
+  });
+
+  it.each<StatusKonten>(["Diajukan", "Disetujui"])(
+    "C26-UT20: menolak penghapusan templat pada konten berstatus %s",
+    async (status) => {
+      vi.mocked(ambilRangkumanMilik).mockResolvedValue(rangkuman(status));
+
+      const hasil = await hapusTemplat(11, 5);
+
+      expect(hasil).toEqual({
+        berhasil: false,
+        galat: `Konten berstatus ${status} tidak bisa diubah.`,
+      });
+      expect(ambilDaftarTemplat).not.toHaveBeenCalled();
+      expect(hapusTemplatDokumen).not.toHaveBeenCalled();
+    },
+  );
+
+  it("C26-UT21: menolak Kurator yang dinonaktifkan", async () => {
+    vi.mocked(cariAkun).mockResolvedValue({ ...KURATOR, statusAktif: false });
+
+    const hasil = await hapusTemplat(11, 5);
+
+    expect(hasil).toEqual({
+      berhasil: false,
+      galat: "Akun Anda tidak aktif. Hubungi Administrator.",
+    });
+    expect(hapusTemplatDokumen).not.toHaveBeenCalled();
+  });
+
+  it("C26-UT22: menampilkan galat bila penghapusan di basis data atau Storage gagal", async () => {
+    vi.mocked(ambilDaftarTemplat).mockResolvedValue([templat("surat.pdf")]);
+    vi.mocked(hapusTemplatDokumen).mockRejectedValue(
+      new Error("Templat tidak terhapus"),
+    );
+
+    const hasil = await hapusTemplat(11, 5);
+
+    expect(hasil).toEqual({
+      berhasil: false,
+      galat: "Templat gagal dihapus. Coba lagi.",
+    });
+    expect(revalidatePath).not.toHaveBeenCalled();
   });
 });
