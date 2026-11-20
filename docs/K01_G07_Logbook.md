@@ -31,6 +31,7 @@
 * [Milestone 7](#milestone-7)
 * [Milestone 8](#milestone-8)
 * [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -231,5 +232,24 @@
 | 13-11-2026 | Matthew, Wesley | Menggabungkan `dev` ke `main` lewat PR #109 (dibuat Matthew, di-review dan di-merge Wesley) | 0.5 | Done | - |
 | 13-11-2026 | Matthew Evan Kurniawan | Menyusun dokumen Milestone 9: laporan implementasi (B.1 sampai B.5), `src/README.md`, dan Form Asistensi | 4 | Done | - |
 | 13-11-2026 | Wesley Lianto | Menyusun Logbook dan AI-Usage Milestone 9 | 1 | Done | - |
+
+### Milestone 10
+**Periode:** 18 November 2026 - 20 November 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 18-11-2026 | Matthew Evan Kurniawan | Menyusun kerangka `K01_G07_HIUPL.md`, aturan penomoran ID, dan draf Tabel 4.1 kedalaman pengujian kelas (PR #111) | 3 | Done | - |
+| 18-11-2026 | Wesley Lianto | Menyusun draf BAB 1 sampai BAB 3 HIUPL sesuai pembagian tugas | 3 | Done | Menunggu penggabungan dokumen oleh Matthew. |
+| 18-11-2026 | Rivan Cahyadi | Memasang `@vitest/coverage-v8`, memisahkan skrip `test:integrasi`, serta menyiapkan helper dan pengaman Supabase lokal (PR #116, di-merge 19-11) | 4 | Done | - |
+| 18-11-2026 | Raditya Wibian Sastaka, Christopherus Michael Jafeth Tobing, Matthew Evan Kurniawan | Memulai uji manual use case dan mengumpulkan tangkapan layar dengan Supabase lokal | 2.5 | Done | Origin `localhost` dipakai karena Next 16 memblokir HMR pada `127.0.0.1`. |
+| 18-11-2026 | Raditya Wibian Sastaka | Membuat issue #112 dan #113 untuk tindak lanjut kegagalan UC05-TC04 dan UC09-TC02 pada HIUPL | 1 | Done | - |
+| 19-11-2026 | Raditya Wibian Sastaka | S3-A11: mengalihkan tombol Keluar ke `/masuk` beserta unit test (PR #114, di-merge 19-11) | 2 | Done | - |
+| 19-11-2026 | Raditya Wibian Sastaka | S3-A12: menambahkan tombol Ubah email Kurator, validasi email, dan unit test (PR #115, di-merge 19-11) | 3 | Done | - |
+| 19-11-2026 | Matthew Evan Kurniawan | Menambahkan unit test C06/C26 dan integration test `INT-TC30`–`INT-TC39` untuk penyusunan konten (PR #117) | 4 | On Progress | Menunggu review PR sebelum digabung. |
+| 19-11-2026 | Christopherus Michael Jafeth Tobing | Menambahkan `C12-UT10`–`C12-UT19`, `C28-UT11`–`C28-UT16`, `INT-TC40`–`INT-TC49`, uji manual UC06, dan pengukuran KNF07/KNF09/KNF12 (PR #118) | 6 | Done | Menunggu review `@MatthewEvan` dan `@radityawsgtg`; bukti diarsipkan pada branch `bukti/m10-screenshots`. |
+| 19-11-2026 | Christopherus Michael Jafeth Tobing | Mengirim potongan Tabel 4.2 sampai 4.6 untuk HIUPL tanpa mengubah dokumen milik Matthew | 1.5 | Done | - |
+| 20-11-2026 | Semua Anggota | Me-review PR yang tersisa sebelum siang dan menanggapi komentar reviewer | 1 | Done | - |
+| 20-11-2026 | Matthew Evan Kurniawan | Menggabungkan BAB 4, menyusun BAB 5 dan Daftar Perubahan, lalu menyiapkan penggabungan `dev` ke `main` dan tag `v10.0` | 5 | On Progress | - |
+| 20-11-2026 | Christopherus Michael Jafeth Tobing | Mengisi Form Asistensi, Logbook, dan AI-Usage Milestone 10 | 2 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
