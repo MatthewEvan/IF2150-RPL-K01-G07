@@ -248,9 +248,9 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C19 | HalamanModerasiKonten | Tidak perlu | Hanya menampilkan antrean dan meneruskan keputusan ke C28. | UC08-TC01 s.d. UC08-TC03 |
 | C20 | HalamanPengelolaanAkun | Tidak perlu | Hanya menampilkan daftar Kurator dan meneruskan aksi ke C29. | UC09-TC01, UC09-TC02 |
 | C21 | KontrolJelajahKasus | Sedang | Mendelegasikan pengambilan data ke model dan menghitung jumlah kelompok per bidang. | C21-UT01 s.d. C21-UTnn |
-| C22 | KontrolPencarianKataKunci | Mendalam | Memuat algoritma pencarian (Algo-032, Algo-012, Algo-013), *escape* pola `ILIKE`, serta penyaringan konten Disetujui dan bidang aktif. | C22-UT01 s.d. C22-UTnn |
+| C22 | KontrolPencarianKataKunci | Mendalam | Memuat algoritma pencarian (Algo-032, Algo-012, Algo-013), *escape* pola `ILIKE`, serta penyaringan konten Disetujui dan bidang aktif. | C22-UT01 s.d. C22-UT17 |
 | C23 | KontrolChecklist | Mendalam | Memuat penyimpanan status centang di `localStorage`, penanganan data rusak, sinkronisasi antartab, dan perhitungan kelengkapan. | C23-UT01 s.d. C23-UTnn |
-| C24 | KontrolUnduhTemplat | Mendalam | Memuat aturan keamanan (hanya templat milik konten Disetujui dan validasi id) serta integrasi dengan Supabase Storage. | C24-UT01 s.d. C24-UTnn |
+| C24 | KontrolUnduhTemplat | Mendalam | Memuat aturan keamanan (hanya templat milik konten Disetujui dan validasi id) serta integrasi dengan Supabase Storage. | C24-UT01 s.d. C24-UT12 |
 | C25 | KontrolAutentikasi | Mendalam | Memuat aturan keamanan login, proteksi rute per peran, pemutusan sesi akun nonaktif, dan batas sesi 30 menit (KNF14). | C25-UT01 s.d. C25-UTnn |
 | C26 | KontrolPenyusunanKonten | Mendalam | Memuat aturan penyuntingan per status, validasi isian, pengajuan konten, serta unggah dan hapus templat. | C26-UT01 s.d. C26-UT22 |
 | C27 | KontrolPelacakanKonten | Sedang | Hanya meneruskan permintaan daftar konten ke model C02. | C27-UT01 s.d. C27-UTnn |
@@ -329,6 +329,77 @@ Tabel 4.2.8. Hasil Pengujian Unit Kelas C17
 | C17-UT06 | `pindahkanButir(...)` | Normal | Pindahkan butir lalu periksa daftar asli | Daftar asli tidak berubah | Daftar asli tetap A, B, C | Pass |
 | C17-UT07 | `pindahkanButir(...)` | Gagal | Naikkan butir pertama, turunkan butir terakhir, dan indeks 5 | Daftar tidak berubah | Daftar asli dikembalikan untuk ketiga masukan | Pass |
 
+### 4.2.10 Kelas KontrolPencarianKataKunci
+
+**ID Kelas:** C22  
+**Nama Kelas:** KontrolPencarianKataKunci  
+**Tingkat:** Mendalam  
+**File test:** `src/tests/kontrolPencarianKataKunci.test.ts`
+
+Tabel 4.2.10. Hasil Pengujian Unit Kelas C22
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C22-UT01 | `rapikanKataKunci(kataKunci): string` | Normal & Batas | Masukan `"  UPAH Lembur  "` dan `"   "` | Mengembalikan `"upah lembur"` dan `""` | Mengembalikan `"upah lembur"` dan `""` | Pass |
+| C22-UT02 | `cekDisetujui(status): boolean` | Normal & Negatif | Masukan `"Disetujui"`, `"Draft"`, `"Diajukan"`, `"Perlu Revisi"`, `null`, `undefined` | `true` hanya untuk `"Disetujui"`, selain itu `false` | Seluruh masukan sesuai harapan | Pass |
+| C22-UT03 | `cocokkanKataKunciKelompok(kelompok, kataKunci): boolean` | Normal & Batas | Cocokkan `"GAJI"`, `"  upah "`, dan 1 karakter `"g"` pada `judulUmum` dan `istilahResmi` | Mengembalikan `true` tanpa membedakan huruf besar/kecil | Seluruh pemanggilan mengembalikan `true` | Pass |
+| C22-UT04 | `cocokkanKataKunciKelompok(...)` | Negatif | Masukan `""`, `"   "`, dan kata tidak cocok `"warisan"` | Mengembalikan `false` | Seluruh pemanggilan mengembalikan `false` | Pass |
+| C22-UT05 | `cocokkanKataKunciRangkuman(rangkuman, kataKunci): boolean` | Normal & Batas | Cocokkan `"rusak"`, `"KOMPENSASI"`, `"transfer"` dengan sebagian kolom `null` | Mengembalikan `true` saat salah satu kolom isi cocok | Seluruh pemanggilan mengembalikan `true` | Pass |
+| C22-UT06 | `cocokkanKataKunciRangkuman(...)` | Negatif | Kata kunci spasi `"   "`, semua kolom `null`, atau kata tidak cocok `"pajak"` | Mengembalikan `false` | Seluruh pemanggilan mengembalikan `false` | Pass |
+| C22-UT07 | `cariKasus(kataKunci): HasilPencarianKasus[]` | Normal | Panggil `cariKasus("  UPAH  ")` pada data tiruan berisi konten Disetujui, Diajukan, dan bidang nonaktif | Mengembalikan 1 kasus Disetujui pada bidang aktif (`idKelompok` 1) dan menyertakan filter `id_kelompok.in.(1)` | Mengembalikan 1 kasus yang tepat dengan `status = Disetujui` | Pass |
+| C22-UT08 | `cariKasus(...)` | Normal | Panggil `cariKasus("kompensasi")` (hanya muncul pada kolom `hak`, bukan judul kelompok) | Mengembalikan kasus `idKelompok` 3 tanpa klausa `id_kelompok.in.` | Mengembalikan 1 kasus (`idKelompok` 3) | Pass |
+| C22-UT09 | `cariKasus(...)`, `cariKasusDisetujui(...)` | Batas & Negatif | Panggil dengan `""` dan `"    "` | Mengembalikan `[]` tanpa memanggil `buatClientServer()` | Mengembalikan `[]`, `buatClientServer` tidak dipanggil | Pass |
+| C22-UT10 | `cariKasus(...)` | Batas | Panggil dengan wildcard SQL `"100%"` pada data berkolom `null` | Karakter `%` di-*escape* menjadi `\%` pada pola `ILIKE` dan kolom `null` dipetakan ke `""` | Pola mengandung `ilike.%100\%%` dan hasil terpetakan bersih | Pass |
+| C22-UT11 | `cariKasus(...)` | Batas | Panggil dengan karakter delimiter PostgREST `"(sepihak),"` | Melewati `.or()` (jalur *fallback* aman) lalu tetap mencocokkan di aplikasi | Tidak ada panggilan `.or()`, mengembalikan 1 kasus cocok (`idKelompok` 10) | Pass |
+| C22-UT12 | `cariKasus(...)` | Negatif | Data `kelompok_kasus: null`, `bidang_hukum: null`, atau respons `data: null` | Baris tidak valid dilewati dan mengembalikan `[]` | Mengembalikan `[]` tanpa melempar galat | Pass |
+| C22-UT13 | `cariKasus(...)` | Negatif | Client mengembalikan baris berstatus `"Draft"` walau filter query dilewati | Pertahanan `cekDisetujui()` menyaring keluar baris `"Draft"` dan mengembalikan `[]` (KF02) | Mengembalikan `[]` | Pass |
+| C22-UT14 | `cariKasus(...)` | Negatif | Kueri `kelompok_kasus` atau `rangkuman_kasus` mengembalikan galat | Galat basis data diteruskan ke pemanggil | Galat `"Kueri kelompok gagal"` dan `"Kueri rangkuman gagal"` diteruskan | Pass |
+| C22-UT15 | `sarankanBidangLain(): BidangHukum[]` | Normal | Data berisi 2 bidang aktif dan 1 bidang nonaktif | Mengembalikan hanya 2 bidang dengan `statusAktif = true` | Mengembalikan Ketenagakerjaan dan Perlindungan Konsumen | Pass |
+| C22-UT16 | `sarankanBidangLain()` | Batas | Seluruh bidang hukum berstatus nonaktif (`status_aktif = false`) | Mengembalikan `[]` | Mengembalikan `[]` | Pass |
+| C22-UT17 | `sarankanBidangLain()` | Negatif | Kueri `bidang_hukum` mengembalikan galat | Galat `"Gagal memuat bidang"` diteruskan | Galat diteruskan | Pass |
+
+Tabel 4.2.10b. Ringkasan Cakupan Kelas C22
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `cariKasus(kataKunci)`, `sarankanBidangLain()`, `ambilDaftarLBH(wilayah)` |
+| Operasi yang diuji | `cariKasus(kataKunci)` dan `sarankanBidangLain()` (2 dari 2 operasi terimplementasi), beserta fungsi model `cariKasusDisetujui()`, `rapikanKataKunci()`, `cekDisetujui()`, `cocokkanKataKunciKelompok()`, dan `cocokkanKataKunciRangkuman()`. `ambilDaftarLBH(wilayah)` tidak diimplementasikan pada C22 (Tugas 9 B.1 no. 20) dan diuji pada C21. |
+| ID Algoritma yang tercakup | Algo-012, Algo-013, Algo-032, Algo-033 |
+| Coverage (wajib ≥ 70%) | `src/lib/controllers/kontrolPencarianKataKunci.ts`: 100% baris, 100% cabang, 100% fungsi; `src/lib/models/pencarian.ts`: 100% baris, 97,61% cabang, 100% fungsi (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
+
+### 4.2.12 Kelas KontrolUnduhTemplat
+
+**ID Kelas:** C24  
+**Nama Kelas:** KontrolUnduhTemplat  
+**Tingkat:** Mendalam  
+**File test:** `src/tests/kontrolUnduhTemplat.test.ts`
+
+Tabel 4.2.12. Hasil Pengujian Unit Kelas C24
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C24-UT01 | `ambilDaftarTemplat(idRangkuman): TemplatDokumen[]` | Normal | Panggil `ambilDaftarTemplat(1)` pada rangkuman yang memiliki 2 templat | Mengembalikan 2 objek `TemplatDokumen` beserta format, ukuran, versi, dan tanggal pembaruan | Mengembalikan 2 templat dengan metadata lengkap | Pass |
+| C24-UT02 | `ambilDaftarTemplat(...)` | Batas | Panggil `ambilDaftarTemplat(99)` pada rangkuman tanpa templat | Mengembalikan `[]` | Mengembalikan `[]` | Pass |
+| C24-UT03 | `ambilDaftarTemplat(...)` | Negatif | Panggil dengan `0`, `-3`, `1.5`, dan `NaN` | Mengembalikan `[]` tanpa memanggil Supabase | Keempat masukan mengembalikan `[]`, `buatClientServer` tidak dipanggil | Pass |
+| C24-UT04 | `unduhTemplat(idTemplat): HasilUnduhTemplat` | Normal | Panggil `unduhTemplat(1)` untuk berkas PDF pada rangkuman Disetujui | Mengembalikan `berhasil: true` dengan *signed URL* dan memanggil `createSignedUrl("1/penagihan.pdf", 60, { download: "surat-penagihan-upah.pdf" })` pada *bucket* `templat` | *Signed URL* dan argumen Storage sesuai | Pass |
+| C24-UT05 | `unduhTemplat(idTemplat, idRangkuman)` | Normal & Batas | Panggil `unduhTemplat(2, 1)` untuk berkas DOCX versi 2 dengan `idRangkuman` cocok | Mengembalikan `berhasil: true` dan `namaBerkas = "surat-perundingan.docx"` | `berhasil: true` dan URL menunjuk `1/perundingan.docx` | Pass |
+| C24-UT06 | `unduhTemplat(...)` | Batas & Negatif | Panggil dengan `idTemplat` = `0`, `-1`, `2.5`, dan `NaN` | Mengembalikan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` tanpa menyentuh Supabase | Keempat masukan ditolak dengan pesan tepat, Supabase tidak dipanggil | Pass |
+| C24-UT07 | `unduhTemplat(...)` | Negatif | Panggil dengan `idTemplat = 1` dan `idRangkuman` = `0`, `-5`, `1.2`, dan `NaN` | Mengembalikan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` tanpa menyentuh Supabase | Keempat masukan ditolak dengan pesan tepat | Pass |
+| C24-UT08 | `unduhTemplat(...)` | Negatif | Panggil `unduhTemplat(3)` milik rangkuman berstatus `"Draft"` | Menolak unduhan (KF02) dan tidak memanggil `createSignedUrl` | Mengembalikan galat `"Berkas templat tidak tersedia."` | Pass |
+| C24-UT09 | `unduhTemplat(...)` | Negatif | Panggil dengan `idRangkuman` tidak cocok (`unduhTemplat(1, 2)`) dan `idTemplat` tidak ada (`unduhTemplat(999)`) | Mengembalikan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` | Keduanya mengembalikan galat tidak tersedia | Pass |
+| C24-UT10 | `unduhTemplat(...)` | Batas | Panggil `unduhTemplat(4)` dengan `lokasiBerkas = null` | Tidak memanggil `createSignedUrl` dan mengembalikan pesan tidak tersedia | Mengembalikan galat `"Berkas templat tidak tersedia."` | Pass |
+| C24-UT11 | `unduhTemplat(...)` | Negatif | `createSignedUrl` mengembalikan galat `"Object not found"` | Mengembalikan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` | Mengembalikan galat tidak tersedia | Pass |
+| C24-UT12 | `unduhTemplat(...)` | Negatif | Kueri basis data melempar pengecualian `"Koneksi basis data terputus"` | Pengecualian ditangkap dan mengembalikan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` | Pengecualian ditangani aman, mengembalikan galat tidak tersedia | Pass |
+
+Tabel 4.2.12b. Ringkasan Cakupan Kelas C24
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `ambilDaftarTemplat(idRangkuman)`, `unduhTemplat(idRangkuman, idTemplat)` |
+| Operasi yang diuji | `ambilDaftarTemplat(idRangkuman)` dan `unduhTemplat(idTemplat, idRangkuman?)` (2 dari 2 operasi public) |
+| ID Algoritma yang tercakup | Algo-023, Algo-035 |
+| Coverage (wajib ≥ 70%) | `src/lib/controllers/kontrolUnduhTemplat.ts`: 100% baris, 100% cabang, 100% fungsi (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
+
 ### 4.2.14 Kelas KontrolPenyusunanKonten
 
 **ID Kelas:** C26  
@@ -385,11 +456,23 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | IA-10 | C26 KontrolPenyusunanKonten | C06 RangkumanKasus, tabel `rangkuman_kasus` dan `riwayat_status` | *Controller* - *Model* - Basis data | INT-TC30, INT-TC31, INT-TC32 |
 | IA-11 | C06 RangkumanKasus | Fungsi basis data `simpan_draf` dan `ajukan_konten`, C12 RiwayatStatus, RLS | Aplikasi - Basis data | INT-TC33, INT-TC34, INT-TC35, INT-TC39 |
 | IA-12 | C09 TemplatDokumen | Supabase Storage (*bucket* privat `templat`) | Aplikasi - Sistem eksternal | INT-TC36, INT-TC37, INT-TC38 |
+| IA-17 | C22 KontrolPencarianKataKunci | `pencarian.ts` (C05/C06), tabel `kelompok_kasus` dan `rangkuman_kasus` | *Controller* - *Model* - Basis data | INT-TC20, INT-TC22, INT-TC23, INT-TC24 |
+| IA-18 | C22 KontrolPencarianKataKunci | C04 BidangHukum, tabel `bidang_hukum` | *Controller* - *Model* - Basis data | INT-TC21 |
+| IA-19 | C24 KontrolUnduhTemplat | C09 TemplatDokumen, tabel `templat_dokumen`, Supabase Storage (*bucket* privat `templat`) | *Controller* - *Model* - Basis data & Sistem eksternal | INT-TC25, INT-TC26, INT-TC27, INT-TC28 |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
 | ID Pengujian | ID Antarmuka | Skenario | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| INT-TC20 | IA-17 | Normal: mencari kata kunci dengan spasi tepi pada klien anonim | Panggil `cariKasus("  upah  ")` melalui C22 terhadap Supabase lokal | Mengembalikan minimal 1 kasus berstatus Disetujui yang memuat `"Gaji tidak dibayar"` | Mengembalikan kasus `idKelompok` 1 berstatus Disetujui | Pass |
+| INT-TC21 | IA-18 | Alternatif: hasil pencarian kosong dan saran bidang aktif | Panggil `cariKasus("kata-kunci-tidak-terdaftar-xyz")` lalu `sarankanBidangLain()` | Pencarian mengembalikan `[]` dan saran mengembalikan seluruh bidang dengan `statusAktif = true` | Hasil pencarian `[]` dan 3 bidang hukum aktif dikembalikan | Pass |
+| INT-TC22 | IA-17 | Gagal keamanan (KF02): konten belum Disetujui tidak muncul | Panggil `cariKasus` dengan kata kunci dari rangkuman Draft, Diajukan, dan Perlu Revisi pada data seed | Seluruh pemanggilan mengembalikan `[]` | Ketiganya mengembalikan `[]` (RLS dan filter status berjalan) | Pass |
+| INT-TC23 | IA-17 | Normal: pencocokan via `istilah_resmi` dan isi rangkuman | Panggil `cariKasus("sengketa konsumen")` dan `cariKasus("kompensasi")` | Keduanya mengembalikan kasus `idKelompok` 3 | Keduanya mengembalikan kasus `idKelompok` 3 | Pass |
+| INT-TC24 | IA-17 | Batas: karakter delimiter PostgREST (koma dan kurung) | Panggil `cariKasus("upah, (uji)")` | Jalur *fallback* berjalan tanpa galat PostgREST dan mengembalikan `[]` | Mengembalikan `[]` tanpa pengecualian | Pass |
+| INT-TC25 | IA-19 | Normal: klien anonim mengunduh templat PDF pada rangkuman Disetujui | Unggah PDF uji ke *bucket* privat `templat` pada `id_rangkuman` 1, panggil `unduhTemplat(idTemplat, 1)` sebagai anonim lalu `fetch(urlUnduh)` | Mendapat *signed URL* valid dan `fetch` mengembalikan HTTP 200 dengan isi berkas PDF identik | HTTP 200 diterima dan isi berkas PDF cocok 100% | Pass |
+| INT-TC26 | IA-19 | Normal: `ambilDaftarTemplat` dan unduh templat DOCX versi terbaru | Unggah DOCX uji versi 2 pada `id_rangkuman` 1, panggil `ambilDaftarTemplat(1)` lalu `unduhTemplat(idTemplat)` dan `fetch(urlUnduh)` | Metadata format, versi, dan ukuran terbaca benar serta berkas DOCX terunduh dengan HTTP 200 | Metadata cocok dan isi berkas DOCX cocok 100% | Pass |
+| INT-TC27 | IA-19 | Gagal keamanan (KF02): unduh templat rangkuman Draft | Pasang templat pada `id_rangkuman` 6 (Draft), panggil `unduhTemplat(idTemplat)` sebagai anonim | Ditolak dengan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` | Mengembalikan galat `"Berkas templat tidak tersedia."` | Pass |
+| INT-TC28 | IA-19 | Gagal: `lokasi_berkas` null atau objek tidak ada di Storage | Panggil `unduhTemplat` pada baris `lokasi_berkas = null` dan baris dengan *path* tidak ada di Storage | Keduanya mengembalikan `{ berhasil: false, galat: "Berkas templat tidak tersedia." }` | Keduanya mengembalikan galat `"Berkas templat tidak tersedia."` | Pass |
 | INT-TC30 | IA-10 | Normal: membuat draf | Masuk sebagai `kurator1`, panggil `buatDraf(1)`, lalu baca ulang rangkuman dan riwayat dari basis data | Rangkuman berstatus Draft milik `kurator1` dan satu riwayat Draft atas nama `kurator1` | Rangkuman Draft dan satu riwayat Draft tercatat | Pass |
 | INT-TC31 | IA-10 | Normal: menyimpan dan menyimpan ulang draf | Panggil `simpanDraf()` dengan isian lengkap dua langkah, lalu simpan ulang dengan satu langkah | Isian, langkah terurut beserta tenggat teks, checklist, dan artikel tersimpan; simpan ulang mengganti langkah lama | Seluruh data tersimpan dan langkah lama tergantikan | Pass |
 | INT-TC32 | IA-10 | Gagal: menyimpan konten Diajukan | Panggil `simpanDraf()` pada rangkuman 4 (Diajukan) | Ditolak dan isi rangkuman di basis data tidak berubah | Ditolak dengan pesan status dan inti masalah tetap | Pass |
@@ -406,6 +489,34 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 ## 4.4 Pengujian Use Case
 
 Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai Subbab 4.4 SKPL, dengan minimal satu test case untuk setiap skenario. Kolom ID KF menunjukkan KF yang diverifikasi oleh test case tersebut.
+
+### 4.4.2 Use Case Mencari Kasus
+
+**ID Use Case:** UC02  
+**Nama Use Case:** Mencari Kasus
+
+Pengujian dilakukan pada aplikasi yang dijalankan secara lokal (`npm run dev`) tanpa login (peran Pencari Informasi).
+
+Tabel 4.4.2. Hasil Pengujian Use Case UC02
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC02-TC01 | KF02, KF06 | Normal | 1. Buka halaman `/cari` (I-03) tanpa login.<br>2. Ketik kata kunci pada kolom pencarian lalu kirim.<br>3. Klik kartu hasil yang tampil. | Kata kunci: `"upah"` | Sistem menampilkan jumlah dan kartu hasil kasus berstatus Disetujui (*Gaji tidak dibayar tepat waktu*), dan klik kartu membuka halaman rangkuman `/kasus/1` (I-02). | Tampil `"1 situasi cocok dengan “upah”"` beserta kartu *Gaji tidak dibayar tepat waktu*; klik kartu membuka `/kasus/1`. | Pass |
+| UC02-TC02 | KF07 | Alternatif 1: Pencarian Tidak Menemukan Hasil | 1. Buka halaman `/cari` (I-03).<br>2. Ketik kata kunci yang tidak cocok dengan kasus mana pun lalu kirim pencarian.<br>3. Klik salah satu kartu saran bidang hukum yang tampil. | Kata kunci: `"pajak kendaraan"` | Sistem menampilkan pesan sopan bahwa situasi belum tersedia, saran bidang hukum aktif yang mengarahkan ke beranda dengan bidang terpilih, serta kotak *disclaimer* rujukan konsultasi ke LBH (sesuai penyesuaian Tugas 9 B.1 no. 20). | Tampil `"Situasi yang kamu cari belum tersedia."`, 3 kartu saran bidang hukum aktif (*Ketenagakerjaan*, *Perlindungan Konsumen*, *Keluarga*), dan kotak *disclaimer* rujukan LBH; klik *Ketenagakerjaan* membuka `/?bidang=1#daftar-situasi`. | Pass |
+
+### 4.4.4 Use Case Mengunduh Templat Dokumen
+
+**ID Use Case:** UC04  
+**Nama Use Case:** Mengunduh Templat Dokumen
+
+Pengujian dilakukan pada halaman rangkuman kasus I-02 (`/kasus/[id]`) tanpa login.
+
+Tabel 4.4.4. Hasil Pengujian Use Case UC04
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC04-TC01 | KF15, KF16, KF17 | Normal | 1. Buka halaman rangkuman `/kasus/1` (I-02) yang memiliki templat tanpa login.<br>2. Gulir ke bagian 6 Templat surat.<br>3. Periksa *disclaimer* kerangka awal dan metadata berkas, lalu klik tombol "Unduh". | Rangkuman `/kasus/1` (templat `.pdf` dan `.docx` pada *bucket* `templat`) | Tampil teks *disclaimer* kerangka awal di atas daftar templat, informasi nama berkas, versi, tanggal pembaruan, format, ukuran, dan tombol "Unduh"; klik tombol langsung mengunduh berkas tanpa meminta login. | Teks *disclaimer* dan metadata tampil sesuai I-02; klik "Unduh" langsung mengunduh berkas `.pdf` dan `.docx` yang dapat dibuka normal tanpa akun. | Pass |
+| UC04-TC02 | KF15 | Alternatif 1: Kasus Belum Memiliki Templat | 1. Buka halaman rangkuman `/kasus/5` (I-02) yang belum memiliki templat.<br>2. Gulir ke bagian 6 Templat surat. | Rangkuman `/kasus/5` (tanpa baris `templat_dokumen`) | Tidak tampil tombol unduh dan muncul pesan bahwa templat belum tersedia untuk kasus tersebut. | Tombol unduh tidak ditampilkan dan muncul pesan `"Belum ada templat surat untuk situasi ini."`. | Pass |
 
 ### 4.4.6 Use Case Mengelola Konten Rangkuman Kasus
 
@@ -433,6 +544,9 @@ Tabel 4.5. Hasil Pengujian KNF
 
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| KNF03-TC01 | KNF03 | *Portability* | Antarmuka berjalan normal tanpa galat konsol dan tanpa *horizontal overflow* (`scrollWidth <= innerWidth`) mulai lebar layar 360 px hingga desktop di peramban umum (Chrome dan Edge versi terbaru) | Uji manual lintas peramban dan Chrome/Edge DevTools *Device Toolbar* (lebar `360 px` dan desktop) pada layar I-01 (`/`), I-02 (`/kasus/1`), dan I-03 (`/cari?q=upah`) | Seluruh layar I-01, I-02, dan I-03 tertata rapi pada lebar `360 px` dan desktop di Chrome dan Edge, tidak ada elemen terpotong atau *horizontal overflow* halaman, dan seluruh kontrol interaktif berjalan normal | Pass |
+| KNF04-TC01 | KNF04 | *Response time* | Waktu respons pencarian paling lama 2 detik (`≤ 2.000 ms`) meski jumlah data kasus melebihi 500 entri | Menambahkan 600 entri fiktif pada Supabase lokal hingga total 603 rangkuman Disetujui (`> 500`), lalu mengukur 5 kali pencarian (`"upah"`, `"sengketa konsumen"`, `"kompensasi"`, `"gaji"`, `"pajak kendaraan"`) menggunakan `performance.now()` pada `cariKasusDisetujui()` dengan indeks GIN `pg_trgm` (`0005_indeks_pencarian.sql`) | Hasil 5 percobaan: 42,78 ms, 30,13 ms, 36,03 ms, 49,87 ms, dan 42,21 ms; rata-rata **40,2 ms** dan maksimum **49,87 ms** (`< 2.000 ms`) | Pass |
+| KNF05-TC01 | KNF05 | *Availability* | Ketersediaan respons sukses (`HTTP 200`) layanan publik minimal 95% (diukur pada lingkungan *build* produksi lokal) | Menjalankan `npm run build` dan `npx next start` dengan Supabase lokal, lalu mengirim 20 permintaan HTTP berurutan ke 5 rute publik (`/`, `/cari`, `/cari?q=upah`, `/kasus/1`, `/kasus/3`) dengan skrip *probe* Node.js `fetch` | **20/20 permintaan mengembalikan HTTP 200** (**100%** *availability*, `≥ 95%`), waktu respons rata-rata 109,54 ms dan maksimum 290,07 ms | Pass |
 | KNF08-TC01 | KNF08 | *Reliability* | Saat templat diperbarui, berkas versi lama tetap tersedia sampai versi baru selesai tersimpan, dan setelah berhasil hanya tersisa satu berkas (versi terbaru) di Storage | Integration test INT-TC36 pada Supabase lokal: unggah `surat.pdf` 2 KB, unggah ulang nama yang sama 4 KB, lalu daftar isi folder rangkuman di *bucket* `templat` | Versi naik dari 1 menjadi 2, baris `templat_dokumen` menunjuk lokasi berkas baru, dan folder hanya berisi 1 berkas (berkas versi 1 terhapus setelah versi 2 tersimpan) | Pass |
 | KNF08-TC02 | KNF08 | *Reliability* | Jika unggahan atau penyimpanan versi baru gagal, templat tetap menunjuk versi sebelumnya dan tidak ada berkas setengah jadi yang tertinggal | Inspeksi kode `perbaruiVersi()` di `src/lib/models/templatDokumen.ts`: berkas baru diunggah ke lokasi unik dengan `upsert: false`, baris basis data baru diperbarui setelah unggahan berhasil, berkas baru dihapus bila pembaruan baris gagal, dan berkas lama baru dihapus setelah pembaruan berhasil | Tiga jalur sesuai target: unggahan gagal berhenti sebelum basis data diubah, pembaruan baris gagal menghapus berkas baru dan versi lama tetap utuh, dan berkas lama tidak pernah ditimpa di tempat. Kegagalan jaringan belum disimulasikan secara otomatis | Pass |
 | KNF12-TC01 | KNF12 | *Ergonomy* | Seluruh isian penyusunan konten dapat diisi dan diajukan pada satu halaman tanpa berpindah halaman atau tab | Uji manual pada UC06-TC01 di halaman `/panel/kurator/konten/[id]`: hitung jumlah kartu isian dan jumlah perpindahan halaman dari draf dibuat sampai diajukan, serta tambah dan hapus butir Langkah dan Artikel | 6 kartu isian (Kasus, Isi rangkuman, Langkah penyelesaian, Daftar periksa dokumen, Templat surat, dan Artikel pendukung) tampil dalam 1 halaman, 0 perpindahan halaman atau tab, dan butir Langkah serta Artikel dapat ditambah, diurutkan, dan dihapus langsung di halaman yang sama | Pass |
@@ -455,6 +569,16 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC06-TC03 | Pengajuan dicegah dan tiga isian wajib yang kosong ditandai<br>![UC06-TC03 isian belum lengkap](./assets/pengujian/uc06/uc06-tc03-isian-belum-lengkap.png) |
 | UC06-TC04 | Panel Status konten milik Kurator hanya berisi "Simpan draf" dan "Ajukan untuk ditinjau"<br>![UC06-TC04 panel status](./assets/pengujian/uc06/uc06-tc04-panel-status.png) |
 | KNF12-TC01 | Seluruh kartu isian berada dalam satu halaman<br>![KNF12-TC01 formulir satu halaman](./assets/pengujian/uc06/uc06-tc01-4-diajukan.png) |
+| C22-UT01 – C22-UT17, C24-UT01 – C24-UT12 | Keluaran `npm test`: berkas `kontrolPencarianKataKunci.test.ts` (17 test, C22) dan `kontrolUnduhTemplat.test.ts` (21 test, C24) seluruhnya lulus<br>![Keluaran unit test C22 dan C24](./assets/pengujian/unit/unit-test-c22-c24.png) |
+| C22 (coverage), C24 (coverage) | Keluaran `npm run test:coverage`: `kontrolPencarianKataKunci.ts` (C22) 100% *lines* dan 100% *branch*; `pencarian.ts` (C22) 100% *lines* dan 97,61% *branch*; `kontrolUnduhTemplat.ts` (C24) 100% *lines* dan 100% *branch*<br>![Laporan coverage C22 dan C24](./assets/pengujian/unit/coverage-c22-c24.png) |
+| INT-TC20 – INT-TC28 | Keluaran `npm run test:integrasi` untuk IA-17 sampai IA-19 pada Supabase lokal (2 berkas, 9 test lulus)<br>![Keluaran integration test IA-17 sampai IA-19](./assets/pengujian/integrasi/ia-17-19-pencarian-unduh-templat.png) |
+| UC02-TC01 | Hasil pencarian kata kunci `"upah"` pada layar I-03<br>![UC02-TC01 hasil pencarian](./assets/pengujian/uc02/uc02-tc01-1-hasil-pencarian.png)<br>Halaman rangkuman `/kasus/1` terbuka setelah kartu hasil diklik<br>![UC02-TC01 rangkuman terbuka](./assets/pengujian/uc02/uc02-tc01-2-rangkuman-terbuka.png) |
+| UC02-TC02 | Keadaan tidak ditemukan beserta saran bidang hukum aktif dan kotak *disclaimer* rujukan LBH<br>![UC02-TC02 tidak ditemukan](./assets/pengujian/uc02/uc02-tc02-1-tidak-ditemukan.png)<br>Klik kartu saran membuka beranda dengan bidang hukum terpilih<br>![UC02-TC02 klik saran bidang](./assets/pengujian/uc02/uc02-tc02-2-klik-saran-bidang.png) |
+| UC04-TC01 | Bagian 6 Templat surat pada `/kasus/1` menampilkan *disclaimer* kerangka awal, metadata berkas, dan tombol "Unduh"<br>![UC04-TC01 bagian templat](./assets/pengujian/uc04/uc04-tc01-1-bagian-templat.png)<br>Berkas `.pdf` / `.docx` berhasil terunduh tanpa login<br>![UC04-TC01 berkas terunduh](./assets/pengujian/uc04/uc04-tc01-2-berkas-terunduh.png) |
+| UC04-TC02 | Kasus tanpa templat (`/kasus/5`) tidak menampilkan tombol unduh dan menyatakan templat belum tersedia<br>![UC04-TC02 belum ada templat](./assets/pengujian/uc04/uc04-tc02-belum-ada-templat.png) |
+| KNF03-TC01 | Tampilan responsif layar I-02 (`/kasus/1`) pada lebar `360 px` tanpa *horizontal overflow* dan tanpa galat konsol<br>![KNF03-TC01 tampilan 360 px](./assets/pengujian/knf/knf03-portability-360px.png) |
+| KNF04-TC01 | Keluaran pengukuran waktu respons pencarian pada 603 entri Disetujui (rata-rata 40,2 ms, maks 49,87 ms)<br>![KNF04-TC01 pengukuran waktu respons](./assets/pengujian/knf/knf04-response-time-pencarian.png) |
+| KNF05-TC01 | Keluaran *probe* ketersediaan layanan publik lokal: 20/20 HTTP 200 (100% *availability*)<br>![KNF05-TC01 pengukuran availability lokal](./assets/pengujian/knf/knf05-availability-lokal.png) |
 
 <br>
 
