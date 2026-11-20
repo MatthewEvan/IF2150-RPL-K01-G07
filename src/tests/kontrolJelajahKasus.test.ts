@@ -133,36 +133,36 @@ beforeEach(() => {
   );
 });
 
-describe("cekDarurat", () => {
-  it("bernilai benar untuk kelompok kasus darurat", async () => {
+describe("C21 KontrolJelajahKasus — cekDarurat", () => {
+  it("C21-UT01: bernilai benar untuk kelompok kasus darurat", async () => {
     await expect(cekDarurat(12)).resolves.toBe(true);
   });
 
-  it("bernilai salah untuk kelompok kasus bukan darurat", async () => {
+  it("C21-UT02: bernilai salah untuk kelompok kasus bukan darurat", async () => {
     await expect(cekDarurat(11)).resolves.toBe(false);
   });
 
-  it("bernilai salah untuk kelompok yang tidak ada", async () => {
+  it("C21-UT03: bernilai salah untuk kelompok yang tidak ada", async () => {
     await expect(cekDarurat(999)).resolves.toBe(false);
   });
 
-  it("bernilai salah untuk kelompok darurat yang belum Disetujui", async () => {
+  it("C21-UT04: bernilai salah untuk kelompok darurat yang belum Disetujui", async () => {
     await expect(cekDarurat(21)).resolves.toBe(false);
   });
 });
 
-describe("konten belum Disetujui tidak ditampilkan", () => {
-  it("hanya menampilkan kelompok kasus Disetujui pada satu bidang", async () => {
+describe("C21 KontrolJelajahKasus — konten belum Disetujui tidak ditampilkan", () => {
+  it("C21-UT05: hanya menampilkan kelompok kasus Disetujui pada satu bidang", async () => {
     const hasil = await ambilDaftarKelompok(1);
 
     expect(hasil.map((item) => item.idKelompok)).toEqual([11, 12]);
   });
 
-  it("tidak menampilkan kelompok bila semua rangkumannya belum Disetujui", async () => {
+  it("C21-UT06: tidak menampilkan kelompok bila semua rangkumannya belum Disetujui", async () => {
     await expect(ambilDaftarKelompok(2)).resolves.toEqual([]);
   });
 
-  it("hanya menampilkan bidang aktif yang punya kelompok Disetujui", async () => {
+  it("C21-UT07: hanya menampilkan bidang aktif yang punya kelompok Disetujui", async () => {
     const hasil = await ambilDaftarBidang();
 
     expect(hasil).toEqual([
@@ -175,7 +175,7 @@ describe("konten belum Disetujui tidak ditampilkan", () => {
     ]);
   });
 
-  it("membuka rangkuman berstatus Disetujui", async () => {
+  it("C21-UT08: membuka rangkuman berstatus Disetujui", async () => {
     const hasil = await ambilRangkuman(11);
 
     expect(hasil).toMatchObject({
@@ -189,22 +189,70 @@ describe("konten belum Disetujui tidak ditampilkan", () => {
     [13, "Draft"],
     [21, "Diajukan"],
     [22, "Perlu Revisi"],
-  ])("tidak membuka rangkuman kelompok %i berstatus %s", async (idKelompok) => {
-    await expect(ambilRangkuman(idKelompok)).resolves.toBeNull();
-  });
+  ])(
+    "C21-UT09: tidak membuka rangkuman kelompok %i berstatus %s",
+    async (idKelompok) => {
+      await expect(ambilRangkuman(idKelompok)).resolves.toBeNull();
+    },
+  );
 });
 
-describe("direktori LBH", () => {
-  it("menampilkan wilayah tanpa duplikat dan terurut", async () => {
+describe("C21 KontrolJelajahKasus — direktori LBH", () => {
+  it("C21-UT10: menampilkan wilayah tanpa duplikat dan terurut", async () => {
     await expect(ambilDaftarWilayah()).resolves.toEqual([
       "DKI Jakarta",
       "Jawa Barat",
     ]);
   });
 
-  it("menyaring LBH sesuai wilayah", async () => {
+  it("C21-UT11: menyaring LBH sesuai wilayah", async () => {
     const hasil = await ambilDaftarLBH("Jawa Barat");
 
     expect(hasil.map((lbh) => lbh.nama)).toEqual(["LBH Bandung", "LBH Bogor"]);
+  });
+});
+
+describe("C21 KontrolJelajahKasus — galat dan nilai batas", () => {
+  function supabaseGagal() {
+    const galat = { message: "koneksi basis data terputus" };
+    const kueri = {
+      select: () => kueri,
+      order: () => kueri,
+      limit: () => kueri,
+      eq: () => kueri,
+      maybeSingle: async () => ({ data: null, error: galat }),
+      then<T>(selesai: (nilai: { data: null; error: typeof galat }) => T) {
+        return Promise.resolve({ data: null, error: galat }).then(selesai);
+      },
+    };
+    return { from: () => kueri };
+  }
+
+  it("C21-UT12: ambilDaftarBidang meneruskan galat basis data", async () => {
+    vi.mocked(buatClientServer).mockResolvedValue(
+      supabaseGagal() as unknown as Awaited<
+        ReturnType<typeof buatClientServer>
+      >,
+    );
+
+    await expect(ambilDaftarBidang()).rejects.toMatchObject({
+      message: "koneksi basis data terputus",
+    });
+  });
+
+  it("C21-UT13: ambilRangkuman meneruskan galat basis data", async () => {
+    vi.mocked(buatClientServer).mockResolvedValue(
+      supabaseGagal() as unknown as Awaited<
+        ReturnType<typeof buatClientServer>
+      >,
+    );
+
+    await expect(ambilRangkuman(11)).rejects.toMatchObject({
+      message: "koneksi basis data terputus",
+    });
+  });
+
+  it("C21-UT14: ambilDaftarLBH mengembalikan daftar kosong untuk wilayah tanpa LBH", async () => {
+    await expect(ambilDaftarLBH("Papua")).resolves.toEqual([]);
   });
 });
