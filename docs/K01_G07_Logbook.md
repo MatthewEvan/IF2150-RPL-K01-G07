@@ -252,5 +252,6 @@
 | 20-11-2026 | Matthew Evan Kurniawan | Menggabungkan BAB 4, menyusun BAB 5 dan Daftar Perubahan, lalu menyiapkan penggabungan PR ke `main` dan tag `v10.0` | 5 | On Progress | - |
 | 20-11-2026 | Christopherus Michael Jafeth Tobing | Mengisi Form Asistensi, Logbook, dan AI-Usage Milestone 10 | 2 | Done | - |
 | 20-11-2026 | Christopherus Michael Jafeth Tobing | Menyesuaikan alur PR #118 ke `main` (rebase branch, ubah base PR, perbarui deskripsi) dan verifikasi ulang setelah `git pull --rebase origin main` serta `npm install` | 1.5 | Done | `dev` tidak lagi dipakai; hasil verifikasi: 190 unit test, 12 integration test, lint dan TypeScript lolos, KNF07 718 ms. |
+| 20-11-2026 | Christopherus Michael Jafeth Tobing | Menguji manual UC07 dan UC08 (N+1 dan N+2) dengan draf uji baru id 37–39; potongan Subbab 4.4.2–4.4.3 dikirim ke Matthew | 2.5 | Done | Bukti screenshot dan log pada branch `bukti/m10-screenshots` commit `b43e228`; seluruh skenario Pass. |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
