@@ -41,7 +41,7 @@ function barisAntrean(
 }
 
 describe("ambilAntreanPeninjauan", () => {
-  it("C03-UT12: hanya meminta konten berstatus Diajukan dari rangkuman_kasus", async () => {
+  it("C03-UT11: hanya meminta konten berstatus Diajukan dari rangkuman_kasus", async () => {
     const { supabase, argumen } = buatSupabase({ data: [], error: null });
 
     await ambilAntreanPeninjauan(supabase);
@@ -50,7 +50,7 @@ describe("ambilAntreanPeninjauan", () => {
     expect(argumen("eq")).toEqual([["status", "Diajukan"]]);
   });
 
-  it("C03-UT13: memetakan baris dan mengurutkan dari pengajuan Diajukan terakhir paling lama", async () => {
+  it("C03-UT12: memetakan baris dan mengurutkan dari pengajuan Diajukan terakhir paling lama", async () => {
     const { supabase } = buatSupabase({
       data: [
         barisAntrean(5, [
@@ -80,7 +80,7 @@ describe("ambilAntreanPeninjauan", () => {
     expect(hasil[2].waktuPengajuan).toBeNull();
   });
 
-  it("C03-UT14: memberi nilai pengganti bila kelompok kasus dan penulis kosong", async () => {
+  it("C03-UT13: memberi nilai pengganti bila kelompok kasus dan penulis kosong", async () => {
     const { supabase } = buatSupabase({
       data: [barisAntrean(4, [], false)],
       error: null,
@@ -96,7 +96,7 @@ describe("ambilAntreanPeninjauan", () => {
     });
   });
 
-  it("C03-UT15: meneruskan galat basis data", async () => {
+  it("C03-UT14: meneruskan galat basis data", async () => {
     const galat = new Error("gagal");
     const { supabase } = buatSupabase({ data: null, error: galat });
 
@@ -132,7 +132,7 @@ const barisKonten = {
 };
 
 describe("ambilKontenModerasi", () => {
-  it("C03-UT16: memetakan isi lengkap konten dengan urutan langkah, templat, dan artikel", async () => {
+  it("C03-UT15: memetakan isi lengkap konten dengan urutan langkah, templat, dan artikel", async () => {
     const { supabase, argumen } = buatSupabase({ data: barisKonten, error: null });
 
     const konten = await ambilKontenModerasi(supabase, 4);
@@ -155,7 +155,7 @@ describe("ambilKontenModerasi", () => {
     expect(konten?.artikel.map((artikel) => artikel.idArtikel)).toEqual([6, 9]);
   });
 
-  it("C03-UT17: menerima checklist berbentuk objek tunggal", async () => {
+  it("C03-UT16: menerima checklist berbentuk objek tunggal", async () => {
     const { supabase } = buatSupabase({
       data: { ...barisKonten, checklist: { daftar_dokumen: ["KTP"] } },
       error: null,
@@ -166,7 +166,7 @@ describe("ambilKontenModerasi", () => {
     expect(konten?.dokumenChecklist).toEqual(["KTP"]);
   });
 
-  it("C03-UT18: memberi nilai kosong bila relasi konten tidak ada", async () => {
+  it("C03-UT17: memberi nilai kosong bila relasi konten tidak ada", async () => {
     const { supabase } = buatSupabase({
       data: {
         ...barisKonten,
@@ -193,13 +193,13 @@ describe("ambilKontenModerasi", () => {
     });
   });
 
-  it("C03-UT19: mengembalikan null bila konten tidak ditemukan", async () => {
+  it("C03-UT18: mengembalikan null bila konten tidak ditemukan", async () => {
     const { supabase } = buatSupabase({ data: null, error: null });
 
     expect(await ambilKontenModerasi(supabase, 99)).toBeNull();
   });
 
-  it("C03-UT20: meneruskan galat basis data", async () => {
+  it("C03-UT19: meneruskan galat basis data", async () => {
     const galat = new Error("gagal");
     const { supabase } = buatSupabase({ data: null, error: galat });
 

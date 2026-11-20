@@ -60,20 +60,16 @@ Dipersiapkan oleh: *#PenjagaNilai*
 
 | Revisi | Deskripsi |
 | :--- | :--- |
-| *A* | *Deskripsikan perubahan yang dilakukan dari dokumen sebelumnya pada dokumen ini. Jika tidak terdapat perubahan, harap kosongkan tabel.* |
-| *B* |  |
-| *C* |  |
-| ... |  |
 
 ---
 
 # BAB 1: Pendahuluan
 
 ## 1.1 Tujuan Penulisan Dokumen
-Tuliskan uraian ringkas mengenai isi dokumen, tujuan pembuatan dokumen HIUPL ini, dan siapa saja target pembacanya.
+Dokumen Hasil Implementasi dan Uji Perangkat Lunak (HIUPL) ini melaporkan hasil implementasi dan pengujian perangkat lunak PahamHukum. Dokumen memuat lingkungan implementasi, daftar modul, antarmuka, dan berkas yang telah dibuat, strategi serta hasil pengujian unit, integrasi, use case, dan kebutuhan non-fungsional beserta buktinya, hingga matriks *traceability* dari kebutuhan ke pengujian. Dokumen ini ditujukan bagi asisten dan dosen pengampu mata kuliah IF2150 Rekayasa Perangkat Lunak sebagai bahan penilaian, serta bagi anggota tim pengembang sebagai acuan pemeliharaan dan pengembangan lanjutan.
 
 ## 1.2 Lingkup Masalah
-Tuliskan lingkup masalah, yaitu membangun perangkat lunak *[nama perangkat lunak]*. Jelaskan dengan singkat dan jelas deskripsi aplikasi serta keterkaitannya dengan perangkat lunak atau sistem lain (jika ada). Bagian ini maksimal berisi satu paragraf, dapat diambil dari SKPL/DPPL.
+Lingkup masalah dokumen ini adalah membangun perangkat lunak PahamHukum, yaitu platform literasi hukum berbasis web yang menjembatani masyarakat awam dengan informasi hukum. PahamHukum menyederhanakan bahasa hukum menjadi panduan praktis berdasarkan kelompok kasus sehari-hari, berisi inti masalah, hak yang dimiliki, langkah penyelesaian, daftar periksa dokumen, templat surat, serta direktori Lembaga Bantuan Hukum, dan dapat diakses secara gratis tanpa akun. Konten disusun oleh Kurator dan baru tampil setelah disetujui Administrator. PahamHukum tidak bertindak sebagai penasihat hukum resmi, melainkan penuntun langkah awal sebelum masyarakat berinteraksi dengan lembaga hukum formal. Sistem bergantung pada Supabase sebagai layanan eksternal untuk basis data PostgreSQL, autentikasi, dan penyimpanan berkas.
 
 ## 1.3 Definisi, Istilah, dan Singkatan
 Semua definisi dan singkatan yang digunakan dalam dokumen ini beserta penjelasannya.
@@ -104,7 +100,6 @@ Tabel 1.3. Definisi Istilah dan Singkatan
 | *Integration testing* | Pengujian interaksi antarkomponen yang sebenarnya, misalnya *controller* dengan *model*, atau aplikasi dengan basis data. |
 | *System testing* | Pengujian aplikasi secara utuh dari sudut pandang pengguna berdasarkan skenario use case. Termasuk *black-box testing* karena hanya memperhatikan masukan dan keluaran. |
 | *Non-functional testing* | Pengujian kebutuhan non-fungsional, misalnya *performance*, *security*, *compatibility*, dan *reliability*. |
-| *...* | *...* |
 
 ## 1.4 Aturan Penomoran
 Dokumen ini memakai pola ID yang sama dengan SKPL, APL, DPPL, dan dokumen Implementasi (Tugas 9). ID pengujian dan ID antarmuka antarkomponen baru diperkenalkan pada dokumen ini.
@@ -128,10 +123,18 @@ Tabel 1.4. Aturan Penomoran
 | Test Case KNF | KNFXX-TCYY | XX adalah nomor KNF, YY adalah nomor urut test case pada KNF tersebut, dimulai dari 01 |
 
 ## 1.5 Referensi
-Cantumkan daftar buku, panduan, atau dokumentasi lain yang dirujuk dalam pembuatan dokumen dan pengembangan P/L, **minimal dokumen SKPL, APL, DPPL, dan Implementasi (Tugas 9)**. Tambahkan dokumentasi *framework*/*library*/*testing tool* atau referensi lain apabila digunakan.
+1. K01_G07, *Spesifikasi Kebutuhan Perangkat Lunak (SKPL) PahamHukum*, `docs/M5/K01_G07_SKPL.md`.
+2. K01_G07, *Analisis Perangkat Lunak (APL) PahamHukum*, Tugas Besar IF2150.
+3. K01_G07, *Deskripsi Perancangan Perangkat Lunak (DPPL) PahamHukum*, `docs/M7/K01_G07_DPPL.md` dan `docs/M8/K01_G07_DPPL2.md`.
+4. K01_G07, *Laporan Implementasi PahamHukum (Tugas 9)*, `docs/M9/K01_G07_Implementasi.md`.
+5. IEEE, *IEEE Standard for Software and System Test Documentation* (IEEE 829-2008).
+6. Vercel, *Next.js Documentation*, https://nextjs.org/docs.
+7. Supabase, *Supabase Documentation* (Database, Auth, Storage, Row Level Security), https://supabase.com/docs.
+8. Vitest, *Vitest Documentation* (termasuk *coverage* `@vitest/coverage-v8`), https://vitest.dev.
+9. Testing Library, *React Testing Library Documentation*, https://testing-library.com/docs/react-testing-library/intro.
 
 ## 1.6 Deskripsi Umum Dokumen (Ikhtisar)
-Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut bab demi bab, dengan maksimal 1 paragraf.
+BAB 1 berisi tujuan penulisan, lingkup masalah, definisi istilah, aturan penomoran, referensi, dan ikhtisar dokumen. BAB 2 memberikan gambaran umum PahamHukum beserta batas dan keterkaitannya dengan sistem lain melalui *physical view* dan *use case diagram*. BAB 3 menjelaskan lingkungan implementasi, modul kelas, antarmuka, dan berkas lain yang telah dibuat. BAB 4 memaparkan strategi kedalaman pengujian serta hasil pengujian unit, integrasi, use case, dan kebutuhan non-fungsional beserta bukti hasilnya. BAB 5 berisi matriks *traceability* yang memetakan setiap KF dan KNF ke use case, kelas, berkas implementasi, dan test case.
 
 <br>
 
@@ -139,15 +142,22 @@ Tuliskan sistematika pembahasan dokumen ini secara ringkas dan runut bab demi ba
 
 # BAB 2: Deskripsi Umum Perangkat Lunak
 
-Bagian ini diisi dengan *System Overview*, dalam bentuk gambar dan narasi yang memberikan gambaran tentang aplikasi dan konteksnya. **Batasan dan keterkaitan** antara sistem yang dibangun dengan sistem lain di luarnya harus jelas. Deskripsi umum sistem perlu dilengkapi dengan pemodelan kasus yang dihadapi, seperti *use case diagram*. Berikan narasi yang jelas untuk setiap gambar yang ditampilkan.
-
-Bagian ini dapat menyalin atau meringkas dari dokumen SKPL atau DPPL.
+PahamHukum dibangun dengan arsitektur MVC di atas Next.js. Seluruh antarmuka dan logika aplikasi berjalan pada satu aplikasi Next.js: kelas *boundary* (C13 sampai C20) diwujudkan sebagai halaman dan komponen React, kelas *control* (C21 sampai C29) sebagai modul fungsi dan *Server Action* di sisi server, dan kelas *entity* (C01 sampai C12) sebagai modul *model* yang mengakses basis data. Batas sistem PahamHukum adalah aplikasi Next.js tersebut beserta skema basis datanya. Di luar batas sistem terdapat Supabase sebagai layanan eksternal, yang menyediakan basis data PostgreSQL dengan *Row Level Security* (RLS), Supabase Auth untuk autentikasi Kurator dan Administrator, serta Supabase Storage (*bucket* privat `templat`) untuk berkas templat surat. Peramban pengguna hanya berkomunikasi dengan aplikasi Next.js, kecuali saat mengunduh templat melalui *signed URL* Storage. Status centang daftar periksa dokumen disimpan di `localStorage` peramban, sehingga tidak dikirim ke server.
 
 <p align="center">
-<img alt="System Overview / Use Case Diagram" src="./assets/contoh-uc-diagram.webp" width="90%">
+<img alt="Physical View PahamHukum" src="./assets/diagram/physical-view-pahamhukum.svg" width="90%">
 </p>
 <p align="center">
-<i>Gambar 2.1. Use Case Diagram [Nama P/L]</i>
+<i>Gambar 2.1. Physical View PahamHukum</i>
+</p>
+
+Sistem memiliki tiga aktor. Pencari Informasi (AKT01) adalah masyarakat umum yang menjelajahi kelompok kasus per bidang hukum (UC01), mencari kasus dengan kata kunci (UC02), menandai daftar periksa dokumen (UC03), dan mengunduh templat surat (UC04) tanpa perlu akun. Kurator (AKT02) masuk ke panel pengelolaan (UC05), menyusun dan mengajukan konten rangkuman kasus (UC06), serta melacak status kontennya beserta catatan revisi (UC07). Administrator (AKT03) masuk ke panel yang sama (UC05), memoderasi konten yang diajukan dengan menyetujui atau mengembalikannya (UC08), dan mengelola akun Kurator (UC09). Konten yang disusun Kurator baru tampil untuk Pencari Informasi setelah disetujui Administrator.
+
+<p align="center">
+<img alt="Use Case Diagram PahamHukum" src="./assets/diagram/use-case-diagram.png" width="90%">
+</p>
+<p align="center">
+<i>Gambar 2.2. Use Case Diagram PahamHukum</i>
 </p>
 
 <br>
@@ -156,58 +166,103 @@ Bagian ini dapat menyalin atau meringkas dari dokumen SKPL atau DPPL.
 
 # BAB 3: Implementasi
 
-Bagian ini diisi dengan informasi tentang elemen P/L yang dikembangkan (*executable files*, *configuration files*, *data files*, dan sebagainya) serta perubahannya terhadap rancangan pada DPPL (jika ada).
+Bab ini memuat elemen perangkat lunak yang telah dikembangkan, yaitu lingkungan implementasi, modul kelas, antarmuka, dan berkas lain. Karena PahamHukum adalah aplikasi web Next.js, tidak ada berkas *executable* tersendiri; aplikasi dijalankan dengan `npm run dev`, atau dibangun dengan `npm run build` lalu `npm start` dari folder `src/`. Perubahan implementasi terhadap rancangan DPPL telah dicatat pada Tabel B.1 dokumen Implementasi (Tugas 9). Pada Milestone 10 ditambahkan operasi `perbaruiKurator()` untuk mengubah email Kurator (KF43, PR #115) dan pengalihan tombol Keluar ke halaman login (KF44, PR #114).
 
 ## 3.1 Lingkungan Implementasi
 
-Tuliskan *hardware* dan *software* yang digunakan untuk implementasi, mencakup *operating system*, bahasa pemrograman beserta versinya, *framework*/*library*, DBMS, *development tools*, dan *version control*. Lingkungan ini harus konsisten dengan **Subbab 2.1 DPPL**; jelaskan jika ada perubahan. Cantumkan juga *framework* dan alat pengujian yang dipakai.
+Lingkungan implementasi konsisten dengan Subbab 2.1 DPPL. Perubahannya hanya pada penambahan alat pengujian (Vitest, React Testing Library, dan `@vitest/coverage-v8`) serta Supabase CLI dengan Docker untuk menjalankan basis data lokal pada pengujian integrasi.
 
 Tabel 3.1. Lingkungan Implementasi
 
 | Aspek | Keterangan |
 | :--- | :--- |
-| *Hardware* | *[Spesifikasi perangkat keras]* |
-| *Operating System* | *[Nama dan versi OS]* |
-| *Bahasa Pemrograman* | *[Bahasa dan versi]* |
-| *Framework/Library* | *[Daftar framework/library beserta versi]* |
-| *DBMS* | *[Nama dan versi DBMS]* |
-| *Development Tools* | *[IDE, version control, tools lain]* |
-| *Testing Tools* | *[Framework unit test, alat ukur performa, alat coverage]* |
+| *Hardware* | Laptop masing-masing anggota (prosesor x86-64 atau ARM64, RAM minimal 8 GB); layanan Supabase *cloud* untuk basis data, Auth, dan Storage |
+| *Operating System* | Windows 11 dan macOS (pengembangan); Supabase lokal berjalan di Docker (*container* Linux) |
+| *Bahasa Pemrograman* | TypeScript 5 (Node.js 24), SQL (PostgreSQL), CSS |
+| *Framework/Library* | Next.js 16.4.5 (App Router, *Server Action*, `proxy.ts`), React 19.3.0, Tailwind CSS 4, `@supabase/supabase-js` 2.119, `@supabase/ssr` 0.12 |
+| *DBMS* | PostgreSQL 17 pada Supabase, dengan RLS dan ekstensi `pg_trgm` |
+| *Development Tools* | Visual Studio Code, Git dan GitHub (*branch*, *pull request*, *code review*), npm, ESLint 9, Supabase CLI, Docker Desktop, Chrome DevTools |
+| *Testing Tools* | Vitest 5.1 dengan lingkungan jsdom (*unit* dan *integration test*), `@vitest/coverage-v8` (laporan *coverage*), React Testing Library, Supabase lokal (basis data uji integrasi), Chrome DevTools (pengukuran KNF), `psql` (inspeksi basis data) |
 
 ## 3.2 Implementasi Modul
 
-Daftar modul/kelas yang **TELAH** diimplementasikan. Gunakan nama dan ID kelas yang sama dengan DPPL, dan konsisten dengan Tabel B.5 pada dokumen Implementasi (Tugas 9).
+Seluruh 29 kelas pada DPPL telah diimplementasikan. Nama dan ID kelas mengikuti DPPL dan konsisten dengan Tabel B.5 dokumen Implementasi (Tugas 9). Kelas *entity* juga diwujudkan sebagai tabel pada `src/supabase/migrations/0001_skema.sql`. Kolom Nama File Executable bernilai "-" karena aplikasi web tidak menghasilkan berkas *executable* per modul.
 
 Tabel 3.2. Implementasi Modul
 
 | No | ID Kelas | Nama Modul/Kelas | Nama File Fisik | Nama File Executable |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[C01]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
-| 2 | *[C02]* | *[Nama modul/kelas]* | *[path/ke/file]* | *[...]* |
-| ... | *...* | *...* | *...* | *...* |
+| 1 | C01 | Akun | `src/lib/models/akun.ts` | - |
+| 2 | C02 | Kurator | `src/lib/models/kurator.ts` | - |
+| 3 | C03 | Administrator | `src/lib/models/administrator.ts` | - |
+| 4 | C04 | BidangHukum | `src/lib/models/bidangHukum.ts` | - |
+| 5 | C05 | KelompokKasus | `src/lib/models/kelompokKasus.ts`<br>`src/lib/models/pencarian.ts` | - |
+| 6 | C06 | RangkumanKasus | `src/lib/models/rangkumanKasus.ts` | - |
+| 7 | C07 | LangkahPenyelesaian | `src/lib/models/langkahPenyelesaian.ts` | - |
+| 8 | C08 | Checklist | `src/supabase/migrations/0001_skema.sql` | - |
+| 9 | C09 | TemplatDokumen | `src/lib/models/templatDokumen.ts` | - |
+| 10 | C10 | Artikel | `src/lib/models/artikel.ts` | - |
+| 11 | C11 | LembagaBantuanHukum | `src/lib/models/lembagaBantuanHukum.ts` | - |
+| 12 | C12 | RiwayatStatus | `src/lib/models/riwayatStatus.ts` | - |
+| 13 | C13 | HalamanJelajahKasus | `src/app/page.tsx`<br>`src/components/beranda/` | - |
+| 14 | C14 | HalamanRangkumanKasus | `src/app/kasus/[id]/page.tsx`<br>`src/components/kasus/` | - |
+| 15 | C15 | HalamanPencarianKataKunci | `src/app/cari/page.tsx`<br>`src/components/pencarian/` | - |
+| 16 | C16 | HalamanLogin | `src/app/masuk/page.tsx`<br>`src/components/login/FormLogin.tsx` | - |
+| 17 | C17 | HalamanPenyusunanKonten | `src/app/panel/kurator/konten/baru/page.tsx`<br>`src/app/panel/kurator/konten/[id]/page.tsx`<br>`src/components/konten/` | - |
+| 18 | C18 | HalamanDaftarKontenKurator | `src/app/panel/kurator/konten/page.tsx`<br>`src/components/pelacakan/DaftarKonten.tsx` | - |
+| 19 | C19 | HalamanModerasiKonten | `src/app/panel/admin/moderasi/page.tsx`<br>`src/components/moderasi/` | - |
+| 20 | C20 | HalamanPengelolaanAkun | `src/app/panel/admin/akun/page.tsx`<br>`src/components/akun/` | - |
+| 21 | C21 | KontrolJelajahKasus | `src/lib/controllers/kontrolJelajahKasus.ts` | - |
+| 22 | C22 | KontrolPencarianKataKunci | `src/lib/controllers/kontrolPencarianKataKunci.ts` | - |
+| 23 | C23 | KontrolChecklist | `src/lib/controllers/kontrolChecklist.ts` | - |
+| 24 | C24 | KontrolUnduhTemplat | `src/lib/controllers/kontrolUnduhTemplat.ts` | - |
+| 25 | C25 | KontrolAutentikasi | `src/lib/controllers/kontrolAutentikasi.ts`<br>`src/lib/controllers/aturanSesi.ts`<br>`src/proxy.ts` | - |
+| 26 | C26 | KontrolPenyusunanKonten | `src/lib/controllers/kontrolPenyusunanKonten.ts`<br>`src/lib/controllers/aturanPenyusunanKonten.ts` | - |
+| 27 | C27 | KontrolPelacakanKonten | `src/lib/controllers/kontrolPelacakanKonten.ts` | - |
+| 28 | C28 | KontrolModerasiKonten | `src/lib/controllers/kontrolModerasiKonten.ts` | - |
+| 29 | C29 | KontrolPengelolaanAkun | `src/lib/controllers/kontrolPengelolaanAkun.ts`<br>`src/lib/controllers/validasiAkun.ts` | - |
 
 ## 3.3 Implementasi Antarmuka
 
-Daftar antarmuka yang telah diimplementasikan. Gunakan ID dan nama layar yang sama dengan ID dan nama layar pada tugas DPPL.
+Seluruh delapan layar pada BAB 6 DPPL telah diimplementasikan dengan ID dan nama yang sama.
 
 Tabel 3.3. Implementasi Antarmuka
 
 | No | ID Antarmuka | Nama Antarmuka | Nama File Fisik | Nama File Executable |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | *[I-01]* | *[Nama layar]* | *[path/ke/file]* | *[Nama file executable, atau - jika tidak ada]* |
-| 2 | *[I-02]* | *[Nama layar]* | *[path/ke/file]* | *[...]* |
-| ... | *...* | *...* | *...* | *...* |
+| 1 | I-01 | Beranda | `src/app/page.tsx` | - |
+| 2 | I-02 | Rangkuman Kasus | `src/app/kasus/[id]/page.tsx` | - |
+| 3 | I-03 | Pencarian Kata Kunci | `src/app/cari/page.tsx` | - |
+| 4 | I-04 | Login Pengelola | `src/app/masuk/page.tsx` | - |
+| 5 | I-05 | Penyusunan Konten | `src/app/panel/kurator/konten/baru/page.tsx`<br>`src/app/panel/kurator/konten/[id]/page.tsx` | - |
+| 6 | I-06 | Daftar Konten Kurator | `src/app/panel/kurator/konten/page.tsx` | - |
+| 7 | I-07 | Moderasi Konten | `src/app/panel/admin/moderasi/page.tsx` | - |
+| 8 | I-08 | Pengelolaan Akun Kurator | `src/app/panel/admin/akun/page.tsx` | - |
 
 ## 3.4 File Lain
 
-Daftar file lain yang dibuat selain file kelas dan antarmuka, misalnya file *utility*, *configuration*, *database schema/seed*, *file test*, atau *data*.
+Berikut berkas lain selain berkas kelas dan antarmuka, yaitu konfigurasi, skema dan data basis data, *utility*, serta berkas pengujian.
 
 Tabel 3.4. File Lain
 
 | No | Nama File | Keterangan |
 | :--- | :--- | :--- |
-| 1 | *[Nama file]* | *[Fungsi file]* |
-| ... | *...* | *...* |
+| 1 | `src/package.json`<br>`src/package-lock.json` | Daftar dependensi dan skrip (`dev`, `build`, `test`, `test:coverage`, `test:integrasi`) |
+| 2 | `src/next.config.ts`<br>`src/tsconfig.json`<br>`src/eslint.config.mjs` | Konfigurasi Next.js, TypeScript, dan ESLint |
+| 3 | `src/vitest.config.mts`<br>`src/vitest.integrasi.config.mts` | Konfigurasi Vitest untuk *unit test* (jsdom dan *coverage*) dan *integration test* (Supabase lokal) |
+| 4 | `src/supabase/config.toml` | Konfigurasi Supabase CLI untuk basis data lokal |
+| 5 | `src/supabase/migrations/0001_skema.sql` | Skema tabel, RLS, *trigger* `riwayat_status_permanen`, dan fungsi `tambah_jumlah_konten` |
+| 6 | `src/supabase/migrations/0002_penyusunan_konten.sql` | Fungsi basis data `simpan_draf` untuk menyimpan draf secara atomik |
+| 7 | `src/supabase/migrations/0003_templat_dokumen.sql` | *Bucket* privat `templat` beserta kebijakan RLS Storage |
+| 8 | `src/supabase/migrations/0004_ajukan_konten.sql` | Fungsi basis data `ajukan_konten` untuk mengubah status dan mencatat riwayat secara atomik |
+| 9 | `src/supabase/migrations/0005_indeks_pencarian.sql` | Indeks `pg_trgm` untuk pencarian kata kunci |
+| 10 | `src/supabase/seed.sql` | Data awal dan akun uji untuk basis data lokal |
+| 11 | `src/lib/supabase/` | *Utility* pembuat *client* Supabase untuk peramban, server, dan *service role* |
+| 12 | `src/app/panel/sesi/route.ts`<br>`src/components/panel/useJagaSesi.ts` | Pembaruan waktu aktivitas sesi panel (KNF14) |
+| 13 | `src/components/ui/`<br>`src/components/layout/` | Komponen antarmuka bersama, misalnya tombol, *badge*, dan navigasi |
+| 14 | `src/tests/` | Berkas *unit test* (Subbab 4.2) |
+| 15 | `src/tests/integrasi/` | Berkas *integration test* beserta *helper* `supabaseLokal.ts` dan `setupEnv.ts` (Subbab 4.3) |
+| 16 | `src/README.md` | Panduan instalasi, menjalankan aplikasi dan pengujian, serta akun uji |
 
 <br>
 
@@ -229,7 +284,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | :--- | :--- | :--- | :--- | :--- |
 | C01 | Akun | Tidak perlu | Hanya membaca profil dan peran akun. Penyimpanan dan pencocokan kata sandi ditangani Supabase Auth. | UC05-TC01 s.d. UC05-TC04, KNF10-TC01 |
 | C02 | Kurator | Mendalam | Memuat aturan status (Kurator hanya dapat diubah oleh Administrator pemiliknya), validasi email unik dengan *escape* pola, integrasi Supabase Auth dengan pembatalan akun jika penyimpanan gagal, serta algoritma pengurutan daftar konten dan riwayat. | C02-UT01 s.d. C02-UT20 |
-| C03 | Administrator | Mendalam | Memuat perhitungan waktu pengajuan terakhir dan lama menunggu, serta algoritma pengurutan antrean peninjauan (Q-007, KF31). | C03-UT01 s.d. C03-UT20 |
+| C03 | Administrator | Mendalam | Memuat perhitungan waktu pengajuan terakhir dan lama menunggu, serta algoritma pengurutan antrean peninjauan (Q-007, KF31). | C03-UT01 s.d. C03-UT19 |
 | C04 | BidangHukum | Tidak perlu | Hanya menyimpan data bidang hukum. `cekAktif` berupa pemeriksaan satu atribut. | UC01-TC01, UC02-TC02 |
 | C05 | KelompokKasus | Sedang | `cekDarurat` dan `cocokkanKataKunci` (Algo-012) berupa pemeriksaan sederhana. Algoritma pencarian utamanya diuji pada C22. | C05-UT01 s.d. C05-UTnn |
 | C06 | RangkumanKasus | Mendalam | Memuat aturan kelengkapan isian (Algo-016), transisi status ke Diajukan, pencocokan kata kunci (Algo-013), dan pembatasan konten publik hanya yang Disetujui (KF02). | C06-UT01 s.d. C06-UT22 |
@@ -305,6 +360,47 @@ Tabel 4.2.1b. Ringkasan Cakupan Kelas C02
 | ID Algoritma yang tercakup | Algo-005 (lewat trigger, INT-TC05), Algo-006, Algo-007 |
 | Coverage (wajib ≥ 70%) | 100% baris, 95,34% cabang, 98,36% *statement* (`lib/models/kurator.ts`). Bukti pada 4.6 |
 
+### 4.2.2 Kelas Administrator
+
+**ID Kelas:** C03  
+**Nama Kelas:** Administrator  
+**Tingkat:** Mendalam
+
+Berkas test: `src/tests/antreanPeninjauan.test.ts` (C03-UT01 s.d. C03-UT10) dan `src/tests/modelAdministrator.test.ts` (C03-UT11 s.d. C03-UT19).
+
+Tabel 4.2.2. Hasil Pengujian Unit Kelas C03
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C03-UT01 | `urutkanAntreanPeninjauan(daftar)` | Normal | Tiga butir dengan waktu pengajuan berbeda | Pengajuan paling lama berada di urutan pertama (KF31) | Sesuai harapan | Pass |
+| C03-UT02 | `urutkanAntreanPeninjauan(...)` | Batas | Satu butir tanpa riwayat Diajukan | Butir tersebut diletakkan paling akhir | Sesuai harapan | Pass |
+| C03-UT03 | `urutkanAntreanPeninjauan(...)` | Batas | Dua butir dengan waktu pengajuan sama | Id terkecil diletakkan lebih dulu | Sesuai harapan | Pass |
+| C03-UT04 | `urutkanAntreanPeninjauan(...)` | Normal | Array masukan | Array masukan tidak berubah | Sesuai harapan | Pass |
+| C03-UT05 | `waktuPengajuanTerakhir(riwayat)` (Q-007) | Normal | Riwayat berisi beberapa status Diajukan dan status lain | Mengambil waktu Diajukan terbaru dan mengabaikan status lain | Sesuai harapan | Pass |
+| C03-UT06 | `waktuPengajuanTerakhir(...)` | Negatif | Tidak ada riwayat Diajukan | Mengembalikan null | Sesuai harapan | Pass |
+| C03-UT07 | `lamaMenungguHari(waktu, sekarang)` | Normal | Pengajuan beberapa hari lalu | Jumlah hari penuh sejak pengajuan | Sesuai harapan | Pass |
+| C03-UT08 | `lamaMenungguHari(...)` | Batas | Pengajuan pada hari yang sama | 0 hari | Sesuai harapan | Pass |
+| C03-UT09 | `lamaMenungguHari(...)` | Batas | Waktu pengajuan di masa depan | Tidak negatif (0) | Sesuai harapan | Pass |
+| C03-UT10 | `lamaMenungguHari(...)` | Negatif | Waktu pengajuan null | Mengembalikan null | Sesuai harapan | Pass |
+| C03-UT11 | `ambilAntreanPeninjauan(supabase)` (Algo-009) | Normal | *Mock* basis data | Kueri ke `rangkuman_kasus` hanya untuk status Diajukan | Sesuai harapan | Pass |
+| C03-UT12 | `ambilAntreanPeninjauan(...)` | Normal | Tiga konten dengan riwayat campuran dan satu tanpa riwayat | Butir dipetakan dan diurutkan dari pengajuan Diajukan terakhir paling lama | Sesuai harapan | Pass |
+| C03-UT13 | `ambilAntreanPeninjauan(...)` | Batas | Kelompok kasus dan nama penulis kosong | Memakai nilai pengganti "Tanpa judul", "—", dan "Tanpa nama" | Sesuai harapan | Pass |
+| C03-UT14 | `ambilAntreanPeninjauan(...)` | Negatif | Basis data mengembalikan galat | Galat diteruskan | Sesuai harapan | Pass |
+| C03-UT15 | `ambilKontenModerasi(supabase, id)` | Normal | Konten lengkap dengan langkah, templat, dan artikel acak | Isi dipetakan; langkah urut nomor, templat terbaru di atas, artikel urut id | Sesuai harapan | Pass |
+| C03-UT16 | `ambilKontenModerasi(...)` | Batas | Checklist berbentuk objek tunggal | Daftar dokumen tetap terbaca | Sesuai harapan | Pass |
+| C03-UT17 | `ambilKontenModerasi(...)` | Batas | Seluruh relasi konten kosong | Daftar kosong dan nilai pengganti | Sesuai harapan | Pass |
+| C03-UT18 | `ambilKontenModerasi(...)` | Negatif | Id konten tidak ditemukan | Mengembalikan null | Sesuai harapan | Pass |
+| C03-UT19 | `ambilKontenModerasi(...)` | Negatif | Basis data mengembalikan galat | Galat diteruskan | Sesuai harapan | Pass |
+
+Tabel 4.2.2b. Ringkasan Cakupan Kelas C03
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `ambilKuratorTerdaftar()`, `ambilAntreanPeninjauan()` |
+| Operasi yang diuji | `ambilAntreanPeninjauan()` beserta fungsi pendukungnya (`urutkanAntreanPeninjauan`, `waktuPengajuanTerakhir`, `lamaMenungguHari`) serta operasi tambahan `ambilKontenModerasi()`. `ambilKuratorTerdaftar()` diwujudkan sebagai `ambilDaftarKurator()` di C02 dan diuji pada C02-UT05 s.d. C02-UT07 |
+| ID Algoritma yang tercakup | Algo-009, Q-007 |
+| Coverage (wajib ≥ 70%) | `src/lib/models/administrator.ts`: 100% baris, 98% cabang, 100% fungsi |
+
 ### 4.2.4 Kelas RangkumanKasus
 
 **ID Kelas:** C06  
@@ -347,6 +443,55 @@ Tabel 4.2.4b. Ringkasan Cakupan Kelas C06
 | Operasi yang diuji | `buatRangkuman()`, `ambilRangkumanMilik()` dan `ambilRangkumanDisetujui()` (mewujudkan `ambilDaftarLangkah()`, `ambilChecklist()`, `ambilDaftarTemplat()`, dan `ambilDaftarArtikel()`), `ambilIsianKosong()` dan `cekIsianLengkap()`, `simpanDraf()`, `ajukanRangkuman()` (`aturStatus("Diajukan")`), serta `cariLangkahBertenggat()`. `cekDisetujui()` dan `cocokkanKataKunci()` diuji pada C22, `lampirkanTemplat()` dan `ambilTemplat()` pada C09, serta `aturStatus()` untuk keputusan moderasi, `ambilCatatanRevisi()`, dan `simpanCatatanRevisi()` pada C12. |
 | ID Algoritma yang tercakup | Algo-015, Algo-016, Algo-017 |
 | Coverage (wajib ≥ 70%) | `src/lib/models/rangkumanKasus.ts`: 100% baris, 96,29% cabang, 100% fungsi (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
+
+### 4.2.5 Kelas TemplatDokumen
+
+**ID Kelas:** C09  
+**Nama Kelas:** TemplatDokumen  
+**Tingkat:** Mendalam
+
+Berkas test: `src/tests/modelTemplatDokumen.test.ts`.
+
+Tabel 4.2.5. Hasil Pengujian Unit Kelas C09
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C09-UT01 | `validasiUnggahan(berkas)` (Algo-021) | Normal | `surat.pdf`, 2 KB | Diterima | Sesuai harapan | Pass |
+| C09-UT02 | `validasiUnggahan(...)` | Batas | `SURAT.DOCX` tepat 5 MB | Diterima | Sesuai harapan | Pass |
+| C09-UT03 | `validasiUnggahan(...)` | Negatif | `bukti.png` | Ditolak (KF26) | Sesuai harapan | Pass |
+| C09-UT04 | `validasiUnggahan(...)` | Batas | PDF 5 MB + 1 byte | Ditolak (KF26) | Sesuai harapan | Pass |
+| C09-UT05 | `validasiUnggahan(...)` | Batas | PDF 0 byte | Ditolak | Sesuai harapan | Pass |
+| C09-UT06 | `validasiUnggahan(...)` | Negatif | Nama berkas tanpa ekstensi | Ditolak | Sesuai harapan | Pass |
+| C09-UT07 | `ambilDaftarTemplat(supabase, idRangkuman)` | Normal | Satu baris templat | Baris dipetakan, difilter `id_rangkuman`, terurut `id_templat` | Sesuai harapan | Pass |
+| C09-UT08 | `ambilDaftarTemplat(...)` | Negatif | Basis data mengembalikan galat | Galat diteruskan | Sesuai harapan | Pass |
+| C09-UT09 | `perbaruiVersi(...)` (Algo-022) | Normal | Templat baru `surat.pdf` | Diunggah ke *bucket* `templat` tanpa `upsert`, disimpan sebagai versi 1, tidak ada berkas yang dihapus (KF25) | Sesuai harapan | Pass |
+| C09-UT10 | `perbaruiVersi(...)` | Normal | Unggah ulang nama yang sama | Versi naik menjadi 2 dan berkas lama dihapus setelah baris tersimpan | Sesuai harapan | Pass |
+| C09-UT11 | `perbaruiVersi(...)` | Normal | Berkas `.docx` | Jenis konten DOCX dipakai saat mengunggah | Sesuai harapan | Pass |
+| C09-UT12 | `perbaruiVersi(...)` | Negatif | Berkas `.png` | Ditolak sebelum mengunggah dan tanpa menyentuh basis data | Sesuai harapan | Pass |
+| C09-UT13 | `perbaruiVersi(...)` | Negatif | Unggahan ke Storage gagal (koneksi terputus) | Basis data tidak diubah dan berkas versi lama tetap utuh (KNF08) | Sesuai harapan | Pass |
+| C09-UT14 | `perbaruiVersi(...)` | Negatif | Penyimpanan baris gagal setelah unggahan berhasil | Berkas baru dihapus kembali, berkas lama tidak dihapus (KNF08) | Sesuai harapan | Pass |
+| C09-UT15 | `perbaruiVersi(...)` | Batas | Templat lama tanpa lokasi berkas | Tidak ada berkas yang dihapus | Sesuai harapan | Pass |
+| C09-UT16 | `hapusTemplat(supabase, templat)` | Normal | Templat milik rangkuman | Baris dihapus lalu berkasnya di Storage | Sesuai harapan | Pass |
+| C09-UT17 | `hapusTemplat(...)` | Negatif | Tidak ada baris yang terhapus | Galat "Templat tidak terhapus" dan Storage tidak disentuh | Sesuai harapan | Pass |
+| C09-UT18 | `hapusTemplat(...)` | Negatif | Basis data menolak | Galat diteruskan dan Storage tidak disentuh | Sesuai harapan | Pass |
+| C09-UT19 | `hapusTemplat(...)` | Batas | Lokasi berkas kosong | Hanya baris yang dihapus | Sesuai harapan | Pass |
+| C09-UT20 | `ambilTemplatDisetujui(supabase, idTemplat)` | Normal | Templat pada rangkuman Disetujui | Kueri memfilter status Disetujui (KF02) | Sesuai harapan | Pass |
+| C09-UT21 | `ambilTemplatDisetujui(...)` | Normal | Dengan `idRangkuman` | Filter `id_rangkuman` ditambahkan | Sesuai harapan | Pass |
+| C09-UT22 | `ambilTemplatDisetujui(...)` | Negatif | Templat tidak ada atau belum Disetujui | Mengembalikan null | Sesuai harapan | Pass |
+| C09-UT23 | `ambilTemplatDisetujui(...)` | Negatif | Basis data mengembalikan galat | Galat diteruskan | Sesuai harapan | Pass |
+| C09-UT24 | `unduh(supabase, templat)` (Algo-023) | Normal | Templat dengan lokasi berkas | *Signed URL* 60 detik dengan nama berkas asli (KF16) | Sesuai harapan | Pass |
+| C09-UT25 | `unduh(...)` | Batas | Lokasi berkas kosong | Mengembalikan null tanpa memanggil Storage | Sesuai harapan | Pass |
+| C09-UT26 | `unduh(...)` | Negatif | Storage mengembalikan galat | Mengembalikan null | Sesuai harapan | Pass |
+| C09-UT27 | `unduh(...)` | Negatif | *Signed URL* kosong | Mengembalikan null | Sesuai harapan | Pass |
+
+Tabel 4.2.5b. Ringkasan Cakupan Kelas C09
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `validasiUnggahan()`, `perbaruiVersi()`, `unduh()` |
+| Operasi yang diuji | Seluruhnya, ditambah operasi `ambilDaftarTemplat()`, `hapusTemplat()`, dan `ambilTemplatDisetujui()` |
+| ID Algoritma yang tercakup | Algo-021, Algo-022, Algo-023, Algo-035 |
+| Coverage (wajib ≥ 70%) | `src/lib/models/templatDokumen.ts`: 100% baris, 97,5% cabang, 100% fungsi |
 
 ### 4.2.8 Kelas HalamanPenyusunanKonten
 
@@ -455,6 +600,23 @@ Tabel 4.2.14b. Ringkasan Cakupan Kelas C26
 | Operasi yang diuji | `buatDraf()`, `simpanDraf()`, `lampirkanTemplat()`, `ajukanKonten()`, serta operasi tambahan `hapusTemplat()`. Operasi privat `catatRiwayat()` teruji melalui `buatDraf()`. `tayangkanKonten()` tidak diimplementasikan (Tugas 9 B.1 no. 11); larangan penayangan oleh Kurator diuji pada INT-TC39. |
 | ID Algoritma yang tercakup | Algo-040, Algo-041, Algo-042, Algo-043, Algo-045 |
 | Coverage (wajib ≥ 70%) | `src/lib/controllers/kontrolPenyusunanKonten.ts`: 96% baris, 96,96% cabang, 100% fungsi; `src/lib/controllers/aturanPenyusunanKonten.ts`: 100% baris, 82,35% cabang (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
+
+### 4.2.15 Kelas KontrolPelacakanKonten
+
+**ID Kelas:** C27  
+**Nama Kelas:** KontrolPelacakanKonten  
+**Tingkat:** Sedang
+
+Berkas test: `src/tests/kontrolPelacakanKonten.test.ts`.
+
+Tabel 4.2.15. Hasil Pengujian Unit Kelas C27
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C27-UT01 | `ambilDaftarKonten(idKurator)` (Algo-007) | Normal | Id Kurator dari sesi | Model C02 dipanggil dengan *client* server dan id yang sama | Sesuai harapan | Pass |
+| C27-UT02 | `ambilDaftarKonten(...)` | Normal | Model mengembalikan dua konten | Daftar diteruskan tanpa diubah (KF29) | Sesuai harapan | Pass |
+| C27-UT03 | `ambilDaftarKonten(...)` | Batas | Kurator belum punya konten | Daftar kosong | Sesuai harapan | Pass |
+| C27-UT04 | `ambilDaftarKonten(...)` | Negatif | Model melempar galat | Galat diteruskan | Sesuai harapan | Pass |
 
 ### 4.2.17 Kelas KontrolPengelolaanAkun
 
@@ -612,6 +774,7 @@ Tabel 4.6. Bukti Hasil Pengujian
 | :--- | :--- |
 | C02-UT01 – C02-UT20 | ![Unit test C02](./assets/pengujian/unit/c02-unit-test.png) |
 | C02 (coverage) | ![Coverage C02](./assets/pengujian/unit/c02-coverage.png) |
+| C03-UT01 – C03-UT19, C09-UT01 – C09-UT27, C27-UT01 – C27-UT04 | Keluaran `npm test` dan `npm run test:coverage` untuk berkas `antreanPeninjauan.test.ts`, `modelAdministrator.test.ts`, `modelTemplatDokumen.test.ts`, dan `kontrolPelacakanKonten.test.ts`: 50 test lulus; `administrator.ts` 100% baris dan 98% cabang, `templatDokumen.ts` 100% baris dan 97,5% cabang, `kontrolPelacakanKonten.ts` 100% |
 | C06-UT01 – C06-UT22, C17-UT01 – C17-UT07, C26-UT01 – C26-UT22 | Keluaran `npm test`: berkas `modelRangkumanKasus.test.ts` (C06), `aturanDaftarButir.test.ts` (C17), serta `kontrolPenyusunanKonten.test.ts` dan `aturanPenyusunanKonten.test.ts` (C26) seluruhnya lulus<br>![Keluaran unit test seluruh berkas](./assets/pengujian/unit/unit-test-seluruh-berkas.png) |
 | C06 (coverage), C26 (coverage) | Keluaran `npm run test:coverage`: `rangkumanKasus.ts` (C06) 100% *lines* dan 96,29% *branch*; `kontrolPenyusunanKonten.ts` (C26) 96% *lines* dan 96,96% *branch*; `aturanPenyusunanKonten.ts` (C26) 100% *lines* dan 82,35% *branch*<br>![Laporan coverage seluruh berkas](./assets/pengujian/unit/coverage-seluruh-berkas.png) |
 | C25-UT01 – C25-UT24 | ![Unit test C25](./assets/pengujian/unit/c25-unit-test.png) |
@@ -647,16 +810,68 @@ Tabel 5.1. Matriks Kerunutan KF terhadap Implementasi dan Pengujian
 
 | KF ID | KNF Terkait | Use Case ID | Kelas Terkait | Implementasi File Terkait | Test Case (UC) | Test Case (Unit/Integrasi/KNF) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KF05* | *KNF01* | *UC03* | *C02 - Pesanan* | *`src/...`* | *UC03-TC01* | *C02-UT05, INT-TC04, KNF01-TC01* |
-| *KF01* | *-* | *UC01<br>UC02* | *[C01 - Nama kelas]<br>[C02 - Nama kelas]* | *[path/ke/file1]<br>[path/ke/file2]* | *UC01-TC01, UC01-TC02<br>UC02-TC01* | *-* |
-| *KF02* | *[KNFXX atau -]* | *[UCXX]* | *[CXX - Nama kelas]* | *[path/ke/file]* | *[UCXX-TCYY]* | *[CXX-UTYY, INT-TCYY, KNFXX-TCYY atau -]* |
-| *KFXX* | *-* | *[UCXX atau -]* | *[CXX - Nama kelas atau -]* | *Tidak diimplementasikan: [alasan]* | *-* | *-* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| KF01 | KNF01, KNF02 | UC01 | C04, C13, C21 | `src/app/page.tsx`<br>`src/lib/controllers/kontrolJelajahKasus.ts`<br>`src/lib/models/bidangHukum.ts` | UC01-TC01 | C21-UT07, C21-UT12, INT-TC10 |
+| KF02 | - | UC01, UC02, UC04 | C05, C06, C21, C22, C24 | `src/lib/controllers/kontrolJelajahKasus.ts`<br>`src/lib/controllers/kontrolPencarianKataKunci.ts`<br>`src/lib/controllers/kontrolUnduhTemplat.ts`<br>`src/supabase/migrations/0001_skema.sql` | UC01-TC01, UC02-TC01 | C21-UT09, C22-UT12, C22-UT13, C24-UT08, INT-TC14, INT-TC22, INT-TC27, INT-TC38, INT-TC39 |
+| KF03 | - | UC01 | C05, C13, C21 | `src/app/page.tsx`<br>`src/lib/controllers/kontrolJelajahKasus.ts`<br>`src/lib/models/kelompokKasus.ts` | UC01-TC01 | C05-UT01, C21-UT05, C21-UT06, INT-TC11 |
+| KF04 | - | UC01 | C05, C14 | `src/components/kasus/KepalaRangkuman.tsx`<br>`src/lib/models/kelompokKasus.ts` | UC01-TC01 | C05-UT05 |
+| KF05 | KNF01 | UC01 | C06, C14, C21 | `src/app/kasus/[id]/page.tsx`<br>`src/lib/controllers/kontrolJelajahKasus.ts`<br>`src/lib/models/rangkumanKasus.ts` | UC01-TC01 | C21-UT08, C06-UT15, INT-TC13 |
+| KF06 | KNF04 | UC02 | C05, C06, C15, C22 | `src/app/cari/page.tsx`<br>`src/lib/controllers/kontrolPencarianKataKunci.ts`<br>`src/lib/models/pencarian.ts` | UC02-TC01 | C22-UT01 s.d. C22-UT11, INT-TC20, INT-TC23, INT-TC24 |
+| KF07 | - | UC02 | C04, C11, C15, C22 | `src/app/cari/page.tsx`<br>`src/components/pencarian/TidakDitemukanPencarian.tsx`<br>`src/lib/controllers/kontrolPencarianKataKunci.ts` | UC02-TC02 | C22-UT15 s.d. C22-UT17, INT-TC21 |
+| KF08 | - | UC01 | C06, C14 | `src/app/kasus/[id]/page.tsx`<br>`src/components/kasus/` | UC01-TC01 | INT-TC13 |
+| KF09 | - | UC01 | C06, C14 | `src/components/kasus/BagianPertimbangan.tsx` | UC01-TC01 | - |
+| KF10 | - | UC01 | C06, C14 | `src/components/kasus/KepalaRangkuman.tsx`<br>`src/lib/models/rangkumanKasus.ts` | UC01-TC01 | INT-TC45 |
+| KF11 | - | UC01 | C07, C14 | `src/components/kasus/BagianLangkah.tsx`<br>`src/lib/models/langkahPenyelesaian.ts` | UC01-TC01 | INT-TC13 |
+| KF12 | - | UC01 | C07, C14 | `src/components/kasus/BagianLangkah.tsx`<br>`src/lib/models/rangkumanKasus.ts` | UC01-TC01 | C06-UT21, C06-UT22 |
+| KF13 | - | UC03 | C08, C14, C23 | `src/components/kasus/ChecklistDokumen.tsx`<br>`src/lib/controllers/kontrolChecklist.ts` | UC03-TC01 | C23-UT15 s.d. C23-UT20 |
+| KF14 | KNF06 | UC03 | C08, C23 | `src/lib/controllers/kontrolChecklist.ts` | UC03-TC01, UC03-TC02 | C23-UT01 s.d. C23-UT14, INT-TC16, INT-TC17 |
+| KF15 | - | UC04 | C09, C14, C24 | `src/components/kasus/BagianTemplat.tsx`<br>`src/lib/controllers/kontrolUnduhTemplat.ts` | UC04-TC01, UC04-TC02 | C24-UT01 s.d. C24-UT03, INT-TC26 |
+| KF16 | KNF08 | UC04 | C09, C24 | `src/components/kasus/TombolUnduhTemplat.tsx`<br>`src/lib/controllers/kontrolUnduhTemplat.ts`<br>`src/lib/models/templatDokumen.ts` | UC04-TC01 | C09-UT24 s.d. C09-UT27, C24-UT04 s.d. C24-UT12, INT-TC25, INT-TC26, INT-TC28 |
+| KF17 | - | UC04 | C14 | `src/components/kasus/BagianTemplat.tsx` | UC04-TC01 | - |
+| KF18 | - | UC01 | C10, C14 | `src/components/kasus/BagianBacaan.tsx`<br>`src/lib/models/artikel.ts` | UC01-TC01 | - |
+| KF19 | - | UC01, UC02 | C13, C14, C15 | `src/components/beranda/KotakDisclaimer.tsx`<br>`src/components/pencarian/KotakDisclaimerPencarian.tsx` | UC01-TC01, UC02-TC01 | - |
+| KF20 | - | UC01 | C11, C14, C21 | `src/components/kasus/DirektoriLBH.tsx`<br>`src/lib/controllers/kontrolJelajahKasus.ts`<br>`src/lib/models/lembagaBantuanHukum.ts` | UC01-TC01 | C11-UT01 s.d. C11-UT04, C21-UT10, C21-UT11, C21-UT14, INT-TC15 |
+| KF21 | - | UC01 | C05, C13, C21 | `src/components/beranda/KartuKelompokDarurat.tsx`<br>`src/lib/controllers/kontrolJelajahKasus.ts` | UC01-TC02 | C05-UT03, C05-UT04, C21-UT01 s.d. C21-UT04, INT-TC12 |
+| KF22 | KNF12 | UC06 | C17, C26 | `src/app/panel/kurator/konten/[id]/page.tsx`<br>`src/components/konten/FormulirKonten.tsx` | UC06-TC01 | C17-UT01 s.d. C17-UT07, C26-UT01 s.d. C26-UT05, KNF12-TC01 |
+| KF23 | - | UC06 | C06, C12, C26 | `src/lib/controllers/kontrolPenyusunanKonten.ts`<br>`src/lib/models/rangkumanKasus.ts` | UC06-TC01 | C06-UT01, C06-UT02, C26-UT11, C26-UT12, INT-TC30 |
+| KF24 | KNF07 | UC08 | C12, C28 | `src/lib/controllers/kontrolModerasiKonten.ts`<br>`src/lib/models/riwayatStatus.ts` | UC08-TC01 | C28-UT11 s.d. C28-UT13, INT-TC45, INT-TC49, KNF07-TC01 |
+| KF25 | KNF08 | UC06 | C09, C26 | `src/lib/controllers/kontrolPenyusunanKonten.ts`<br>`src/lib/models/templatDokumen.ts` | UC06-TC01 | C09-UT09 s.d. C09-UT15, C26-UT15 s.d. C26-UT17, INT-TC36, INT-TC37, KNF08-TC01, KNF08-TC02 |
+| KF26 | - | UC06 | C09, C17, C26 | `src/lib/controllers/kontrolPenyusunanKonten.ts`<br>`src/lib/models/templatDokumen.ts`<br>`src/components/konten/KartuTemplat.tsx` | UC06-TC02 | C09-UT01 s.d. C09-UT06, C26-UT13, C26-UT14 |
+| KF27 | - | UC06 | C06, C12, C26 | `src/lib/controllers/kontrolPenyusunanKonten.ts`<br>`src/lib/models/rangkumanKasus.ts`<br>`src/supabase/migrations/0004_ajukan_konten.sql` | UC06-TC01 | C06-UT11, C06-UT12, C26-UT06, C26-UT07, INT-TC33 |
+| KF28 | - | UC06 | C06, C17, C26 | `src/lib/controllers/aturanPenyusunanKonten.ts`<br>`src/lib/models/rangkumanKasus.ts`<br>`src/components/konten/TandaIsian.tsx` | UC06-TC03 | C06-UT07 s.d. C06-UT10, C26-UT08 s.d. C26-UT10, INT-TC34 |
+| KF29 | - | UC07 | C02, C18, C27 | `src/app/panel/kurator/konten/page.tsx`<br>`src/lib/controllers/kontrolPelacakanKonten.ts`<br>`src/lib/models/kurator.ts` | UC07-TC01 | C02-UT19, C02-UT20, C27-UT01 s.d. C27-UT04, INT-TC40, INT-TC41 |
+| KF30 | - | UC07 | C02, C18, C27 | `src/components/pelacakan/DaftarKonten.tsx`<br>`src/lib/models/kurator.ts` | UC07-TC02 | C02-UT19, INT-TC47 |
+| KF31 | - | UC08 | C03, C19, C28 | `src/app/panel/admin/moderasi/page.tsx`<br>`src/lib/controllers/kontrolModerasiKonten.ts`<br>`src/lib/models/administrator.ts` | UC08-TC01 | C03-UT01 s.d. C03-UT14, C28-UT14, INT-TC42 |
+| KF32 | KNF13 | UC08 | C12, C19, C28 | `src/components/moderasi/PanelKeputusan.tsx`<br>`src/lib/controllers/kontrolModerasiKonten.ts`<br>`src/lib/models/riwayatStatus.ts` | UC08-TC01 | C12-UT10, C28-UT11 s.d. C28-UT13, INT-TC45 |
+| KF33 | - | UC08 | C12, C19, C28 | `src/components/moderasi/PanelKeputusan.tsx`<br>`src/lib/controllers/kontrolModerasiKonten.ts` | UC08-TC02 | INT-TC47 |
+| KF34 | - | UC08 | C12, C19, C28 | `src/components/moderasi/PanelKeputusan.tsx`<br>`src/lib/controllers/kontrolModerasiKonten.ts`<br>`src/lib/models/riwayatStatus.ts` | UC08-TC03 | INT-TC46 |
+| KF35 | - | UC06 | C06, C17, C26 | `src/supabase/migrations/0001_skema.sql`<br>`src/components/konten/PanelStatusKonten.tsx` | UC06-TC04 | INT-TC35, INT-TC39 |
+| KF36 | KNF09 | UC06, UC08 | C12, C26, C28 | `src/lib/models/riwayatStatus.ts`<br>`src/lib/controllers/kontrolPenyusunanKonten.ts`<br>`src/lib/controllers/kontrolModerasiKonten.ts` | UC06-TC01, UC08-TC01 | C12-UT10 s.d. C12-UT19, C26-UT11, INT-TC30, INT-TC33, INT-TC45, INT-TC48 |
+| KF37 | KNF14 | UC09 | C02, C20, C25, C29 | `src/lib/controllers/kontrolPengelolaanAkun.ts`<br>`src/lib/models/kurator.ts`<br>`src/proxy.ts` | UC09-TC03 | C02-UT16 s.d. C02-UT18, C25-UT05, C25-UT20, C29-UT07 s.d. C29-UT09, INT-TC03, INT-TC07 |
+| KF38 | KNF10 | UC09 | C02, C20, C29 | `src/lib/controllers/kontrolPengelolaanAkun.ts`<br>`src/lib/controllers/validasiAkun.ts`<br>`src/lib/models/kurator.ts` | UC09-TC01 | C02-UT08 s.d. C02-UT15, C29-UT01 s.d. C29-UT06, INT-TC05, INT-TC06, KNF10-TC01 |
+| KF39 | - | UC05 | C01, C16, C25 | `src/app/masuk/page.tsx`<br>`src/lib/controllers/kontrolAutentikasi.ts` | UC05-TC01 | C25-UT01, C25-UT02, C25-UT11, INT-TC01 |
+| KF40 | - | UC05 | C16, C25 | `src/components/login/FormLogin.tsx`<br>`src/lib/controllers/kontrolAutentikasi.ts` | UC05-TC02 | C25-UT03, C25-UT04, C25-UT06, INT-TC02 |
+| KF41 | KNF14 | UC05 | C25 | `src/proxy.ts`<br>`src/lib/controllers/aturanSesi.ts` | UC05-TC03, UC05-TC05 | C25-UT08 s.d. C25-UT19, C25-UT21 s.d. C25-UT24, INT-TC04, INT-TC09 |
+| KF42 | - | UC01 s.d. UC09 | C13 s.d. C20 | `src/app/`<br>`src/components/` | UC01-TC01 s.d. UC09-TC03 | - |
+| KF43 | - | UC09 | C02, C20, C29 | `src/lib/controllers/kontrolPengelolaanAkun.ts`<br>`src/lib/models/kurator.ts`<br>`src/components/akun/` | UC09-TC02 | C02-UT01 s.d. C02-UT04, C29-UT10 s.d. C29-UT17, INT-TC08 |
+| KF44 | - | UC05 | C25 | `src/lib/controllers/kontrolAutentikasi.ts`<br>`src/components/layout/NavbarPanel.tsx` | UC05-TC04 | C25-UT07 |
+
+Seluruh 44 KF telah diimplementasikan. KF43 dan KF44 yang sebelumnya belum sesuai pada `v9.0` telah dilengkapi melalui PR #115 dan #114.
 
 Tabel 5.2. Matriks Kerunutan KNF terhadap Pengujian
 
 | ID KNF | Parameter | KF/UC Terkait | Test Case |
 | :--- | :--- | :--- | :--- |
-| *KNF01* | *Reliability* | *KF05 / UC03* | *KNF01-TC01* |
-| *KNFXX* | *[Parameter]* | *[KFXX / UCXX atau -]* | *[KNFXX-TCYY]* |
-| *...* | *...* | *...* | *...* |
+| KNF01 | *Response time* | KF01, KF05 / UC01 | KNF01-TC01 |
+| KNF02 | *Efficiency* | KF01, KF05 / UC01 | KNF02-TC01 |
+| KNF03 | *Portability* | KF42 / UC01 s.d. UC09 | KNF03-TC01 |
+| KNF04 | *Response time* | KF06 / UC02 | KNF04-TC01 |
+| KNF05 | *Availability* | - / UC01 s.d. UC04 | KNF05-TC01 |
+| KNF06 | *Security* | KF14 / UC03 | KNF06-TC01, INT-TC16 |
+| KNF07 | *Response time* | KF24 / UC08 | KNF07-TC01, INT-TC49 |
+| KNF08 | *Reliability* | KF16, KF25 / UC06 | KNF08-TC01, KNF08-TC02, C09-UT13, C09-UT14, INT-TC36 |
+| KNF09 | *Security* | KF36 / UC06, UC08 | KNF09-TC01, INT-TC48 |
+| KNF10 | *Security* | KF38 / UC09 | KNF10-TC01 |
+| KNF11 | *Security* | - / UC01 s.d. UC09 | KNF11-TC01 |
+| KNF12 | *Ergonomy* | KF22 / UC06 | KNF12-TC01 |
+| KNF13 | *Ergonomy* | KF32, KF33 / UC08 | KNF13-TC01 |
+| KNF14 | *Security* | KF37, KF41 / UC05 | KNF14-TC01, C25-UT15, C25-UT16, C25-UT19 |
