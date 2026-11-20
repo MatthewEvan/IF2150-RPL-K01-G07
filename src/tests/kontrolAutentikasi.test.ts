@@ -46,7 +46,7 @@ describe("prosesLogin", () => {
     });
   });
 
-  it("mengarahkan Kurator ke panelnya dan mencatat aktivitas", async () => {
+  it("C25-UT01: mengarahkan Kurator ke panelnya dan mencatat aktivitas", async () => {
     vi.mocked(cariAkun).mockResolvedValue(akunUji(PERAN.KURATOR));
 
     await expect(prosesLogin({}, isian())).rejects.toThrow(
@@ -59,7 +59,7 @@ describe("prosesLogin", () => {
     );
   });
 
-  it("mengarahkan Administrator ke panelnya", async () => {
+  it("C25-UT02: mengarahkan Administrator ke panelnya", async () => {
     vi.mocked(cariAkun).mockResolvedValue(akunUji(PERAN.ADMINISTRATOR));
 
     await expect(prosesLogin({}, isian())).rejects.toThrow(
@@ -67,7 +67,7 @@ describe("prosesLogin", () => {
     );
   });
 
-  it("menolak kredensial salah tanpa menyebut bagian yang salah", async () => {
+  it("C25-UT03: menolak kredensial salah tanpa menyebut bagian yang salah", async () => {
     auth.signInWithPassword.mockResolvedValue({
       data: { user: null },
       error: new Error("Invalid login credentials"),
@@ -79,14 +79,14 @@ describe("prosesLogin", () => {
     expect(cariAkun).not.toHaveBeenCalled();
   });
 
-  it("menolak isian kosong tanpa menghubungi Supabase", async () => {
+  it("C25-UT04: menolak isian kosong tanpa menghubungi Supabase", async () => {
     await expect(prosesLogin({}, isian("", ""))).resolves.toHaveProperty(
       "galat",
     );
     expect(auth.signInWithPassword).not.toHaveBeenCalled();
   });
 
-  it("menolak akun nonaktif dan mengakhiri sesinya", async () => {
+  it("C25-UT05: menolak akun nonaktif dan mengakhiri sesinya", async () => {
     vi.mocked(cariAkun).mockResolvedValue(akunUji(PERAN.KURATOR, false));
 
     await expect(prosesLogin({}, isian())).resolves.toEqual({
@@ -96,7 +96,7 @@ describe("prosesLogin", () => {
     expect(cookieSet).not.toHaveBeenCalled();
   });
 
-  it("menolak pengguna Auth yang tidak punya profil akun", async () => {
+  it("C25-UT06: menolak pengguna Auth yang tidak punya profil akun", async () => {
     vi.mocked(cariAkun).mockResolvedValue(null);
 
     await expect(prosesLogin({}, isian())).resolves.toEqual({
@@ -109,7 +109,7 @@ describe("prosesLogin", () => {
 describe("logout", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("mengakhiri sesi dan mengarahkan ke halaman login (KF44)", async () => {
+  it("C25-UT07: mengakhiri sesi dan mengarahkan ke halaman login (KF44)", async () => {
     await expect(logout()).rejects.toThrow("REDIRECT:/masuk");
     expect(auth.signOut).toHaveBeenCalledOnce();
     expect(cookieDelete).toHaveBeenCalledWith("aktivitas_terakhir");

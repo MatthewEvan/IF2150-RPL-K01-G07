@@ -61,17 +61,17 @@ describe("validasiAkunBaru", () => {
     ["baru@contoh.test", ""],
     ["bukan-email", "rahasia-uji"],
     ["baru@contoh.test", "pendek"],
-  ])("menolak email %j dan kata sandi %j", (email, kataSandi) => {
+  ])("C29-UT01: menolak email %j dan kata sandi %j", (email, kataSandi) => {
     expect(validasiAkunBaru(email, kataSandi)).not.toBeNull();
   });
 
-  it("menerima isian yang benar", () => {
+  it("C29-UT02: menerima isian yang benar", () => {
     expect(validasiAkunBaru("baru@contoh.test", "rahasia-uji")).toBeNull();
   });
 });
 
 describe("daftarkanKurator", () => {
-  it("menyimpan akun baru dengan email huruf kecil", async () => {
+  it("C29-UT03: menyimpan akun baru dengan email huruf kecil", async () => {
     const hasil = await daftarkanKurator({}, isian(" Baru@Contoh.Test "));
 
     expect(hasil.sukses).toContain("baru@contoh.test");
@@ -83,7 +83,7 @@ describe("daftarkanKurator", () => {
     );
   });
 
-  it("menolak email duplikat", async () => {
+  it("C29-UT04: menolak email duplikat", async () => {
     vi.mocked(cekEmailUnik).mockResolvedValue(false);
 
     await expect(
@@ -92,7 +92,7 @@ describe("daftarkanKurator", () => {
     expect(simpanKuratorBaru).not.toHaveBeenCalled();
   });
 
-  it("melaporkan galat jika penyimpanan gagal", async () => {
+  it("C29-UT05: melaporkan galat jika penyimpanan gagal", async () => {
     vi.mocked(simpanKuratorBaru).mockRejectedValueOnce(new Error("gagal"));
 
     await expect(
@@ -100,7 +100,7 @@ describe("daftarkanKurator", () => {
     ).resolves.toHaveProperty("galat");
   });
 
-  it("menolak pemanggil yang bukan Administrator", async () => {
+  it("C29-UT06: menolak pemanggil yang bukan Administrator", async () => {
     vi.mocked(cariAkun).mockResolvedValue({ ...ADMIN, peran: PERAN.KURATOR });
 
     await expect(
@@ -112,7 +112,7 @@ describe("daftarkanKurator", () => {
 });
 
 describe("ubahStatusKurator", () => {
-  it("menonaktifkan Kurator milik Administrator yang sedang masuk", async () => {
+  it("C29-UT07: menonaktifkan Kurator milik Administrator yang sedang masuk", async () => {
     vi.mocked(aturStatusKurator).mockResolvedValue(true);
 
     await expect(ubahStatusKurator("k1", false)).resolves.toEqual({});
@@ -124,7 +124,7 @@ describe("ubahStatusKurator", () => {
     );
   });
 
-  it("melaporkan galat jika Kurator tidak ditemukan", async () => {
+  it("C29-UT08: melaporkan galat jika Kurator tidak ditemukan", async () => {
     vi.mocked(aturStatusKurator).mockResolvedValue(false);
 
     await expect(ubahStatusKurator("x", false)).resolves.toHaveProperty(
@@ -132,7 +132,7 @@ describe("ubahStatusKurator", () => {
     );
   });
 
-  it("menolak pemanggil tanpa sesi", async () => {
+  it("C29-UT09: menolak pemanggil tanpa sesi", async () => {
     getUser.mockResolvedValue({ data: { user: null } });
 
     await expect(ubahStatusKurator("k1", false)).resolves.toHaveProperty(
@@ -144,13 +144,13 @@ describe("ubahStatusKurator", () => {
 
 describe("validasiEmail", () => {
   it.each([[""], ["bukan-email"], ["tanpa@titik"]])(
-    "menolak email %j",
+    "C29-UT10: menolak email %j",
     (email) => {
       expect(validasiEmail(email)).not.toBeNull();
     },
   );
 
-  it("menerima email yang benar", () => {
+  it("C29-UT11: menerima email yang benar", () => {
     expect(validasiEmail("baru@contoh.test")).toBeNull();
   });
 });
@@ -160,7 +160,7 @@ describe("perbaruiKurator (KF43)", () => {
     vi.mocked(perbaruiEmailKurator).mockResolvedValue(true);
   });
 
-  it("mengganti email dengan huruf kecil tanpa spasi tepi", async () => {
+  it("C29-UT12: mengganti email dengan huruf kecil tanpa spasi tepi", async () => {
     const hasil = await perbaruiKurator("k1", "  Baru@Contoh.Test ");
 
     expect(hasil.sukses).toContain("baru@contoh.test");
@@ -173,7 +173,7 @@ describe("perbaruiKurator (KF43)", () => {
   });
 
   it.each([[""], ["bukan-email"]])(
-    "menolak email %j sebelum memeriksa basis data",
+    "C29-UT13: menolak email %j sebelum memeriksa basis data",
     async (email) => {
       await expect(perbaruiKurator("k1", email)).resolves.toHaveProperty(
         "galat",
@@ -183,7 +183,7 @@ describe("perbaruiKurator (KF43)", () => {
     },
   );
 
-  it("menolak email yang sudah dipakai akun lain", async () => {
+  it("C29-UT14: menolak email yang sudah dipakai akun lain", async () => {
     vi.mocked(cekEmailUnik).mockResolvedValue(false);
 
     await expect(perbaruiKurator("k1", "ada@contoh.test")).resolves.toEqual({
@@ -192,7 +192,7 @@ describe("perbaruiKurator (KF43)", () => {
     expect(perbaruiEmailKurator).not.toHaveBeenCalled();
   });
 
-  it("menolak Kurator yang bukan milik Administrator tersebut", async () => {
+  it("C29-UT15: menolak Kurator yang bukan milik Administrator tersebut", async () => {
     vi.mocked(perbaruiEmailKurator).mockResolvedValue(false);
 
     await expect(perbaruiKurator("x", "baru@contoh.test")).resolves.toEqual({
@@ -200,7 +200,7 @@ describe("perbaruiKurator (KF43)", () => {
     });
   });
 
-  it("melaporkan galat jika penyimpanan gagal", async () => {
+  it("C29-UT16: melaporkan galat jika penyimpanan gagal", async () => {
     vi.mocked(perbaruiEmailKurator).mockRejectedValueOnce(new Error("gagal"));
 
     await expect(
@@ -208,7 +208,7 @@ describe("perbaruiKurator (KF43)", () => {
     ).resolves.toHaveProperty("galat");
   });
 
-  it("menolak pemanggil yang bukan Administrator", async () => {
+  it("C29-UT17: menolak pemanggil yang bukan Administrator", async () => {
     vi.mocked(cariAkun).mockResolvedValue({ ...ADMIN, peran: PERAN.KURATOR });
 
     await expect(
