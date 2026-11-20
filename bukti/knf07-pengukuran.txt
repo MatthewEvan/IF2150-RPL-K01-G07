@@ -1,0 +1,3 @@
+KNF07-TC01: konten tampil 148 ms setelah disetujui
+KNF07-TC01: konten tampil 198 ms setelah disetujui
+KNF07-TC01: konten tampil 278 ms setelah disetujui

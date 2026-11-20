@@ -1,0 +1,56 @@
+
+> pahamhukum@0.1.0 test:coverage
+> vitest run --coverage --maxWorkers=2
+
+
+ RUN  v5.1.1 /mnt/c/Users/Michael/IF2150-RPL-K01-G07/src
+      Coverage enabled with v8
+
+
+ Test Files  15 passed (15)
+      Tests  174 passed (174)
+   Start at  07:45:57
+   Duration  292.92s (environment 95%, worker 2%, import 2%, transform 1%)
+
+Environment  jsdom was created 15 times · 482.16s total, 95% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   56.55 |    47.95 |   58.68 |   57.26 |                   
+ src               |       0 |        0 |       0 |       0 |                   
+  proxy.ts         |       0 |        0 |       0 |       0 | 11-67             
+ ...ponents/konten |   31.91 |       50 |      50 |   25.64 |                   
+  ...aftarButir.ts |       0 |        0 |       0 |       0 | 1-57              
+ ...ib/controllers |   83.53 |    80.33 |   87.87 |   83.49 |                   
+  ...unanKonten.ts |     100 |    82.35 |     100 |     100 | 27-28,40          
+  ...utentikasi.ts |   81.81 |    88.88 |      50 |      80 | 49-52             
+  ...lChecklist.ts |     100 |     87.5 |     100 |     100 | 78-85             
+  ...rasiKonten.ts |      98 |    96.55 |     100 |     100 | 157               
+  ...akanKonten.ts |       0 |      100 |       0 |       0 | 14-15             
+  ...nKataKunci.ts |       0 |        0 |       0 |       0 | 24-41             
+  ...lolaanAkun.ts |   93.93 |    83.33 |     100 |   96.55 | 80                
+  ...unanKonten.ts |   79.06 |    84.84 |      80 |      80 | 96,137,196-223    
+  ...duhTemplat.ts |       0 |        0 |       0 |       0 | 1-77              
+ src/lib/models    |   33.57 |    27.09 |   40.96 |   33.33 |                   
+  administrator.ts |   48.78 |       32 |      40 |      50 | 168-252           
+  akun.ts          |   83.33 |       75 |     100 |     100 | 29                
+  bidangHukum.ts   |   83.33 |       50 |     100 |     100 | 16                
+  kelompokKasus.ts |   45.45 |       25 |      60 |   57.14 | 56-65             
+  kurator.ts       |   25.53 |    22.85 |   33.33 |   22.22 | 36-38,80-192      
+  ...ntuanHukum.ts |   83.33 |       50 |     100 |     100 | 18                
+  pencarian.ts     |       0 |        0 |       0 |       0 | 43-227            
+  ...kumanKasus.ts |   30.76 |    25.92 |      30 |   33.33 | ...47-167,282-314 
+  ...latDokumen.ts |   13.46 |       15 |   22.22 |   15.55 | 39,57,74-200      
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 56.55% ( 388/686 )
+Branches     : 47.95% ( 223/465 )
+Functions    : 58.68% ( 98/167 )
+Lines        : 57.26% ( 339/592 )
+================================================================================
+coverage=0

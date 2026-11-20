@@ -1,0 +1,18 @@
+
+> pahamhukum@0.1.0 test:integrasi
+> vitest run --config vitest.integrasi.config.mts --maxWorkers=2
+
+
+ RUN  v5.1.1 /mnt/c/Users/Michael/IF2150-RPL-K01-G07/src
+
+KNF07-TC01: konten tampil 235 ms setelah disetujui
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  07:51:07
+   Duration  38.87s (setup 45%, import 31%, tests 17%, transform 4%, worker 4%)
+
+    Isolate  2 workers spawned · ~3.82s startup each (spawn + environment, per file)
+             at least ~3.82s faster with isolate: false — reuses workers across files instead of one per file
+
+integrasi=0

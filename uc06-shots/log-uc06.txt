@@ -1,0 +1,17 @@
+2026-11-19T16:25:56.486Z login berhasil: http://localhost:3000/panel/kurator/konten
+2026-11-19T16:26:00.983Z UC06-TC01 draf baru id=14, URL=http://localhost:3000/panel/kurator/konten/14
+2026-11-19T16:26:01.115Z screenshot UC06-TC01-status-draft.png
+2026-11-19T16:26:01.165Z UC06-TC01 isian wajib terisi
+2026-11-19T16:26:02.521Z UC06-TC01 templat PDF valid tersimpan
+2026-11-19T16:26:02.733Z screenshot UC06-TC01-templat-terlampir.png
+2026-11-19T16:26:03.735Z screenshot UC06-TC01-draf-tersimpan.png
+2026-11-19T16:26:04.585Z UC06-TC01 status berubah menjadi Diajukan
+2026-11-19T16:26:04.766Z screenshot UC06-TC01-status-diajukan.png
+2026-11-19T16:26:09.163Z Draf kedua untuk skenario alternatif id=15
+2026-11-19T16:26:09.228Z UC06-TC02 unggahan .txt ditolak dengan pesan penjelasan
+2026-11-19T16:26:09.427Z screenshot UC06-TC02-galat-berkas.png
+2026-11-19T16:26:10.274Z UC06-TC03 pengajuan dicegah; penanda isian kosong terlihat (node=3)
+2026-11-19T16:26:10.521Z screenshot UC06-TC03-galat-isian-kosong.png
+2026-11-19T16:26:11.532Z UC06-TC04 tombol tayang pada panel kurator = 0
+2026-11-19T16:26:11.715Z screenshot UC06-TC04-tanpa-tombol-penayangan.png
+2026-11-19T16:26:11.847Z UC06-TC04 RLS menolak penayangan mandiri: HTTP 403 {"code":"42501","details":null,"hint":null,"message":"new row violates row-level security policy for table \"rangkuman_kasus\""}

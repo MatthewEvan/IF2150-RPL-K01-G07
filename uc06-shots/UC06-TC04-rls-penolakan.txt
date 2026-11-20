@@ -1,0 +1,4 @@
+PATCH /rest/v1/rangkuman_kasus?id_rangkuman=eq.15
+body: {"status":"Disetujui"}
+HTTP 403
+{"code":"42501","details":null,"hint":null,"message":"new row violates row-level security policy for table \"rangkuman_kasus\""}

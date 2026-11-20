@@ -1,0 +1,18 @@
+
+> pahamhukum@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.1.1 /mnt/c/Users/Michael/IF2150-RPL-K01-G07/src
+
+
+ Test Files  15 passed (15)
+      Tests  174 passed (174)
+   Start at  07:39:53
+   Duration  229.23s (environment 95%, import 2%, worker 2%, transform 1%)
+
+Environment  jsdom was created 15 times · 387.14s total, 95% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+unit=0
