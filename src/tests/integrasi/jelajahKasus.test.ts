@@ -63,7 +63,7 @@ beforeEach(() => {
   );
 });
 
-describe("Integrasi C21 KontrolJelajahKasus ke C04/C05 dan Supabase (IA-10)", () => {
+describe("Integrasi C21 KontrolJelajahKasus ke C04/C05 dan Supabase (IA-13)", () => {
   it("INT-TC10: ambilDaftarBidang hanya mengembalikan bidang aktif yang punya kelompok Disetujui, dengan jumlah yang sama dengan basis data", async () => {
     const harapan = semuaBidang
       .filter((bidang) => bidang.status_aktif)
@@ -122,7 +122,7 @@ describe("Integrasi C21 KontrolJelajahKasus ke C04/C05 dan Supabase (IA-10)", ()
   });
 });
 
-describe("Integrasi C21 KontrolJelajahKasus ke C06 RangkumanKasus dan Supabase (IA-11)", () => {
+describe("Integrasi C21 KontrolJelajahKasus ke C06 RangkumanKasus dan Supabase (IA-14)", () => {
   it("INT-TC13: ambilRangkuman mengembalikan rangkuman Disetujui beserta langkah terurut dan checklist dari basis data", async () => {
     const idKelompok = [...idDisetujui][0];
     const admin = buatClientAdminLokal();
@@ -173,7 +173,7 @@ describe("Integrasi C21 KontrolJelajahKasus ke C06 RangkumanKasus dan Supabase (
   });
 });
 
-describe("Integrasi C21 KontrolJelajahKasus ke C11 LembagaBantuanHukum dan Supabase (IA-12)", () => {
+describe("Integrasi C21 KontrolJelajahKasus ke C11 LembagaBantuanHukum dan Supabase (IA-15)", () => {
   it("INT-TC15: daftar wilayah dan LBH per wilayah sama dengan isi basis data", async () => {
     const { data, error } = await buatClientAdminLokal()
       .from("lembaga_bantuan_hukum")

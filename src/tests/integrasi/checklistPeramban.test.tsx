@@ -22,7 +22,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("Integrasi C14 HalamanRangkumanKasus ke C23 KontrolChecklist dan localStorage (IA-13)", () => {
+describe("Integrasi C14 HalamanRangkumanKasus ke C23 KontrolChecklist dan localStorage (IA-16)", () => {
   it("INT-TC16: centang tersimpan di localStorage, tetap ada setelah halaman dibuka ulang, dan tidak dikirim ke server", async () => {
     const fetch = vi.spyOn(globalThis, "fetch");
     const halaman = await bukaHalaman();
