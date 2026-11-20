@@ -160,6 +160,18 @@ Sistem memiliki tiga aktor. Pencari Informasi (AKT01) adalah masyarakat umum yan
 <i>Gambar 2.2. Use Case Diagram PahamHukum</i>
 </p>
 
+**Batasan dan keterkaitan dengan sistem lain.** PahamHukum tidak menarik data dari sistem lain dan tidak mengirim data pengguna ke lembaga mana pun. Keterkaitannya dengan pihak luar dirangkum pada Tabel 2.1.
+
+Tabel 2.1. Keterkaitan PahamHukum dengan Sistem Lain
+
+| Sistem di luar PahamHukum | Bentuk keterkaitan | Batasan |
+| :--- | :--- | :--- |
+| Supabase (PostgreSQL, Auth, Storage) | Basis data seluruh *entity*, autentikasi Kurator dan Administrator, serta penyimpanan berkas templat pada *bucket* privat `templat` | Diakses hanya dari kode aplikasi. Hak akses dibatasi RLS, sehingga pengunjung publik hanya dapat membaca konten Disetujui. |
+| Peramban pengguna | Menampilkan antarmuka dan menyimpan status *checklist* di `localStorage` | Status *checklist* tidak pernah dikirim ke server (KNF06). |
+| Sumber hukum resmi (misalnya JDIH dan peraturan.bpk.go.id) | Ditautkan sebagai artikel pendukung oleh Kurator | Hanya berupa tautan. Aplikasi tidak menarik isi dari situs tersebut. |
+| Layanan darurat (112) dan kepolisian (110) | Tombol telepon (`tel:`) pada peringatan darurat | Panggilan dilakukan oleh perangkat pengguna. Aplikasi tidak menangani situasi darurat secara langsung. |
+| Lembaga Bantuan Hukum | Ditampilkan sebagai direktori beserta wilayah layanan dan tautannya | Informasi statis. Tidak ada data pengguna yang dikirim ke LBH. |
+
 <br>
 
 ---
@@ -286,13 +298,13 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C02 | Kurator | Mendalam | Memuat aturan status (Kurator hanya dapat diubah oleh Administrator pemiliknya), validasi email unik dengan *escape* pola, integrasi Supabase Auth dengan pembatalan akun jika penyimpanan gagal, serta algoritma pengurutan daftar konten dan riwayat. | C02-UT01 s.d. C02-UT20 |
 | C03 | Administrator | Mendalam | Memuat perhitungan waktu pengajuan terakhir dan lama menunggu, serta algoritma pengurutan antrean peninjauan (Q-007, KF31). | C03-UT01 s.d. C03-UT19 |
 | C04 | BidangHukum | Tidak perlu | Hanya menyimpan data bidang hukum. `cekAktif` berupa pemeriksaan satu atribut. | UC01-TC01, UC02-TC02 |
-| C05 | KelompokKasus | Sedang | `cekDarurat` dan `cocokkanKataKunci` (Algo-012) berupa pemeriksaan sederhana. Algoritma pencarian utamanya diuji pada C22. | C05-UT01 s.d. C05-UTnn |
+| C05 | KelompokKasus | Sedang | `cekDarurat` dan `cocokkanKataKunci` (Algo-012) berupa pemeriksaan sederhana. Algoritma pencarian utamanya diuji pada C22. | C05-UT01 s.d. C05-UT09 |
 | C06 | RangkumanKasus | Mendalam | Memuat aturan kelengkapan isian (Algo-016), transisi status ke Diajukan, pencocokan kata kunci (Algo-013), dan pembatasan konten publik hanya yang Disetujui (KF02). | C06-UT01 s.d. C06-UT22 |
 | C07 | LangkahPenyelesaian | Tidak perlu | Hanya struktur data langkah. Penanda tenggat teruji melalui C06. | UC01-TC01, UC06-TC01 |
 | C08 | Checklist | Tidak perlu | Hanya menyimpan daftar dokumen. Logika centang berada di C23. | UC03-TC01, UC06-TC01 |
 | C09 | TemplatDokumen | Mendalam | Memuat validasi format dan ukuran berkas (Algo-021), pembaruan versi dengan pembatalan unggahan jika gagal (Algo-022, KNF08), serta pembuatan *signed URL* pada *bucket* privat (Algo-023). | C09-UT01 s.d. C09-UT27 |
 | C10 | Artikel | Tidak perlu | Hanya struktur data judul dan tautan sumber. | UC01-TC01, UC06-TC01 |
-| C11 | LembagaBantuanHukum | Sedang | `cocokkanWilayah` berupa penyaringan sederhana berdasarkan wilayah. | C11-UT01 s.d. C11-UTnn |
+| C11 | LembagaBantuanHukum | Sedang | `cocokkanWilayah` berupa penyaringan sederhana berdasarkan wilayah. | C11-UT01 s.d. C11-UT04 |
 | C12 | RiwayatStatus | Mendalam | Memuat transisi keputusan moderasi, pemulihan status jika pencatatan gagal, aturan alasan revisi wajib (Algo-049), dan riwayat yang permanen (KNF09). | C12-UT01 s.d. C12-UTnn |
 | C13 | HalamanJelajahKasus | Tidak perlu | Hanya menampilkan data dan meneruskan aksi ke C21. | UC01-TC01, UC01-TC02 |
 | C14 | HalamanRangkumanKasus | Tidak perlu | Hanya menampilkan rangkuman. Logika checklist dan unduh berada di C23 dan C24. | UC01-TC01, UC03-TC01, UC03-TC02, UC04-TC01, UC04-TC02 |
@@ -302,9 +314,9 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C18 | HalamanDaftarKontenKurator | Tidak perlu | Hanya menampilkan daftar dan catatan revisi dari C27. | UC07-TC01, UC07-TC02 |
 | C19 | HalamanModerasiKonten | Tidak perlu | Hanya menampilkan antrean dan meneruskan keputusan ke C28. | UC08-TC01 s.d. UC08-TC03 |
 | C20 | HalamanPengelolaanAkun | Tidak perlu | Hanya menampilkan daftar Kurator dan meneruskan aksi ke C29. | UC09-TC01, UC09-TC02 |
-| C21 | KontrolJelajahKasus | Sedang | Mendelegasikan pengambilan data ke model dan menghitung jumlah kelompok per bidang. | C21-UT01 s.d. C21-UTnn |
+| C21 | KontrolJelajahKasus | Sedang | Mendelegasikan pengambilan data ke model dan menghitung jumlah kelompok per bidang. | C21-UT01 s.d. C21-UT14 |
 | C22 | KontrolPencarianKataKunci | Mendalam | Memuat algoritma pencarian (Algo-032, Algo-012, Algo-013), *escape* pola `ILIKE`, serta penyaringan konten Disetujui dan bidang aktif. | C22-UT01 s.d. C22-UTnn |
-| C23 | KontrolChecklist | Mendalam | Memuat penyimpanan status centang di `localStorage`, penanganan data rusak, sinkronisasi antartab, dan perhitungan kelengkapan. | C23-UT01 s.d. C23-UTnn |
+| C23 | KontrolChecklist | Mendalam | Memuat penyimpanan status centang di `localStorage`, penanganan data rusak, sinkronisasi antartab, dan perhitungan kelengkapan. | C23-UT01 s.d. C23-UT20, INT-TC16, INT-TC17 |
 | C24 | KontrolUnduhTemplat | Mendalam | Memuat aturan keamanan (hanya templat milik konten Disetujui dan validasi id) serta integrasi dengan Supabase Storage. | C24-UT01 s.d. C24-UTnn |
 | C25 | KontrolAutentikasi | Mendalam | Memuat aturan keamanan login, proteksi rute per peran, pemutusan sesi akun nonaktif, dan batas sesi 30 menit (KNF14). | C25-UT01 s.d. C25-UT24 |
 | C26 | KontrolPenyusunanKonten | Mendalam | Memuat aturan penyuntingan per status, validasi isian, pengajuan konten, serta unggah dan hapus templat. | C26-UT01 s.d. C26-UT22 |
@@ -401,6 +413,30 @@ Tabel 4.2.2b. Ringkasan Cakupan Kelas C03
 | ID Algoritma yang tercakup | Algo-009, Q-007 |
 | Coverage (wajib ≥ 70%) | `src/lib/models/administrator.ts`: 100% baris, 98% cabang, 100% fungsi |
 
+### 4.2.3 Kelas KelompokKasus
+
+**ID Kelas:** C05  
+**Nama Kelas:** KelompokKasus  
+**Tingkat:** Sedang  
+**File test:** `src/tests/modelKelompokKasus.test.ts`
+
+Operasi `cocokkanKataKunci()` diimplementasikan sebagai `cocokkanKataKunciKelompok()` di `src/lib/models/pencarian.ts` (Tabel B.5 dokumen Implementasi).
+
+Tabel 4.2.3. Hasil Pengujian Unit Kelas C05
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C05-UT01 | `ambilKelompokDisetujui(supabase): KelompokKasus[]` | Normal | *Mock* Supabase mengembalikan satu baris kelompok "Gaji tidak dibayar tepat waktu" | Baris dipetakan ke objek `KelompokKasus`; query memakai `rangkuman_kasus!inner(status)`, filter `rangkuman_kasus.status = Disetujui`, dan urutan `id_kelompok` | Objek dan filter sesuai harapan | Pass |
+| C05-UT02 | `ambilKelompokDisetujui(supabase)` | Gagal | *Mock* Supabase mengembalikan galat "permintaan ditolak" | Galat diteruskan ke pemanggil | Galat yang sama dilempar | Pass |
+| C05-UT03 | `cekDarurat(kelompok): bool` | Normal | Kelompok "Mengalami kekerasan di rumah" dengan `penandaDarurat = true` | `true` | `true` | Pass |
+| C05-UT04 | `cekDarurat(kelompok): bool` | Normal | Kelompok yang sama dengan `penandaDarurat = false` | `false` | `false` | Pass |
+| C05-UT05 | `cocokkanKataKunci(kataKunci): bool` (Algo-012) | Normal | Kata kunci "RUMAH TANGGA" terhadap istilah "Kekerasan dalam rumah tangga" | `true` (tidak membedakan huruf besar dan kecil) | `true` | Pass |
+| C05-UT06 | `cocokkanKataKunci(kataKunci): bool` | Batas | Kata kunci hanya berisi spasi `"   "` | `false` | `false` | Pass |
+| C05-UT07 | `cocokkanKataKunci(kataKunci): bool` | Gagal | Kata kunci "pesangon" yang tidak ada di judul maupun istilah | `false` | `false` | Pass |
+| C05-UT08 | `ambilPilihanKelompok(supabase): PilihanKelompok[]` | Normal | *Mock* Supabase mengembalikan kelompok "Diberhentikan tanpa pesangon" pada bidang Ketenagakerjaan | Pilihan berisi id, nama bidang, dan judul; filter `bidang_hukum.status_aktif = true`; urutan `id_bidang` lalu `id_kelompok` | Sesuai harapan | Pass |
+| C05-UT09 | `ambilPilihanKelompok(supabase)` | Gagal | *Mock* Supabase mengembalikan galat | Galat diteruskan ke pemanggil | Galat yang sama dilempar | Pass |
+
+
 ### 4.2.4 Kelas RangkumanKasus
 
 **ID Kelas:** C06  
@@ -493,6 +529,22 @@ Tabel 4.2.5b. Ringkasan Cakupan Kelas C09
 | ID Algoritma yang tercakup | Algo-021, Algo-022, Algo-023, Algo-035 |
 | Coverage (wajib ≥ 70%) | `src/lib/models/templatDokumen.ts`: 100% baris, 97,5% cabang, 100% fungsi |
 
+### 4.2.6 Kelas LembagaBantuanHukum
+
+**ID Kelas:** C11  
+**Nama Kelas:** LembagaBantuanHukum  
+**Tingkat:** Sedang  
+**File test:** `src/tests/modelLembagaBantuanHukum.test.ts`
+
+Tabel 4.2.6. Hasil Pengujian Unit Kelas C11
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C11-UT01 | `ambilSemuaLBH(supabase): LembagaBantuanHukum[]` (Q-022) | Normal | *Mock* Supabase mengembalikan "LBH Contoh Bandung" wilayah Jawa Barat | Baris dipetakan ke objek LBH dari tabel `lembaga_bantuan_hukum`, diurutkan berdasarkan `nama` | Sesuai harapan | Pass |
+| C11-UT02 | `ambilSemuaLBH(supabase)` | Gagal | *Mock* Supabase mengembalikan galat | Galat diteruskan ke pemanggil | Galat yang sama dilempar | Pass |
+| C11-UT03 | `cocokkanWilayah(wilayah): bool` | Normal | LBH wilayah "Jawa Barat", wilayah dipilih "Jawa Barat" | `true` | `true` | Pass |
+| C11-UT04 | `cocokkanWilayah(wilayah): bool` | Gagal | LBH wilayah "Jawa Barat", wilayah dipilih "DKI Jakarta" | `false` | `false` | Pass |
+
 ### 4.2.8 Kelas HalamanPenyusunanKonten
 
 **ID Kelas:** C17  
@@ -513,6 +565,77 @@ Tabel 4.2.8. Hasil Pengujian Unit Kelas C17
 | C17-UT05 | `pindahkanButir(...)` | Normal | Turunkan butir A (indeks 0) | Daftar B, A, C | Daftar B, A, C | Pass |
 | C17-UT06 | `pindahkanButir(...)` | Normal | Pindahkan butir lalu periksa daftar asli | Daftar asli tidak berubah | Daftar asli tetap A, B, C | Pass |
 | C17-UT07 | `pindahkanButir(...)` | Gagal | Naikkan butir pertama, turunkan butir terakhir, dan indeks 5 | Daftar tidak berubah | Daftar asli dikembalikan untuk ketiga masukan | Pass |
+
+### 4.2.9 Kelas KontrolJelajahKasus
+
+**ID Kelas:** C21  
+**Nama Kelas:** KontrolJelajahKasus  
+**Tingkat:** Sedang  
+**File test:** `src/tests/kontrolJelajahKasus.test.ts`
+
+*Client* Supabase diganti *mock* yang benar-benar menyaring baris berdasarkan filter `eq()` yang dikirim model, sehingga test membuktikan filter status Disetujui, bukan sekadar pemanggilannya. Data tiruan memuat bidang aktif dan nonaktif serta kelompok dengan status Disetujui, Draft, Diajukan, dan Perlu Revisi.
+
+Tabel 4.2.9. Hasil Pengujian Unit Kelas C21
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C21-UT01 | `cekDarurat(idKelompok): bool` | Normal | Kelompok 12, darurat dan Disetujui | `true` | `true` | Pass |
+| C21-UT02 | `cekDarurat(idKelompok): bool` | Normal | Kelompok 11, bukan darurat | `false` | `false` | Pass |
+| C21-UT03 | `cekDarurat(idKelompok): bool` | Gagal | Kelompok 999 yang tidak ada | `false` | `false` | Pass |
+| C21-UT04 | `cekDarurat(idKelompok): bool` | Gagal | Kelompok 21, darurat tetapi rangkumannya Diajukan | `false` | `false` | Pass |
+| C21-UT05 | `ambilDaftarKelompok(idBidang)` (Algo-029) | Normal | Bidang 1 dengan kelompok 11 dan 12 (Disetujui) serta 13 (Draft) | Hanya kelompok 11 dan 12 | `[11, 12]` | Pass |
+| C21-UT06 | `ambilDaftarKelompok(idBidang)` | Batas | Bidang 2, seluruh rangkumannya Diajukan atau Perlu Revisi | Daftar kosong | `[]` | Pass |
+| C21-UT07 | `ambilDaftarBidang()` (Algo-028) | Normal | Bidang 1 dan 2 aktif, bidang 3 nonaktif | Hanya bidang 1 dengan `jumlahKelompokKasus = 2`; bidang tanpa kelompok Disetujui dan bidang nonaktif disembunyikan (KF01, KF02) | Sesuai harapan | Pass |
+| C21-UT08 | `ambilRangkuman(idKelompok)` (Algo-030) | Normal | Kelompok 11 dengan rangkuman Disetujui | Rangkuman 101 beserta daftar dokumen | Sesuai harapan | Pass |
+| C21-UT09 | `ambilRangkuman(idKelompok)` | Gagal | Kelompok 13 (Draft), 21 (Diajukan), dan 22 (Perlu Revisi) | `null` untuk ketiganya (KF02) | `null` untuk ketiganya | Pass |
+| C21-UT10 | `ambilDaftarWilayah()` | Normal | Tiga LBH di Jawa Barat (2) dan DKI Jakarta (1) | `["DKI Jakarta", "Jawa Barat"]`, tanpa duplikat dan terurut | Sesuai harapan | Pass |
+| C21-UT11 | `ambilDaftarLBH(wilayah)` (Algo-031) | Normal | Wilayah "Jawa Barat" | LBH Bandung dan LBH Bogor | Sesuai harapan | Pass |
+| C21-UT12 | `ambilDaftarBidang()` | Gagal | *Mock* Supabase mengembalikan galat "koneksi basis data terputus" | Galat diteruskan ke pemanggil | Galat yang sama dilempar | Pass |
+| C21-UT13 | `ambilRangkuman(idKelompok)` | Gagal | *Mock* Supabase mengembalikan galat | Galat diteruskan ke pemanggil | Galat yang sama dilempar | Pass |
+| C21-UT14 | `ambilDaftarLBH(wilayah)` | Batas | Wilayah "Papua" yang tidak punya LBH | Daftar kosong | `[]` | Pass |
+
+### 4.2.11 Kelas KontrolChecklist
+
+**ID Kelas:** C23  
+**Nama Kelas:** KontrolChecklist  
+**Tingkat:** Mendalam  
+**File test:** `src/tests/kontrolChecklist.test.ts`
+
+Kelas ini berjalan di peramban. Test memakai `localStorage` milik jsdom, dan modul dimuat ulang (`vi.resetModules`) untuk meniru membuka halaman kembali.
+
+Tabel 4.2.11. Hasil Pengujian Unit Kelas C23
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C23-UT01 | `bacaCentang(idRangkuman): string[]` | Batas | `localStorage` kosong | `[]` | `[]` | Pass |
+| C23-UT02 | `simpanCentang(idRangkuman, daftar)` | Normal | Simpan "KTP" dan "Surat PHK" untuk rangkuman 7 | Kunci `pahamhukum:checklist:7` berisi kedua dokumen dan `bacaCentang(7)` mengembalikannya | Sesuai harapan | Pass |
+| C23-UT03 | `bacaCentang(idRangkuman)` | Normal | Simpan "KTP", lalu modul dimuat ulang | `["KTP"]` dibaca kembali dari `localStorage` (KF14) | `["KTP"]` | Pass |
+| C23-UT04 | `simpanCentang` dan `bacaCentang` | Normal | Simpan centang berbeda untuk rangkuman 7 dan 8 | Centang tiap rangkuman terpisah | Sesuai harapan | Pass |
+| C23-UT05 | `kosongkanCentang(idRangkuman)` | Normal | Simpan "KTP", lalu kosongkan | Kunci dihapus dan `bacaCentang(7)` mengembalikan `[]` | Sesuai harapan | Pass |
+| C23-UT06 | `bacaCentang(idRangkuman)` | Normal | Dua kali membaca tanpa perubahan | Rujukan larik yang sama, sehingga komponen tidak dirender ulang tanpa perlu | Rujukan sama | Pass |
+| C23-UT07 | `bacaCentangAwal(): string[]` | Normal | Dipanggil saat render di server | `[]` | `[]` | Pass |
+| C23-UT08 | `simpanCentang` dan `kosongkanCentang` | Normal | Mengintai `fetch` selama menyimpan dan mengosongkan | `fetch` tidak pernah dipanggil (KNF06) | Tidak dipanggil | Pass |
+| C23-UT09 | `bacaCentang(idRangkuman)` | Negatif | Isi kunci berupa JSON rusak `{bukan json` dan objek `{"KTP":true}` | `[]` untuk keduanya | `[]` | Pass |
+| C23-UT10 | `bacaCentang(idRangkuman)` | Negatif | Isi `["KTP", 3, null, "Surat PHK"]` | Butir bukan teks dibuang: `["KTP", "Surat PHK"]` | Sesuai harapan | Pass |
+| C23-UT11 | `bacaCentang` dan `simpanCentang` | Negatif | `getItem` dan `setItem` melempar galat (penyimpanan diblokir) | Tidak melempar galat; centang tetap berlaku selama halaman terbuka | Sesuai harapan | Pass |
+| C23-UT12 | `pantauCentang(pendengar)` | Normal | Simpan, kosongkan, berhenti memantau, lalu simpan lagi | Pendengar dipanggil 2 kali saja | 2 kali | Pass |
+| C23-UT13 | `pantauCentang(pendengar)` | Normal | Event `storage` dari tab lain dengan kunci checklist | Pendengar dipanggil dan centang terbaru terbaca | Sesuai harapan | Pass |
+| C23-UT14 | `pantauCentang(pendengar)` | Negatif | Event `storage` dengan kunci lain (`tema`) | Pendengar tidak dipanggil | Tidak dipanggil | Pass |
+| C23-UT15 | `hitungKelengkapan(jumlahDicentang, jumlahTotal): int` (Algo-034) | Normal | (1, 3), (2, 3), (3, 3) | 33, 67, 100 | 33, 67, 100 | Pass |
+| C23-UT16 | `pantauCentang(pendengar)` | Batas | `localStorage` dikosongkan di tab lain (event dengan `key = null`) | Tembolok dibersihkan, pendengar dipanggil, `bacaCentang(7)` menjadi `[]` | Sesuai harapan | Pass |
+| C23-UT17 | `kosongkanCentang(idRangkuman)` | Negatif | `removeItem` melempar galat | Tidak melempar galat dan centang di memori kosong | Sesuai harapan | Pass |
+| C23-UT18 | `pantauCentang(pendengar)` | Batas | Dua komponen memantau, lalu berhenti satu per satu | Event `storage` dipasang sekali dan dilepas setelah komponen terakhir berhenti | Dipasang 1 kali, dilepas 1 kali | Pass |
+| C23-UT19 | `hitungKelengkapan(jumlahDicentang, jumlahTotal)` | Batas | (0, 3) dan (0, 0) | 0 dan 0, tanpa pembagian dengan nol | 0 dan 0 | Pass |
+| C23-UT20 | `hitungKelengkapan(jumlahDicentang, jumlahTotal)` | Negatif | (5, 3), jumlah dicentang melebihi total | Dibatasi 100 | 100 | Pass |
+
+Tabel 4.2.11b. Ringkasan Cakupan Kelas C23
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `ambilChecklist(idRangkuman)`, `hitungKelengkapan(jumlahDicentang, jumlahTotal)` |
+| Operasi yang diuji | `bacaCentang`, `bacaCentangAwal`, `simpanCentang`, `kosongkanCentang`, `pantauCentang`, dan `hitungKelengkapan`. Pada implementasi, `ambilChecklist` dipecah menjadi fungsi baca, simpan, kosongkan, dan pantau atas `localStorage`, karena daftar dokumennya sudah diambil oleh C21 bersama rangkuman (Tabel B.5 dokumen Implementasi). |
+| ID Algoritma yang tercakup | Algo-034 (`hitungKelengkapan`) |
+| Coverage (wajib ≥ 70%) | `src/lib/controllers/kontrolChecklist.ts`: 100% baris, 100% cabang, 100% fungsi (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
 
 ### 4.2.13 Kelas KontrolAutentikasi
 
@@ -671,6 +794,10 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 | IA-10 | C26 KontrolPenyusunanKonten | C06 RangkumanKasus, tabel `rangkuman_kasus` dan `riwayat_status` | *Controller* - *Model* - Basis data | INT-TC30, INT-TC31, INT-TC32 |
 | IA-11 | C06 RangkumanKasus | Fungsi basis data `simpan_draf` dan `ajukan_konten`, C12 RiwayatStatus, RLS | Aplikasi - Basis data | INT-TC33, INT-TC34, INT-TC35, INT-TC39 |
 | IA-12 | C09 TemplatDokumen | Supabase Storage (*bucket* privat `templat`) | Aplikasi - Sistem eksternal | INT-TC36, INT-TC37, INT-TC38 |
+| IA-13 | C21 KontrolJelajahKasus | C04 BidangHukum, C05 KelompokKasus (Model) dan tabel `bidang_hukum`, `kelompok_kasus`, `rangkuman_kasus` | *Controller* - *Model* - Basis data | INT-TC10, INT-TC11, INT-TC12 |
+| IA-14 | C21 KontrolJelajahKasus | C06 RangkumanKasus (Model) dan tabel rangkuman beserta tabel anaknya, dengan RLS peran `anon` | *Controller* - *Model* - Basis data | INT-TC13, INT-TC14 |
+| IA-15 | C21 KontrolJelajahKasus | C11 LembagaBantuanHukum (Model) dan tabel `lembaga_bantuan_hukum` | *Controller* - *Model* - Basis data | INT-TC15 |
+| IA-16 | C14 HalamanRangkumanKasus (komponen `ChecklistDokumen`) | C23 KontrolChecklist dan `localStorage` peramban | *View* - *Controller* - Penyimpanan peramban | INT-TC16, INT-TC17 |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
@@ -685,6 +812,14 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 | INT-TC07 | IA-03 | Normal dan gagal: nonaktifkan lalu aktifkan | `ubahStatusKurator(id, false)`, login Kurator, lalu `ubahStatusKurator(id, true)` dan login lagi | `status_aktif` false di basis data dan login ditolak; setelah diaktifkan, login berhasil | Sesuai harapan | Pass |
 | INT-TC08 | IA-03 | Normal: ubah email (KF43) | `perbaruiKurator(id, emailBaru)` | Email di tabel `akun` dan Auth berganti; login dengan email lama gagal dan dengan email baru berhasil | Sesuai harapan | Pass |
 | INT-TC09 | IA-03, IA-02 | Gagal: Kurator mengelola akun | Kurator memanggil `ubahStatusKurator` dan meng-*update* tabel `kurator` langsung | Server Action menolak, RLS tidak mengubah baris apa pun, status Kurator lain tetap aktif | Sesuai harapan | Pass |
+| INT-TC10 | IA-13 | Normal: daftar bidang di beranda | Panggil `ambilDaftarBidang()` dengan *client* anonim, lalu bandingkan dengan isi tabel yang dibaca lewat *service role* | Hanya bidang aktif yang punya kelompok Disetujui, dengan jumlah kelompok yang sama dengan basis data (KF01, KF02) | 3 bidang (Ketenagakerjaan, Perlindungan Konsumen, Keluarga), masing-masing 1 situasi, sama dengan basis data | Pass |
+| INT-TC11 | IA-13 | Normal: daftar kelompok per bidang | Panggil `ambilDaftarKelompok(idBidang)` untuk setiap bidang | Hanya kelompok yang rangkumannya Disetujui; kelompok berstatus Diajukan, Perlu Revisi, dan Draft tidak ikut | Daftar setiap bidang sama dengan basis data | Pass |
+| INT-TC12 | IA-13 | Alternatif: kelompok darurat | Panggil `cekDarurat(idKelompok)` untuk setiap kelompok di basis data | `true` hanya untuk kelompok bertanda darurat yang rangkumannya Disetujui (KF21) | `true` hanya untuk kelompok 5 "Mengalami kekerasan di rumah" | Pass |
+| INT-TC13 | IA-14 | Normal: membuka rangkuman | Panggil `ambilRangkuman(idKelompok)` untuk kelompok Disetujui | Rangkuman, langkah terurut menurut nomor, dan isi *checklist* sama dengan basis data (KF05, KF08, KF11) | Sesuai basis data | Pass |
+| INT-TC14 | IA-14 | Gagal: konten belum Disetujui | Panggil `ambilRangkuman` untuk setiap kelompok tanpa rangkuman Disetujui, lalu baca `rangkuman_kasus` dengan status selain Disetujui langsung lewat *client* anonim | `null` dari controller dan daftar kosong dari query langsung karena RLS (KF02) | `null` dan `[]` | Pass |
+| INT-TC15 | IA-15 | Normal: direktori LBH per wilayah | Panggil `ambilDaftarWilayah()` dan `ambilDaftarLBH(wilayah)` untuk setiap wilayah | Wilayah unik dan terurut; LBH tiap wilayah sama dengan basis data (KF20) | Sesuai basis data | Pass |
+| INT-TC16 | IA-16 | Normal: centang tersimpan dan dipulihkan | *Render* `ChecklistDokumen` dengan 3 dokumen, centang 2, *unmount*, muat ulang modul, lalu *render* lagi | Teks "1 dokumen lagi", kunci `pahamhukum:checklist:1` berisi 2 dokumen, centang dan progres 2/3 tampil kembali, dan `fetch` tidak dipanggil (KF13, KF14, KNF06) | Sesuai harapan | Pass |
+| INT-TC17 | IA-16 | Alternatif: kosongkan centang | Isi `localStorage` dengan 3 dokumen, *render*, lalu klik "Kosongkan centang" | Kunci terhapus, progres 0/3, teks "3 dokumen lagi" | Sesuai harapan | Pass |
 | INT-TC30 | IA-10 | Normal: membuat draf | Masuk sebagai `kurator1`, panggil `buatDraf(1)`, lalu baca ulang rangkuman dan riwayat dari basis data | Rangkuman berstatus Draft milik `kurator1` dan satu riwayat Draft atas nama `kurator1` | Rangkuman Draft dan satu riwayat Draft tercatat | Pass |
 | INT-TC31 | IA-10 | Normal: menyimpan dan menyimpan ulang draf | Panggil `simpanDraf()` dengan isian lengkap dua langkah, lalu simpan ulang dengan satu langkah | Isian, langkah terurut beserta tenggat teks, checklist, dan artikel tersimpan; simpan ulang mengganti langkah lama | Seluruh data tersimpan dan langkah lama tergantikan | Pass |
 | INT-TC32 | IA-10 | Gagal: menyimpan konten Diajukan | Panggil `simpanDraf()` pada rangkuman 4 (Diajukan) | Ditolak dan isi rangkuman di basis data tidak berubah | Ditolak dengan pesan status dan inti masalah tetap | Pass |
@@ -701,6 +836,34 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 ## 4.4 Pengujian Use Case
 
 Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai Subbab 4.4 SKPL, dengan minimal satu test case untuk setiap skenario. Kolom ID KF menunjukkan KF yang diverifikasi oleh test case tersebut.
+
+### 4.4.1 Use Case Menelusuri dan Membaca Rangkuman Kasus
+
+**ID Use Case:** UC01  
+**Nama Use Case:** Menelusuri dan Membaca Rangkuman Kasus
+
+Pengujian dilakukan pada *build* produksi (`next build` lalu `next start`) yang terhubung ke PostgreSQL lokal dengan migrasi `0001` sampai `0005` dan data awal `seed.sql` dari repositori, diakses lewat PostgREST dengan peran `anon` dan RLS yang sama dengan Supabase, menggunakan peramban Chromium. Pengujian ini tidak memerlukan akun karena seluruh fitur dipakai sebagai Pencari Informasi.
+
+Tabel 4.4.1. Hasil Pengujian Use Case UC01
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC01-TC01 | KF01, KF02, KF03, KF04, KF05, KF08, KF09, KF10, KF11, KF12, KF18, KF19, KF20, KF42 | Normal | 1. Buka beranda `/`.<br>2. Klik bidang "Ketenagakerjaan".<br>3. Klik kelompok "Gaji tidak dibayar tepat waktu".<br>4. Baca bagian Hak kamu dan Poin pertimbangan.<br>5. Baca Langkah penyelesaian.<br>6. Gulir ke Bacaan pendukung, lalu ganti pilihan wilayah LBH.<br>7. Ulangi langkah 1 pada lebar 360 px. | Bidang "Ketenagakerjaan"; kelompok id 1; wilayah "Jawa Timur" | 1. Hanya bidang aktif dengan kelompok Disetujui beserta jumlahnya.<br>2. Kelompok bidang itu tampil dengan judul sehari-hari dan istilah resmi.<br>3. Halaman `/kasus/1` tersusun urut: inti masalah, hak, langkah, pertimbangan, dokumen, templat, bacaan, lalu *disclaimer*.<br>5. Langkah bernomor dengan tujuan, dokumen, dan penanda tenggat.<br>6. Artikel bertaut, LBH sesuai wilayah, nama Kurator, dan tanggal peninjauan tampil.<br>7. Tidak ada geser horizontal. | 1. Tiga bidang tampil, masing-masing "1 situasi"; kelompok "Diberhentikan tanpa pesangon" (Diajukan) tidak muncul.<br>2. "Gaji tidak dibayar tepat waktu" dengan "Istilah hukum: Keterlambatan pembayaran upah."<br>3. Tujuh bagian tampil berurutan, disertai kotak *disclaimer*.<br>5. Langkah 1 dan 2 bernomor; langkah 2 menampilkan "Tenggat: 14 hari kerja setelah surat penagihan dikirim".<br>6. Wilayah awal DKI Jakarta (LBH Contoh Jakarta) berganti menjadi Jawa Timur (LBH Contoh Surabaya); penanda "Disusun oleh Kurator Satu (Kurator) · Ditinjau 20 Okt 2026" tampil.<br>7. Lebar halaman tetap 360 px. | Pass |
+| UC01-TC02 | KF21, KF05 | Alternatif 1: Kasus Ditandai Situasi Darurat | 1. Buka beranda dan pilih bidang "Keluarga".<br>2. Klik "Lihat bantuan" pada kelompok "Mengalami kekerasan di rumah".<br>3. Klik "Tutup dan lanjut membaca". | Bidang "Keluarga"; kelompok id 5 (darurat) | 2. Peringatan prioritas berisi ajakan melapor serta tombol Telepon 112 dan Telepon polisi 110 tampil sebelum rangkuman dibuka.<br>3. Halaman rangkuman kasus tampil seperti skenario normal. | 2. Dialog "Kalau kamu sedang terancam, cari bantuan sekarang" terbuka dengan tombol Telepon 112 (`tel:112`) dan Telepon polisi 110 (`tel:110`).<br>3. Halaman `/kasus/5` "Mengalami kekerasan di rumah" terbuka. | Pass |
+
+### 4.4.3 Use Case Menyiapkan Dokumen dengan Checklist
+
+**ID Use Case:** UC03  
+**Nama Use Case:** Menyiapkan Dokumen dengan *Checklist*
+
+Pengujian dilakukan pada *build* produksi (`next build` lalu `next start`) yang terhubung ke PostgreSQL lokal dengan migrasi `0001` sampai `0005` dan data awal `seed.sql` dari repositori, diakses lewat PostgREST dengan peran `anon` dan RLS yang sama dengan Supabase, menggunakan peramban Chromium. Pengujian ini tidak memerlukan akun karena seluruh fitur dipakai sebagai Pencari Informasi.
+
+Tabel 4.4.3. Hasil Pengujian Use Case UC03
+
+| ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| UC03-TC01 | KF13, KF14 | Normal | 1. Buka `/kasus/1` dan gulir ke bagian 5 Daftar periksa dokumen.<br>2. Centang dua dokumen.<br>3. Periksa `localStorage` dan lalu lintas jaringan. | Centang "Perjanjian kerja" dan "Slip gaji" dari 3 dokumen | Tampilan item berubah, progres terhitung, dan status centang tersimpan di penyimpanan lokal tanpa dikirim ke server | Progres "2/3" dengan teks "1 dokumen lagi"; kunci `pahamhukum:checklist:1` berisi `["Perjanjian kerja","Slip gaji"]`; tidak ada permintaan jaringan saat mencentang | Pass |
+| UC03-TC02 | KF14 | Alternatif 1: Pengguna Memuat Ulang atau Membuka Kembali Halaman | 1. Lanjut dari UC03-TC01, muat ulang halaman.<br>2. Tutup tab, lalu buka `/kasus/1` di tab baru. | Status centang dari UC03-TC01 | Status *checklist* dan centangnya dipulihkan dari penyimpanan lokal | Setelah muat ulang dan di tab baru, "Perjanjian kerja" dan "Slip gaji" tetap tercentang dengan teks "1 dokumen lagi" | Pass |
 
 ### 4.4.5 Use Case Masuk dan Keluar Panel Pengelolaan
 
@@ -756,6 +919,9 @@ Tabel 4.5. Hasil Pengujian KNF
 
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| KNF01-TC01 | KNF01 | *Response time* | Bagian inti beranda (judul, kolom pencarian, dan kartu bidang hukum) tampil ≤ 3 detik pada koneksi 1 Mbps | *Build* produksi; Chromium lewat Playwright dengan Chrome DevTools Protocol: *throttling* 1 Mbps unduh dan unggah, RTT 40 ms, *cache* dinonaktifkan. Diukur 5 kali: waktu sampai kartu bidang hukum tampil dan *Largest Contentful Paint* (LCP). | Bagian inti tampil rata-rata 98 ms (maks 130 ms); LCP rata-rata 513 ms (maks 524 ms); seluruh halaman selesai dimuat (*load*) rata-rata sekitar 1,83 detik (maks 1,84 detik) | Pass |
+| KNF02-TC01 | KNF02 | *Efficiency* | Total data terunduh pada pemuatan awal tanpa *cache* ≤ 350 KB per halaman, di luar berkas templat | Chrome DevTools Protocol, menjumlahkan `encodedDataLength` seluruh permintaan (ukuran setelah kompresi) pada setiap halaman publik dengan *cache* dinonaktifkan | `/` 211,6 KB; `/kasus/1` 214,9 KB; `/cari?q=upah` 208,4 KB; `/masuk` 196,6 KB. Halaman terberat 214,9 KB (61,4% dari batas). | Pass |
+| KNF06-TC01 | KNF06 | *Security* | Status *checklist* tetap anonim, hanya tersimpan di perangkat, dan tidak dikirim atau disimpan ke basis data server | 1. Memantau seluruh permintaan jaringan saat mencentang dokumen di `/kasus/1` (Playwright).<br>2. Memeriksa isi `localStorage`.<br>3. Inspeksi basis data: kolom tabel `checklist`, hak tulis peran `anon`, dan isi baris setelah mencentang.<br>4. Didukung C23-UT08 dan INT-TC16. | 0 permintaan jaringan saat mencentang; status hanya ada di kunci `localStorage` `pahamhukum:checklist:1`; tabel `checklist` hanya menyimpan daftar dokumen dari Kurator (`daftar_dokumen`), peran `anon` tidak memiliki hak `INSERT` maupun `UPDATE`, dan barisnya tidak berubah setelah pengguna mencentang | Pass |
 | KNF08-TC01 | KNF08 | *Reliability* | Saat templat diperbarui, berkas versi lama tetap tersedia sampai versi baru selesai tersimpan, dan setelah berhasil hanya tersisa satu berkas (versi terbaru) di Storage | Integration test INT-TC36 pada Supabase lokal: unggah `surat.pdf` 2 KB, unggah ulang nama yang sama 4 KB, lalu daftar isi folder rangkuman di *bucket* `templat` | Versi naik dari 1 menjadi 2, baris `templat_dokumen` menunjuk lokasi berkas baru, dan folder hanya berisi 1 berkas (berkas versi 1 terhapus setelah versi 2 tersimpan) | Pass |
 | KNF08-TC02 | KNF08 | *Reliability* | Jika unggahan atau penyimpanan versi baru gagal, templat tetap menunjuk versi sebelumnya dan tidak ada berkas setengah jadi yang tertinggal | Inspeksi kode `perbaruiVersi()` di `src/lib/models/templatDokumen.ts`: berkas baru diunggah ke lokasi unik dengan `upsert: false`, baris basis data baru diperbarui setelah unggahan berhasil, berkas baru dihapus bila pembaruan baris gagal, dan berkas lama baru dihapus setelah pembaruan berhasil | Tiga jalur sesuai target: unggahan gagal berhenti sebelum basis data diubah, pembaruan baris gagal menghapus berkas baru dan versi lama tetap utuh, dan berkas lama tidak pernah ditimpa di tempat. Kegagalan jaringan belum disimulasikan secara otomatis | Pass |
 | KNF10-TC01 | KNF10 | Security | Kata sandi tidak tersimpan sebagai teks mentah dan di-*hash* dengan bcrypt *cost factor* ≥ 10 | Membuat akun lewat `auth.admin.createUser` (jalur yang sama dengan `simpanKuratorBaru`), lalu memeriksa kolom `auth.users.encrypted_password` dengan `psql` pada Supabase lokal, serta mencari kolom kata sandi di skema `public` | Seluruh akun yang diperiksa (akun baru, `admin`, `kurator1`) berawalan `$2a$10$` (bcrypt, *cost factor* 10) dengan panjang 60 karakter, tidak sama dengan teks kata sandi, dan skema `public` tidak memiliki kolom kata sandi | Pass |
@@ -775,6 +941,8 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C02-UT01 – C02-UT20 | ![Unit test C02](./assets/pengujian/unit/c02-unit-test.png) |
 | C02 (coverage) | ![Coverage C02](./assets/pengujian/unit/c02-coverage.png) |
 | C03-UT01 – C03-UT19, C09-UT01 – C09-UT27, C27-UT01 – C27-UT04 | Keluaran `npm test` dan `npm run test:coverage` untuk berkas `antreanPeninjauan.test.ts`, `modelAdministrator.test.ts`, `modelTemplatDokumen.test.ts`, dan `kontrolPelacakanKonten.test.ts`: 50 test lulus; `administrator.ts` 100% baris dan 98% cabang, `templatDokumen.ts` 100% baris dan 97,5% cabang, `kontrolPelacakanKonten.ts` 100% |
+| C05-UT01 – C05-UT09, C11-UT01 – C11-UT04, C21-UT01 – C21-UT14, C23-UT01 – C23-UT20 | Keluaran `npm test`: berkas `modelKelompokKasus.test.ts` (C05), `modelLembagaBantuanHukum.test.ts` (C11), `kontrolJelajahKasus.test.ts` (C21), dan `kontrolChecklist.test.ts` (C23), 53 test seluruhnya lulus<br>![Keluaran unit test C05, C11, C21, dan C23](./assets/pengujian/unit/unit-test-c05-c11-c21-c23.png) |
+| C23 (coverage) | Keluaran `npm run test:coverage`: `kontrolChecklist.ts` (C23) 100% *lines* dan 100% *branch*; `kontrolJelajahKasus.ts` (C21), `kelompokKasus.ts` (C05), dan `lembagaBantuanHukum.ts` (C11) juga 100% *lines* dan 100% *branch*<br>![Laporan coverage C05, C11, C21, dan C23](./assets/pengujian/unit/coverage-c05-c11-c21-c23.png) |
 | C06-UT01 – C06-UT22, C17-UT01 – C17-UT07, C26-UT01 – C26-UT22 | Keluaran `npm test`: berkas `modelRangkumanKasus.test.ts` (C06), `aturanDaftarButir.test.ts` (C17), serta `kontrolPenyusunanKonten.test.ts` dan `aturanPenyusunanKonten.test.ts` (C26) seluruhnya lulus<br>![Keluaran unit test seluruh berkas](./assets/pengujian/unit/unit-test-seluruh-berkas.png) |
 | C06 (coverage), C26 (coverage) | Keluaran `npm run test:coverage`: `rangkumanKasus.ts` (C06) 100% *lines* dan 96,29% *branch*; `kontrolPenyusunanKonten.ts` (C26) 96% *lines* dan 96,96% *branch*; `aturanPenyusunanKonten.ts` (C26) 100% *lines* dan 82,35% *branch*<br>![Laporan coverage seluruh berkas](./assets/pengujian/unit/coverage-seluruh-berkas.png) |
 | C25-UT01 – C25-UT24 | ![Unit test C25](./assets/pengujian/unit/c25-unit-test.png) |
@@ -782,7 +950,12 @@ Tabel 4.6. Bukti Hasil Pengujian
 | C29-UT01 – C29-UT17 | ![Unit test C29](./assets/pengujian/unit/c29-unit-test.png) |
 | C29 (coverage) | ![Coverage C29](./assets/pengujian/unit/c29-coverage.png) |
 | INT-TC01 – INT-TC09 | Keluaran `npm run test:integrasi` untuk IA-01 sampai IA-03 pada Supabase lokal<br>![Integration test IA-01 sampai IA-03](./assets/pengujian/integrasi/ia-01-03-autentikasi-akun.png) |
+| INT-TC10 – INT-TC17 | Keluaran `npm run test:integrasi` untuk IA-13 sampai IA-16<br>![Keluaran integration test IA-13 sampai IA-16](./assets/pengujian/integrasi/ia-13-16-jelajah-checklist.png) |
 | INT-TC30 – INT-TC39, KNF08-TC01 | Keluaran `npm run test:integrasi` untuk IA-10 sampai IA-12 pada Supabase lokal<br>![Keluaran integration test IA-10 sampai IA-12](./assets/pengujian/integrasi/ia-10-12-penyusunan-konten.png) |
+| UC01-TC01 | Beranda menampilkan tiga bidang hukum yang punya situasi Disetujui<br>![UC01-TC01 beranda](./assets/pengujian/uc01/uc01-tc01-1-beranda.png)<br>Daftar situasi setelah memilih bidang Ketenagakerjaan<br>![UC01-TC01 pilih bidang](./assets/pengujian/uc01/uc01-tc01-2-pilih-bidang.png)<br>Halaman rangkuman `/kasus/1` dengan tujuh bagian berurutan, penanda Kurator, dan *disclaimer*<br>![UC01-TC01 rangkuman kasus](./assets/pengujian/uc01/uc01-tc01-3-rangkuman.png)<br>Direktori LBH setelah wilayah diganti menjadi Jawa Timur<br>![UC01-TC01 direktori LBH](./assets/pengujian/uc01/uc01-tc01-5-direktori-lbh.png)<br>Beranda pada lebar 360 px<br>![UC01-TC01 beranda ponsel](./assets/pengujian/uc01/uc01-tc01-4-beranda-ponsel.png) |
+| UC01-TC02 | Peringatan darurat dengan tombol Telepon 112 dan Telepon polisi 110<br>![UC01-TC02 peringatan darurat](./assets/pengujian/uc01/uc01-tc02-1-peringatan.png)<br>Rangkuman `/kasus/5` setelah klik "Tutup dan lanjut membaca"<br>![UC01-TC02 rangkuman setelah peringatan](./assets/pengujian/uc01/uc01-tc02-2-rangkuman.png) |
+| UC03-TC01 | Dua dari tiga dokumen dicentang, progres 2/3 dan teks "1 dokumen lagi"<br>![UC03-TC01 centang dokumen](./assets/pengujian/uc03/uc03-tc01-centang.png) |
+| UC03-TC02 | Centang tetap ada setelah halaman dimuat ulang<br>![UC03-TC02 setelah muat ulang](./assets/pengujian/uc03/uc03-tc02-1-muat-ulang.png)<br>Centang tetap ada saat halaman dibuka di tab baru<br>![UC03-TC02 setelah dibuka kembali](./assets/pengujian/uc03/uc03-tc02-2-buka-kembali.png) |
 | UC05-TC01 | Login Kurator<br>![UC05-TC01 Kurator](./assets/pengujian/uc05/uc05-tc01-kurator.png)<br>Login Administrator<br>![UC05-TC01 Administrator](./assets/pengujian/uc05/uc05-tc01-admin.png) |
 | UC05-TC02 | Kata sandi salah<br>![UC05-TC02 kata sandi salah](./assets/pengujian/uc05/uc05-tc02-sandi-salah.png)<br>Email tidak terdaftar<br>![UC05-TC02 email salah](./assets/pengujian/uc05/uc05-tc02-email-salah.png) |
 | UC05-TC03 | Tanpa login<br>![UC05-TC03 tanpa login](./assets/pengujian/uc05/uc05-tc03-tanpa-login.png)<br>Kurator membuka panel Administrator<br>![UC05-TC03 peran salah](./assets/pengujian/uc05/uc05-tc03-peran-salah.png) |
@@ -795,6 +968,8 @@ Tabel 4.6. Bukti Hasil Pengujian
 | UC09-TC01 | Akun baru terdaftar<br>![UC09-TC01 akun baru](./assets/pengujian/uc09/uc09-tc01-akun-baru.png)<br>Login dengan akun baru<br>![UC09-TC01 login akun baru](./assets/pengujian/uc09/uc09-tc01-login-akun-baru.png) |
 | UC09-TC02 | Dialog ubah email<br>![UC09-TC02 dialog](./assets/pengujian/uc09/uc09-tc02-ulang-dialog.png)<br>Email yang sudah dipakai ditolak<br>![UC09-TC02 email dipakai](./assets/pengujian/uc09/uc09-tc02-ulang-email-dipakai.png)<br>Email baru tersimpan<br>![UC09-TC02 tersimpan](./assets/pengujian/uc09/uc09-tc02-ulang-tersimpan.png)<br>Login dengan email baru<br>![UC09-TC02 login email baru](./assets/pengujian/uc09/uc09-tc02-ulang-login-email-baru.png) |
 | UC09-TC03 | Konfirmasi penonaktifan<br>![UC09-TC03 konfirmasi](./assets/pengujian/uc09/uc09-tc03-konfirmasi.png)<br>Status Nonaktif<br>![UC09-TC03 status nonaktif](./assets/pengujian/uc09/uc09-tc03-status-nonaktif.png)<br>Sesi Kurator diputus<br>![UC09-TC03 sesi diputus](./assets/pengujian/uc09/uc09-tc03-sesi-diputus.png)<br>Login ulang ditolak<br>![UC09-TC03 login ditolak](./assets/pengujian/uc09/uc09-tc03-login-ditolak.png) |
+| KNF01-TC01, KNF02-TC01 | Hasil lima kali pengukuran beranda pada 1 Mbps dan total data terunduh tiap halaman publik<br>![KNF01-TC01 dan KNF02-TC01 hasil pengukuran](./assets/pengujian/knf/knf01-knf02-pengukuran.png) |
+| KNF06-TC01 | Tidak ada permintaan jaringan saat mencentang, dan status hanya ada di `localStorage`<br>![KNF06-TC01 lalu lintas jaringan](./assets/pengujian/knf/knf06-jaringan-saat-mencentang.png)<br>Inspeksi basis data: tabel `checklist` hanya berisi daftar dokumen dari Kurator dan peran `anon` tidak punya hak tulis<br>![KNF06-TC01 inspeksi basis data](./assets/pengujian/knf/knf06-inspeksi-basis-data.png) |
 | KNF10-TC01 | Pemeriksaan `auth.users.encrypted_password` dengan `psql`<br>![KNF10-TC01 hash kata sandi](./assets/pengujian/knf/knf10-tc01-hash-kata-sandi.png) |
 | KNF12-TC01 | Seluruh kartu isian berada dalam satu halaman<br>![KNF12-TC01 formulir satu halaman](./assets/pengujian/uc06/uc06-tc01-4-diajukan.png) |
 
