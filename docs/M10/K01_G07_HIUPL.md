@@ -232,7 +232,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C03 | Administrator | Mendalam | Memuat perhitungan waktu pengajuan terakhir dan lama menunggu, serta algoritma pengurutan antrean peninjauan (Q-007, KF31). | C03-UT01 s.d. C03-UTnn |
 | C04 | BidangHukum | Tidak perlu | Hanya menyimpan data bidang hukum. `cekAktif` berupa pemeriksaan satu atribut. | UC01-TC01, UC02-TC02 |
 | C05 | KelompokKasus | Sedang | `cekDarurat` dan `cocokkanKataKunci` (Algo-012) berupa pemeriksaan sederhana. Algoritma pencarian utamanya diuji pada C22. | C05-UT01 s.d. C05-UTnn |
-| C06 | RangkumanKasus | Mendalam | Memuat aturan kelengkapan isian (Algo-016), transisi status ke Diajukan, pencocokan kata kunci (Algo-013), dan pembatasan konten publik hanya yang Disetujui (KF02). | C06-UT01 s.d. C06-UTnn |
+| C06 | RangkumanKasus | Mendalam | Memuat aturan kelengkapan isian (Algo-016), transisi status ke Diajukan, pencocokan kata kunci (Algo-013), dan pembatasan konten publik hanya yang Disetujui (KF02). | C06-UT01 s.d. C06-UT22 |
 | C07 | LangkahPenyelesaian | Tidak perlu | Hanya struktur data langkah. Penanda tenggat teruji melalui C06. | UC01-TC01, UC06-TC01 |
 | C08 | Checklist | Tidak perlu | Hanya menyimpan daftar dokumen. Logika centang berada di C23. | UC03-TC01, UC06-TC01 |
 | C09 | TemplatDokumen | Mendalam | Memuat validasi format dan ukuran berkas (Algo-021), pembaruan versi dengan pembatalan unggahan jika gagal (Algo-022, KNF08), serta pembuatan *signed URL* pada *bucket* privat (Algo-023). | C09-UT01 s.d. C09-UTnn |
@@ -243,7 +243,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C14 | HalamanRangkumanKasus | Tidak perlu | Hanya menampilkan rangkuman. Logika checklist dan unduh berada di C23 dan C24. | UC01-TC01, UC03-TC01, UC03-TC02, UC04-TC01, UC04-TC02 |
 | C15 | HalamanPencarianKataKunci | Tidak perlu | Hanya menampilkan hasil dari C22. | UC02-TC01, UC02-TC02 |
 | C16 | HalamanLogin | Tidak perlu | Hanya meneruskan isian ke C25 dan menampilkan pesan galat. | UC05-TC01, UC05-TC02 |
-| C17 | HalamanPenyusunanKonten | Sedang | Satu-satunya kelas *boundary* yang memiliki logika sendiri, yaitu menambah, menghapus, dan mengurutkan butir langkah dan artikel. | C17-UT01 s.d. C17-UTnn |
+| C17 | HalamanPenyusunanKonten | Sedang | Satu-satunya kelas *boundary* yang memiliki logika sendiri, yaitu menambah, menghapus, dan mengurutkan butir langkah dan artikel. | C17-UT01 s.d. C17-UT07 |
 | C18 | HalamanDaftarKontenKurator | Tidak perlu | Hanya menampilkan daftar dan catatan revisi dari C27. | UC07-TC01, UC07-TC02 |
 | C19 | HalamanModerasiKonten | Tidak perlu | Hanya menampilkan antrean dan meneruskan keputusan ke C28. | UC08-TC01 s.d. UC08-TC03 |
 | C20 | HalamanPengelolaanAkun | Tidak perlu | Hanya menampilkan daftar Kurator dan meneruskan aksi ke C29. | UC09-TC01, UC09-TC02 |
@@ -252,7 +252,7 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 | C23 | KontrolChecklist | Mendalam | Memuat penyimpanan status centang di `localStorage`, penanganan data rusak, sinkronisasi antartab, dan perhitungan kelengkapan. | C23-UT01 s.d. C23-UTnn |
 | C24 | KontrolUnduhTemplat | Mendalam | Memuat aturan keamanan (hanya templat milik konten Disetujui dan validasi id) serta integrasi dengan Supabase Storage. | C24-UT01 s.d. C24-UTnn |
 | C25 | KontrolAutentikasi | Mendalam | Memuat aturan keamanan login, proteksi rute per peran, pemutusan sesi akun nonaktif, dan batas sesi 30 menit (KNF14). | C25-UT01 s.d. C25-UTnn |
-| C26 | KontrolPenyusunanKonten | Mendalam | Memuat aturan penyuntingan per status, validasi isian, pengajuan konten, serta unggah dan hapus templat. | C26-UT01 s.d. C26-UTnn |
+| C26 | KontrolPenyusunanKonten | Mendalam | Memuat aturan penyuntingan per status, validasi isian, pengajuan konten, serta unggah dan hapus templat. | C26-UT01 s.d. C26-UT22 |
 | C27 | KontrolPelacakanKonten | Sedang | Hanya meneruskan permintaan daftar konten ke model C02. | C27-UT01 s.d. C27-UTnn |
 | C28 | KontrolModerasiKonten | Mendalam | Memuat aturan bahwa hanya Administrator aktif yang dapat memutuskan, alasan revisi wajib, keputusan hanya untuk konten Diajukan, dan pemulihan status. | C28-UT01 s.d. C28-UTnn |
 | C29 | KontrolPengelolaanAkun | Mendalam | Memuat aturan keamanan (hanya Administrator), validasi email dan kata sandi, email unik, serta pembatalan akun jika pendaftaran gagal. | C29-UT01 s.d. C29-UTnn |
@@ -261,39 +261,116 @@ Tabel 4.1.1. Identifikasi Tingkat Pengujian Kelas
 
 Pengujian unit dilakukan pada kelas bertingkat Mendalam dan Sedang. Kelas Mendalam diuji pada seluruh operasi public dengan kasus normal, batas, dan negatif, serta mencapai *coverage* minimal 70%. Kelas Sedang diuji minimal dengan satu kasus normal dan satu kasus gagal pada operasi public utama.
 
-Cara menjalankan unit test: *[tuliskan perintah, mis. `pytest src/tests/`]*.
+Cara menjalankan unit test: `npm test` dari folder `src/`. Laporan *coverage* dihasilkan dengan `npm run test:coverage` (Vitest dan `@vitest/coverage-v8`).
 
-Lokasi file test: *[path, mis. `src/tests/`]*.
+Lokasi file test: `src/tests/`. Judul test diberi awalan ID pengujian, misalnya `C06-UT01`, sehingga keluaran *test runner* dapat dicocokkan langsung dengan tabel pada subbab ini. Pada berkas test yang judulnya belum memuat ID, nomor ID mengikuti urutan test di dalam berkas. Dependensi basis data pada *unit test* diganti *mock* *client* Supabase.
 
-### 4.2.1 Kelas [Nama Kelas 1]
+### 4.2.4 Kelas RangkumanKasus
 
-**ID Kelas:** *[C02]*  
-**Nama Kelas:** *[Pesanan]*  
-**Tingkat:** *[Mendalam]*
+**ID Kelas:** C06  
+**Nama Kelas:** RangkumanKasus  
+**Tingkat:** Mendalam  
+**File test:** `src/tests/modelRangkumanKasus.test.ts`
 
-Tabel 4.2.1. Hasil Pengujian Unit Kelas [C02]
+Tabel 4.2.4. Hasil Pengujian Unit Kelas C06
 
 | ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *C02-UT01* | *`hitungTotal(): Decimal`* | *Normal* | *Pesanan berisi 2 item: 10.000 x 2 dan 5.000 x 1* | *Total = 25.000* | *[Hasil aktual]* | *Pass/Fail* |
-| *C02-UT02* | *`hitungTotal(): Decimal`* | *Batas* | *Pesanan berisi tepat 1 item dengan jumlah 1* | *Total = harga item tersebut* | *[...]* | *Pass/Fail* |
-| *C02-UT03* | *`hitungTotal(): Decimal`* | *Negatif* | *Pesanan tanpa item* | *Total = 0 atau melempar kesalahan sesuai rancangan* | *[...]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| C06-UT01 | `buatRangkuman(supabase, idKelompok, idKurator): number` | Normal | Kelompok 1, Kurator `k1`; basis data mengembalikan id 12 | Id 12 dikembalikan dan data yang dimasukkan berisi `id_kelompok` 1 dan `id_kurator` `k1` | Id 12 dikembalikan dengan data masukan yang sesuai | Pass |
+| C06-UT02 | `buatRangkuman(...)` | Negatif | Basis data menolak dengan galat RLS `42501` | Galat diteruskan ke pemanggil | Galat `42501` diteruskan | Pass |
+| C06-UT03 | `ambilRangkumanMilik(supabase, idRangkuman, idKurator): RangkumanKasus` | Normal | Rangkuman 11 milik `k1` dengan langkah bernomor 2 dan 1, artikel ber-id 9 dan 3, serta sebagian kolom `null` | Query difilter `id_rangkuman` dan `id_kurator`; langkah terurut per nomor, artikel per id, dan nilai `null` menjadi teks kosong | Filter, urutan langkah dan artikel, serta pemetaan nilai sesuai | Pass |
+| C06-UT04 | `ambilRangkumanMilik(...)` | Batas | Rangkuman baru tanpa langkah, checklist, dan artikel | Seluruh isian bernilai teks kosong dan seluruh daftar kosong | Isian dan daftar kosong | Pass |
+| C06-UT05 | `ambilRangkumanMilik(...)` | Negatif | Rangkuman 99 tidak ditemukan atau milik Kurator lain | Mengembalikan `null` | `null` dikembalikan | Pass |
+| C06-UT06 | `ambilRangkumanMilik(...)` | Negatif | Basis data mengembalikan galat | Galat diteruskan | Galat diteruskan | Pass |
+| C06-UT07 | `ambilIsianKosong(data): IsianWajib[]` | Normal | Konten dengan seluruh isian wajib terisi | Daftar kosong | Daftar kosong | Pass |
+| C06-UT08 | `ambilIsianKosong(...)` | Batas | Checklist hanya berisi baris kosong dan spasi | `checklist` ditandai kosong | Hanya `checklist` yang ditandai | Pass |
+| C06-UT09 | `ambilIsianKosong(...)` | Batas | Checklist berisi satu baris spasi dan satu dokumen | Tidak ada isian yang ditandai | Daftar kosong | Pass |
+| C06-UT10 | `ambilIsianKosong(...)` | Negatif | Seluruh isian kosong, inti masalah hanya berisi spasi | Keenam isian wajib ditandai sesuai urutan | Keenam isian ditandai | Pass |
+| C06-UT11 | `ajukanRangkuman(supabase, idRangkuman): void` | Normal | Rangkuman 11 | Fungsi basis data `ajukan_konten` dipanggil dengan `p_id_rangkuman` 11 | Fungsi dipanggil dengan argumen yang sesuai | Pass |
+| C06-UT12 | `ajukanRangkuman(...)` | Negatif | Fungsi basis data menolak dengan kode `23514` (isian belum lengkap) | Galat diteruskan | Galat `23514` diteruskan | Pass |
+| C06-UT13 | `simpanDraf(supabase, idRangkuman, data): void` | Normal | Data konten lengkap untuk rangkuman 11 | Fungsi basis data `simpan_draf` dipanggil dengan seluruh isian, langkah, dokumen, dan artikel | Seluruh parameter terkirim | Pass |
+| C06-UT14 | `simpanDraf(...)` | Negatif | Fungsi basis data menolak dengan galat RLS (konten terkunci) | Galat diteruskan | Galat diteruskan | Pass |
+| C06-UT15 | `ambilRangkumanDisetujui(supabase, idKelompok): RangkumanTampil` | Normal | Kelompok 2 | Query difilter `id_kelompok` 2 dan `status = Disetujui`, dengan batas satu baris (KF02) | Filter status Disetujui dan batas satu baris terkirim | Pass |
+| C06-UT16 | `ambilRangkumanDisetujui(...)` | Normal | Rangkuman 4 lengkap dengan bidang hukum dan templat | Seluruh atribut tampilan I-02 terpetakan, termasuk nama bidang, penulis, tanggal peninjauan, dan templat | Seluruh atribut terpetakan | Pass |
+| C06-UT17 | `ambilRangkumanDisetujui(...)` | Batas | Tenggat langkah berisi `"   "` dan `" 7 hari kerja "` | Tenggat spasi menjadi `null`, tenggat lain dirapikan | Tenggat bernilai `null` dan `"7 hari kerja"` | Pass |
+| C06-UT18 | `ambilRangkumanDisetujui(...)` | Batas | Artikel tanpa tautan, artikel tanpa judul, dan checklist `null` | Hanya artikel lengkap yang ditampilkan dan checklist menjadi daftar kosong | Satu artikel lengkap tampil dan checklist kosong | Pass |
+| C06-UT19 | `ambilRangkumanDisetujui(...)` | Negatif | Kelompok tanpa rangkuman Disetujui | Mengembalikan `null` | `null` dikembalikan | Pass |
+| C06-UT20 | `ambilRangkumanDisetujui(...)` | Negatif | Basis data mengembalikan galat | Galat diteruskan | Galat diteruskan | Pass |
+| C06-UT21 | `cariLangkahBertenggat(daftarLangkah): LangkahPenyelesaian` | Normal | Langkah 1 tanpa tenggat, langkah 2 dan 3 bertenggat | Langkah 2 dikembalikan | Langkah 2 dikembalikan | Pass |
+| C06-UT22 | `cariLangkahBertenggat(...)` | Batas | Daftar tanpa langkah bertenggat dan daftar kosong | Mengembalikan `null` | `null` dikembalikan untuk kedua masukan | Pass |
 
-Khusus kelas **Mendalam**:
-
-Tabel 4.2.1b. Ringkasan Cakupan Kelas [C02]
+Tabel 4.2.4b. Ringkasan Cakupan Kelas C06
 
 | Informasi | Keterangan |
 | :--- | :--- |
-| Daftar operasi public pada DPPL | *[op1(), op2(), ...]* |
-| Operasi yang diuji | *[op1(), op2(), ...]* |
-| ID Algoritma yang tercakup | *[Algo-001, ...]* |
-| Coverage (wajib ≥ 70%) | *[% baris / % cabang, alat dan bukti pada 4.6]* |
+| Daftar operasi public pada DPPL | `cekDisetujui()`, `cocokkanKataKunci()`, `ambilDaftarLangkah()`, `ambilChecklist()`, `ambilDaftarTemplat()`, `ambilTemplat()`, `ambilDaftarArtikel()`, `lampirkanTemplat()`, `simpanDraf()`, `cekIsianLengkap()`, `ambilIsianKosong()`, `aturStatus()`, `ambilCatatanRevisi()`, `simpanCatatanRevisi()` |
+| Operasi yang diuji | `buatRangkuman()`, `ambilRangkumanMilik()` dan `ambilRangkumanDisetujui()` (mewujudkan `ambilDaftarLangkah()`, `ambilChecklist()`, `ambilDaftarTemplat()`, dan `ambilDaftarArtikel()`), `ambilIsianKosong()` dan `cekIsianLengkap()`, `simpanDraf()`, `ajukanRangkuman()` (`aturStatus("Diajukan")`), serta `cariLangkahBertenggat()`. `cekDisetujui()` dan `cocokkanKataKunci()` diuji pada C22, `lampirkanTemplat()` dan `ambilTemplat()` pada C09, serta `aturStatus()` untuk keputusan moderasi, `ambilCatatanRevisi()`, dan `simpanCatatanRevisi()` pada C12. |
+| ID Algoritma yang tercakup | Algo-015, Algo-016, Algo-017 |
+| Coverage (wajib ≥ 70%) | `src/lib/models/rangkumanKasus.ts`: 100% baris, 96,29% cabang, 100% fungsi (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
 
-### 4.2.2 Kelas [Nama Kelas 2]
+### 4.2.8 Kelas HalamanPenyusunanKonten
 
-*[Ulangi pola 4.2.1 untuk setiap kelas bertingkat Mendalam atau Sedang.]*
+**ID Kelas:** C17  
+**Nama Kelas:** HalamanPenyusunanKonten  
+**Tingkat:** Sedang  
+**File test:** `src/tests/aturanDaftarButir.test.ts`
+
+Logika yang diuji adalah pengelolaan butir langkah dan artikel pada formulir I-05 (`src/components/konten/aturanDaftarButir.ts`). Tampilan formulirnya diuji melalui UC06.
+
+Tabel 4.2.8. Hasil Pengujian Unit Kelas C17
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C17-UT01 | `buatDaftarButir()`, `tambahButir()` | Normal | Daftar A, B, C lalu tambah D dengan kunci 3 | Daftar A, B, C, D dengan kunci 0 sampai 3 yang berbeda | Urutan dan kunci sesuai | Pass |
+| C17-UT02 | `hapusButir(daftar, indeks)` | Normal | Hapus indeks 1 dari A, B, C | Daftar A, C | Daftar A, C | Pass |
+| C17-UT03 | `hapusButir(...)` | Gagal | Indeks -1 dan 3 (di luar rentang) | Daftar tidak berubah | Daftar asli dikembalikan | Pass |
+| C17-UT04 | `pindahkanButir(daftar, indeks, arah)` | Normal | Naikkan butir C (indeks 2) | Daftar A, C, B dan kunci C ikut berpindah | Urutan dan kunci sesuai | Pass |
+| C17-UT05 | `pindahkanButir(...)` | Normal | Turunkan butir A (indeks 0) | Daftar B, A, C | Daftar B, A, C | Pass |
+| C17-UT06 | `pindahkanButir(...)` | Normal | Pindahkan butir lalu periksa daftar asli | Daftar asli tidak berubah | Daftar asli tetap A, B, C | Pass |
+| C17-UT07 | `pindahkanButir(...)` | Gagal | Naikkan butir pertama, turunkan butir terakhir, dan indeks 5 | Daftar tidak berubah | Daftar asli dikembalikan untuk ketiga masukan | Pass |
+
+### 4.2.14 Kelas KontrolPenyusunanKonten
+
+**ID Kelas:** C26  
+**Nama Kelas:** KontrolPenyusunanKonten  
+**Tingkat:** Mendalam  
+**File test:** `src/tests/kontrolPenyusunanKonten.test.ts`
+
+Tabel 4.2.14. Hasil Pengujian Unit Kelas C26
+
+| ID Pengujian | Operasi yang Diuji | Jenis Kasus | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| C26-UT01 | `simpanDraf(idRangkuman, dataKonten)` | Batas | Formulir hanya berisi inti masalah dan satu langkah | Draf tetap tersimpan dan data yang dikirim ke model sudah dirapikan | Draf tersimpan dengan data yang sesuai | Pass |
+| C26-UT02 | `simpanDraf(...)` | Negatif | Kurator dinonaktifkan | Ditolak dengan pesan "Akun Anda tidak aktif. Hubungi Administrator." tanpa menyimpan | Ditolak, model tidak dipanggil | Pass |
+| C26-UT03 | `simpanDraf(...)` | Negatif | Rangkuman 99 bukan milik Kurator | Ditolak dengan pesan "Konten tidak ditemukan." | Ditolak, model tidak dipanggil | Pass |
+| C26-UT04 | `simpanDraf(...)` | Negatif | Konten berstatus Diajukan dan Disetujui | Ditolak dengan pesan "Konten berstatus ... tidak bisa diubah." | Kedua status ditolak | Pass |
+| C26-UT05 | `simpanDraf(...)` | Negatif | Penyimpanan di basis data gagal | Pesan "Draf gagal disimpan. Coba lagi." | Pesan galat ditampilkan | Pass |
+| C26-UT06 | `ajukanKonten(idRangkuman, dataKonten)` | Negatif | Hak, poin pertimbangan, checklist, dan artikel kosong | Draf tersimpan, keempat isian ditandai, dan status tidak diubah | Empat isian ditandai, fungsi pengajuan tidak dipanggil | Pass |
+| C26-UT07 | `ajukanKonten(...)` | Batas | Setiap isian wajib dikosongkan satu per satu (6 masukan) | Hanya isian yang kosong yang ditandai | Keenam masukan menandai tepat satu isian | Pass |
+| C26-UT08 | `ajukanKonten(...)` | Negatif | Konten sudah berstatus Diajukan | Ditolak tanpa menyimpan dan tanpa mengajukan | Ditolak, model tidak dipanggil | Pass |
+| C26-UT09 | `ajukanKonten(...)` | Normal | Konten Draft dan Perlu Revisi yang lengkap | Draf disimpan lebih dulu, lalu pengajuan dijalankan tepat satu kali | Urutan simpan lalu ajukan sesuai untuk kedua status | Pass |
+| C26-UT10 | `ajukanKonten(...)` | Negatif | Perubahan status dan riwayat gagal di basis data | Pesan "Konten gagal diajukan. Coba lagi." | Pesan galat ditampilkan | Pass |
+| C26-UT11 | `buatDraf(idKelompok)` | Normal | Kurator aktif memilih kelompok 1 | Rangkuman dibuat, riwayat Draft dicatat atas nama Kurator, lalu dialihkan ke halaman draf | Rangkuman, riwayat, dan pengalihan sesuai | Pass |
+| C26-UT12 | `buatDraf(...)` | Negatif | Kurator dinonaktifkan | Ditolak tanpa membuat rangkuman maupun riwayat | Ditolak, model tidak dipanggil | Pass |
+| C26-UT13 | `lampirkanTemplat(idRangkuman, berkas)` | Negatif | Berkas PNG, PDF 5 MB + 1 byte, dan DOCX 0 byte | Ditolak dengan pesan "Berkas harus berformat PDF atau DOCX dan berukuran paling besar 5 MB." | Ketiga berkas ditolak dengan pesan tersebut | Pass |
+| C26-UT14 | `lampirkanTemplat(...)` | Negatif | Permintaan tanpa berkas | Ditolak dengan pesan yang sama | Ditolak | Pass |
+| C26-UT15 | `lampirkanTemplat(...)` | Normal | Berkas PDF dan DOCX 2 KB | Berkas diteruskan ke model sebagai templat baru | Kedua berkas diterima | Pass |
+| C26-UT16 | `lampirkanTemplat(...)` | Normal | Berkas dengan nama yang sama dengan templat versi 1 | Templat lama diteruskan ke model dan versi menjadi 2 | Versi 2 dikembalikan | Pass |
+| C26-UT17 | `lampirkanTemplat(...)` | Negatif | Konten berstatus Diajukan | Ditolak tanpa mengunggah | Ditolak, model tidak dipanggil | Pass |
+| C26-UT18 | `hapusTemplat(idRangkuman, idTemplat)` | Normal | Templat milik rangkuman 11 | Templat dihapus melalui model dan halaman diperbarui | Templat dihapus | Pass |
+| C26-UT19 | `hapusTemplat(...)` | Negatif | Id templat 999 bukan milik rangkuman | Pesan "Templat tidak ditemukan." tanpa menghapus | Ditolak, model tidak dipanggil | Pass |
+| C26-UT20 | `hapusTemplat(...)` | Negatif | Konten berstatus Diajukan dan Disetujui | Ditolak tanpa membaca maupun menghapus templat | Kedua status ditolak | Pass |
+| C26-UT21 | `hapusTemplat(...)` | Negatif | Kurator dinonaktifkan | Ditolak tanpa menghapus | Ditolak | Pass |
+| C26-UT22 | `hapusTemplat(...)` | Negatif | Penghapusan di basis data atau Storage gagal | Pesan "Templat gagal dihapus. Coba lagi." dan halaman tidak diperbarui | Pesan galat ditampilkan | Pass |
+
+Tabel 4.2.14b. Ringkasan Cakupan Kelas C26
+
+| Informasi | Keterangan |
+| :--- | :--- |
+| Daftar operasi public pada DPPL | `buatDraf()`, `simpanDraf()`, `lampirkanTemplat()`, `ajukanKonten()`, `tayangkanKonten()` |
+| Operasi yang diuji | `buatDraf()`, `simpanDraf()`, `lampirkanTemplat()`, `ajukanKonten()`, serta operasi tambahan `hapusTemplat()`. Operasi privat `catatRiwayat()` teruji melalui `buatDraf()`. `tayangkanKonten()` tidak diimplementasikan (Tugas 9 B.1 no. 11); larangan penayangan oleh Kurator diuji pada INT-TC39. |
+| ID Algoritma yang tercakup | Algo-040, Algo-041, Algo-042, Algo-043, Algo-045 |
+| Coverage (wajib ≥ 70%) | `src/lib/controllers/kontrolPenyusunanKonten.ts`: 96% baris, 96,96% cabang, 100% fungsi; `src/lib/controllers/aturanPenyusunanKonten.ts`: 100% baris, 82,35% cabang (Vitest `@vitest/coverage-v8`, bukti pada 4.6) |
 
 <br>
 
@@ -305,20 +382,24 @@ Tabel 4.3.1. Daftar Antarmuka Antarkomponen
 
 | ID Antarmuka | Komponen Asal | Komponen Tujuan | Jenis Batas | Test Case |
 | :--- | :--- | :--- | :--- | :--- |
-| *I-01* | *KeranjangController* | *Keranjang (Model)* | *Controller - Model* | *INT-TC01, INT-TC02* |
-| *I-02* | *Pesanan (Model)* | *Database* | *Aplikasi - Basis data* | *INT-TC03* |
-| *I-03* | *PaymentGatewayAdapter* | *Payment Gateway (dummy)* | *Aplikasi - Sistem eksternal* | *INT-TC04, INT-TC05* |
-| *[I-XX]* | *[Komponen asal]* | *[Komponen tujuan]* | *[Jenis batas]* | *[ID test case]* |
-| *...* | *...* | *...* | *...* | *...* |
+| IA-10 | C26 KontrolPenyusunanKonten | C06 RangkumanKasus, tabel `rangkuman_kasus` dan `riwayat_status` | *Controller* - *Model* - Basis data | INT-TC30, INT-TC31, INT-TC32 |
+| IA-11 | C06 RangkumanKasus | Fungsi basis data `simpan_draf` dan `ajukan_konten`, C12 RiwayatStatus, RLS | Aplikasi - Basis data | INT-TC33, INT-TC34, INT-TC35, INT-TC39 |
+| IA-12 | C09 TemplatDokumen | Supabase Storage (*bucket* privat `templat`) | Aplikasi - Sistem eksternal | INT-TC36, INT-TC37, INT-TC38 |
 
 Tabel 4.3.2. Hasil Pengujian Integrasi
 
 | ID Pengujian | ID Antarmuka | Skenario | Prosedur/Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *INT-TC01* | *I-01* | *Normal: tambah item ke keranjang* | *Panggil `tambahItem()` melalui KeranjangController dengan produk valid* | *Item tersimpan pada Keranjang dan tampil pada daftar item* | *[Hasil aktual]* | *Pass/Fail* |
-| *INT-TC03* | *I-02* | *Normal: simpan pesanan* | *Buat pesanan, lalu baca ulang langsung dari basis data* | *Baris pesanan ada dengan nilai total dan status yang sama* | *[...]* | *Pass/Fail* |
-| *INT-TC05* | *I-03* | *Gagal: gateway mengembalikan status gagal* | *Kirim otorisasi dengan saldo dummy tidak cukup* | *Status pesanan tidak berubah menjadi "Lunas", pesan gagal diteruskan ke pengguna* | *[...]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| INT-TC30 | IA-10 | Normal: membuat draf | Masuk sebagai `kurator1`, panggil `buatDraf(1)`, lalu baca ulang rangkuman dan riwayat dari basis data | Rangkuman berstatus Draft milik `kurator1` dan satu riwayat Draft atas nama `kurator1` | Rangkuman Draft dan satu riwayat Draft tercatat | Pass |
+| INT-TC31 | IA-10 | Normal: menyimpan dan menyimpan ulang draf | Panggil `simpanDraf()` dengan isian lengkap dua langkah, lalu simpan ulang dengan satu langkah | Isian, langkah terurut beserta tenggat teks, checklist, dan artikel tersimpan; simpan ulang mengganti langkah lama | Seluruh data tersimpan dan langkah lama tergantikan | Pass |
+| INT-TC32 | IA-10 | Gagal: menyimpan konten Diajukan | Panggil `simpanDraf()` pada rangkuman 4 (Diajukan) | Ditolak dan isi rangkuman di basis data tidak berubah | Ditolak dengan pesan status dan inti masalah tetap | Pass |
+| INT-TC33 | IA-11 | Normal: mengajukan konten | Buat draf, lalu panggil `ajukanKonten()` dengan isian lengkap, kemudian coba simpan ulang | Status menjadi Diajukan, riwayat Draft lalu Diajukan atas nama `kurator1`, dan konten terkunci | Status Diajukan, dua riwayat tercatat, dan simpan ulang ditolak | Pass |
+| INT-TC34 | IA-11 | Gagal: konten belum lengkap | Panggil fungsi basis data `ajukan_konten` langsung pada draf kosong | Ditolak dengan kode `23514`, status tetap Draft, dan riwayat tidak bertambah | Ditolak `23514`, status Draft, satu riwayat | Pass |
+| INT-TC35 | IA-11 | Gagal: Kurator lain | Masuk sebagai `kurator2`, panggil `simpan_draf` dan `ajukan_konten` pada draf `kurator1` | Keduanya ditolak dengan kode `42501` dan draf tidak berubah | Keduanya ditolak `42501` | Pass |
+| INT-TC36 | IA-12 | Normal: mengunggah dan memperbarui versi templat | Panggil `lampirkanTemplat()` dengan PDF 2 KB, lalu unggah ulang nama yang sama berukuran 4 KB | Versi 1 tersimpan di Storage; unggahan ulang menjadi versi 2 dan berkas versi lama terhapus | Versi 2 tersimpan dan Storage hanya berisi berkas terbaru | Pass |
+| INT-TC37 | IA-12 | Normal: menghapus templat | Unggah templat, lalu panggil `hapusTemplat()` | Baris `templat_dokumen` dan berkas di Storage terhapus | Baris dan berkas terhapus | Pass |
+| INT-TC38 | IA-12 | Gagal: pengunjung mengunduh templat draf | Tanpa sesi, minta *signed URL* untuk templat milik draf | Ditolak oleh RLS Storage | Ditolak ("Object not found"), sementara akses *service role* untuk berkas yang sama berhasil | Pass |
+| INT-TC39 | IA-11 | Gagal: Kurator menayangkan sendiri (KF35) | Masuk sebagai `kurator1`, ubah status draf sendiri menjadi Disetujui langsung ke tabel `rangkuman_kasus` | Ditolak dengan kode `42501`, status tetap Draft, tidak ada riwayat Disetujui, dan konten tidak tampil untuk publik | Ditolak `42501` dan konten tetap Draft serta tidak terlihat publik | Pass |
 
 <br>
 
