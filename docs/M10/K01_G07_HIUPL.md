@@ -407,22 +407,21 @@ Tabel 4.3.2. Hasil Pengujian Integrasi
 
 Pengujian use case dilakukan pada seluruh skenario normal dan alternatif sesuai Subbab 4.4 SKPL, dengan minimal satu test case untuk setiap skenario. Kolom ID KF menunjukkan KF yang diverifikasi oleh test case tersebut.
 
-### 4.4.1 Use Case [Nama Use Case 1]
+### 4.4.6 Use Case Mengelola Konten Rangkuman Kasus
 
-**ID Use Case:** *[UC01 sesuai SKPL]*  
-**Nama Use Case:** *[Nama use case sesuai SKPL]*
+**ID Use Case:** UC06  
+**Nama Use Case:** Mengelola Konten Rangkuman Kasus
 
-Tabel 4.4.1. Hasil Pengujian Use Case [UC01]
+Pengujian dilakukan pada aplikasi yang dijalankan secara lokal (`npm run dev`) dan terhubung ke Supabase lokal, menggunakan akun `kurator1@pahamhukum.test` dan `admin@pahamhukum.test` dari data awal pengujian.
+
+Tabel 4.4.6. Hasil Pengujian Use Case UC06
 
 | ID Pengujian | ID KF | Skenario | Prosedur Pengujian | Masukan | Hasil yang Diharapkan | Hasil Pengujian | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *UC01-TC01* | *KF01* | *Normal* | *1. Buka halaman login.<br>2. Masukkan kredensial.<br>3. Klik tombol "Login".* | *User: rpl@gmail.com<br>Pass: 123456* | *Pengguna diarahkan ke Halaman Dashboard.* | *Pengguna diarahkan ke Halaman Dashboard sesuai hasil yang diharapkan.* | *Pass* |
-| *UC01-TC02* | *KF01* | *Alternatif 1: [Nama skenario]* | *[Langkah-langkah pengujian]* | *[Data masukan]* | *[Hasil yang diharapkan]* | *[Hasil aktual]* | *[Pass/Fail. Jika Fail: penjelasan dan solusi]* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* | *...* |
-
-### 4.4.2 Use Case [Nama Use Case 2]
-
-*[Lanjutkan untuk seluruh use case dengan pola yang sama, hingga 4.4.N.]*
+| UC06-TC01 | KF22, KF23, KF25, KF27 | Normal | 1. Masuk sebagai Kurator.<br>2. Klik "Tulis konten", pilih kelompok kasus, lalu klik "Mulai menulis".<br>3. Unggah berkas templat pada kartu Templat surat.<br>4. Lengkapi seluruh isian wajib, lalu klik "Ajukan untuk ditinjau".<br>5. Masuk sebagai Administrator dan buka halaman Moderasi. | Kelompok: Gaji tidak dibayar tepat waktu<br>Berkas: `templat-surat-penagihan.pdf` (616 byte)<br>Seluruh isian wajib terisi | Formulir satu halaman tampil dan konten berstatus Draft. Templat tersimpan sebagai versi 1. Setelah diajukan, status menjadi Diajukan, formulir terkunci, dan konten masuk antrean peninjauan Administrator. | Formulir tampil dengan status Draft. Templat tersimpan sebagai versi 1. Setelah diajukan, badge berubah menjadi Diajukan, seluruh isian terkunci, dan konten muncul di antrean Moderasi. | Pass |
+| UC06-TC02 | KF26 | Alternatif 1: Berkas Templat Tidak Valid | 1. Buat draf baru.<br>2. Pilih berkas PNG lalu klik "Unggah".<br>3. Pilih berkas PDF berukuran 6 MB lalu klik "Unggah". | `bukti-transfer.png`<br>`berkas-terlalu-besar.pdf` (6 MB) | Unggahan ditolak dengan pesan yang menjelaskan format dan ukuran yang benar, dan tidak ada templat yang tersimpan. | Kedua unggahan ditolak dengan pesan "Berkas harus berformat PDF atau DOCX dan berukuran paling besar 5 MB." dan daftar templat tetap kosong. | Pass |
+| UC06-TC03 | KF28 | Alternatif 2: Isian Wajib Belum Lengkap | 1. Pada draf, isi Inti masalah saja.<br>2. Klik "Ajukan untuk ditinjau". | Hanya Inti masalah yang terisi | Pengajuan dicegah dan setiap isian wajib yang kosong ditandai. | Pengajuan dicegah. Pesan galat tampil di bawah Hak kamu, Poin pertimbangan, Langkah, Dokumen, dan Artikel, ringkasan tampil di panel status, dan status tetap Draft. | Pass |
+| UC06-TC04 | KF35 | Alternatif 3: Kurator Mencoba Menayangkan Sendiri | 1. Buka draf sebagai Kurator dan periksa panel Status konten.<br>2. Ubah status draf menjadi Disetujui langsung ke basis data dengan sesi Kurator (INT-TC39). | Sesi Kurator, permintaan ubah status menjadi Disetujui | Kurator tidak dapat menayangkan konten. Penayangan hanya melalui persetujuan Administrator. | Panel status hanya menyediakan "Simpan draf" dan "Ajukan untuk ditinjau". Permintaan ubah status ditolak basis data dengan kode `42501`, status tetap Draft, dan konten tidak tampil untuk publik. | Pass |
 
 <br>
 
@@ -434,10 +433,9 @@ Tabel 4.5. Hasil Pengujian KNF
 
 | ID Pengujian | ID KNF | Parameter | Target Terukur | Metode dan Alat | Hasil Aktual | Kesimpulan |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| *KNF01-TC01* | *KNF01* | *Reliability* | *Tidak ada data hilang/ganda saat jaringan putus di tengah transaksi* | *Simulasi putus koneksi saat bayar, lalu cek status di DB* | *[Hasil aktual]* | *Pass/Fail* |
-| *KNF02-TC01* | *KNF02* | *Security* | *Password tersimpan sebagai hash, bukan plain-text* | *Inspeksi tabel pengguna di DB* | *[...]* | *Pass/Fail* |
-| *KNFXX-TC01* | *KNFXX* | *Response time* | *Halaman tampil ≤ 4 detik* | *Chrome DevTools, 5 kali ukur, ambil rata-rata* | *[Rata-rata ... detik, maks ... detik]* | *Pass/Fail* |
-| *...* | *...* | *...* | *...* | *...* | *...* | *...* |
+| KNF08-TC01 | KNF08 | *Reliability* | Saat templat diperbarui, berkas versi lama tetap tersedia sampai versi baru selesai tersimpan, dan setelah berhasil hanya tersisa satu berkas (versi terbaru) di Storage | Integration test INT-TC36 pada Supabase lokal: unggah `surat.pdf` 2 KB, unggah ulang nama yang sama 4 KB, lalu daftar isi folder rangkuman di *bucket* `templat` | Versi naik dari 1 menjadi 2, baris `templat_dokumen` menunjuk lokasi berkas baru, dan folder hanya berisi 1 berkas (berkas versi 1 terhapus setelah versi 2 tersimpan) | Pass |
+| KNF08-TC02 | KNF08 | *Reliability* | Jika unggahan atau penyimpanan versi baru gagal, templat tetap menunjuk versi sebelumnya dan tidak ada berkas setengah jadi yang tertinggal | Inspeksi kode `perbaruiVersi()` di `src/lib/models/templatDokumen.ts`: berkas baru diunggah ke lokasi unik dengan `upsert: false`, baris basis data baru diperbarui setelah unggahan berhasil, berkas baru dihapus bila pembaruan baris gagal, dan berkas lama baru dihapus setelah pembaruan berhasil | Tiga jalur sesuai target: unggahan gagal berhenti sebelum basis data diubah, pembaruan baris gagal menghapus berkas baru dan versi lama tetap utuh, dan berkas lama tidak pernah ditimpa di tempat. Kegagalan jaringan belum disimulasikan secara otomatis | Pass |
+| KNF12-TC01 | KNF12 | *Ergonomy* | Seluruh isian penyusunan konten (Inti masalah, Hak kamu, Poin pertimbangan, Langkah, Dokumen, Artikel, dan Templat surat) dapat diisi dan diajukan pada satu halaman tanpa berpindah halaman atau tab | Uji manual pada UC06-TC01 di halaman `/panel/kurator/konten/[id]`: hitung jumlah perpindahan halaman dari draf dibuat sampai diajukan, serta tambah dan hapus baris Langkah, Dokumen, dan Artikel | 7 bagian isian tampil dalam 1 halaman, 0 perpindahan halaman atau tab, dan baris Langkah, Dokumen, serta Artikel dapat ditambah dan dihapus langsung di halaman yang sama | Pass |
 
 <br>
 
