@@ -33,7 +33,7 @@ function akses(
 }
 
 describe("proteksi peran", () => {
-  it("menolak akses panel tanpa sesi", () => {
+  it("C25-UT08: menolak akses panel tanpa sesi", () => {
     expect(akses("/panel/kurator/konten", null)).toEqual({
       izin: false,
       tujuan: "/masuk",
@@ -41,7 +41,7 @@ describe("proteksi peran", () => {
     });
   });
 
-  it("menolak Kurator yang membuka panel Administrator", () => {
+  it("C25-UT09: menolak Kurator yang membuka panel Administrator", () => {
     expect(akses("/panel/admin/akun", KURATOR)).toEqual({
       izin: false,
       tujuan: "/panel/ditolak",
@@ -49,30 +49,30 @@ describe("proteksi peran", () => {
     });
   });
 
-  it("menolak Administrator yang membuka panel Kurator", () => {
+  it("C25-UT10: menolak Administrator yang membuka panel Kurator", () => {
     expect(akses("/panel/kurator/konten", ADMIN)).toMatchObject({
       izin: false,
       tujuan: "/panel/ditolak",
     });
   });
 
-  it("mengizinkan setiap peran membuka panelnya sendiri", () => {
+  it("C25-UT11: mengizinkan setiap peran membuka panelnya sendiri", () => {
     expect(akses("/panel/kurator/konten/5", KURATOR)).toEqual({ izin: true });
     expect(akses("/panel/admin/moderasi", ADMIN)).toEqual({ izin: true });
   });
 
-  it("tidak tertukar dengan rute yang awalannya mirip", () => {
+  it("C25-UT12: tidak tertukar dengan rute yang awalannya mirip", () => {
     expect(akses("/panel/administrasi", KURATOR)).toEqual({ izin: true });
   });
 
-  it("tidak membatasi rute panel bersama seperti /panel/sesi", () => {
+  it("C25-UT13: tidak membatasi rute panel bersama seperti /panel/sesi", () => {
     expect(akses("/panel/sesi", KURATOR)).toEqual({ izin: true });
     expect(akses("/panel/sesi", ADMIN)).toEqual({ izin: true });
   });
 });
 
 describe("status akun", () => {
-  it("mengakhiri sesi Kurator yang sudah dinonaktifkan", () => {
+  it("C25-UT14: mengakhiri sesi Kurator yang sudah dinonaktifkan", () => {
     expect(
       akses("/panel/kurator/konten", { ...KURATOR, statusAktif: false }),
     ).toEqual({
@@ -84,14 +84,14 @@ describe("status akun", () => {
 });
 
 describe("batas 30 menit tanpa aktivitas", () => {
-  it("masih sah tepat pada batasnya", () => {
+  it("C25-UT15: masih sah tepat pada batasnya", () => {
     const tepatBatas = SEKARANG - BATAS_TANPA_AKTIVITAS_MS;
     expect(akses("/panel/kurator/konten", KURATOR, tepatBatas)).toEqual({
       izin: true,
     });
   });
 
-  it("berakhir setelah melewati batas", () => {
+  it("C25-UT16: berakhir setelah melewati batas", () => {
     const lewatBatas = SEKARANG - BATAS_TANPA_AKTIVITAS_MS - 1;
     expect(akses("/panel/kurator/konten", KURATOR, lewatBatas)).toEqual({
       izin: false,
@@ -100,7 +100,7 @@ describe("batas 30 menit tanpa aktivitas", () => {
     });
   });
 
-  it("menganggap sesi baru jika belum ada catatan aktivitas", () => {
+  it("C25-UT17: menganggap sesi baru jika belum ada catatan aktivitas", () => {
     expect(akses("/panel/kurator/konten", KURATOR, null)).toEqual({
       izin: true,
     });
