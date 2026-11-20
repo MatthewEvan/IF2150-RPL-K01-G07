@@ -31,6 +31,7 @@
 * [Milestone 7](#milestone-7)
 * [Milestone 8](#milestone-8)
 * [Milestone 9](#milestone-9)
+* [Milestone 10](#milestone-10)
 * Notes: Copy bagian Daftar Isi seperti Milestone 1 untuk Milestone berikutnya, contoh ``* [Milestone 2](#milestone-2)``. Ketika Daftar isi diklik maka akan langsung diarahkan ke bagian bawah sesuai dengan Milestone tujuan.
 
 
@@ -231,5 +232,24 @@
 | 13-11-2026 | Matthew, Wesley | Menggabungkan `dev` ke `main` lewat PR #109 (dibuat Matthew, di-review dan di-merge Wesley) | 0.5 | Done | - |
 | 13-11-2026 | Matthew Evan Kurniawan | Menyusun dokumen Milestone 9: laporan implementasi (B.1 sampai B.5), `src/README.md`, dan Form Asistensi | 4 | Done | - |
 | 13-11-2026 | Wesley Lianto | Menyusun Logbook dan AI-Usage Milestone 9 | 1 | Done | - |
+
+### Milestone 10
+**Periode:** 16 November 2026 - 20 November 2026
+
+| Tanggal | Nama Anggota | Deskripsi Pekerjaan | Durasi (Jam) | Status | Kendala / *Blocker* |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 16-11-2026 | Semua Anggota | Asistensi Milestone 10 bersama asisten mengenai struktur dan ketentuan dokumen HIUPL | 1 | Done | - |
+| 18-11-2026 | Matthew Evan Kurniawan | Menyusun kerangka `K01_G07_HIUPL.md`: sampul, aturan penomoran ID pengujian, istilah pengujian, dan Tabel 4.1 kedalaman pengujian 29 kelas (PR #111) | 3 | Done | - |
+| 18-11-2026 | Raditya Wibian Sastaka | Membuat issue #112 dan #113, lalu memperbaiki tombol Keluar agar mengarah ke halaman login (KF44, PR #114) dan menambahkan ubah email akun Kurator (KF43, PR #115) | 4 | Done | - |
+| 18-11-2026 | Rivan Cahyadi | Memasang `@vitest/coverage-v8`, memisahkan skrip `test:integrasi`, serta menyiapkan helper dan pengaman Supabase lokal (PR #116) | 3 | Done | - |
+| 19-11-2026 | Matthew Evan Kurniawan | Me-review dan menggabungkan PR #114, #115, dan #116 ke `main` | 1 | Done | PR awalnya mengarah ke `dev`, sehingga base PR dipindahkan ke `main`. |
+| 19-11-2026 | Matthew Evan Kurniawan | Unit test C06 dan C26, integration test `INT-TC30` sampai `INT-TC39`, serta uji manual UC06 (PR #117) | 5 | Done | Port Supabase lokal bentrok dengan rentang port yang dipesan Windows; diatasi dengan memulai ulang layanan WinNAT. |
+| 20-11-2026 | Christopherus Michael Jafeth Tobing | Unit test C12 dan C28, integration test `INT-TC40` sampai `INT-TC49`, serta pengukuran KNF07 dan KNF09 (PR #118) | 4 | Done | - |
+| 20-11-2026 | Christopherus Michael Jafeth Tobing | Menyusun draf Form Asistensi, Logbook, dan AI-Usage Milestone 10 (PR #119) | 2 | Done | - |
+| 20-11-2026 | Raditya Wibian Sastaka | Unit test C02, C25, C29, dan `proxy.ts`, integration test `INT-TC01` sampai `INT-TC09`, uji manual UC05 dan UC09, pengukuran KNF10 dan KNF14, serta potongan HIUPL (PR #120) | 6 | Done | UC05-TC04 dan UC09-TC02 gagal pada `v9.0`, lalu diuji ulang setelah PR #114 dan #115. |
+| 20-11-2026 | Wesley Lianto | Unit test C05, C11, C21, dan C23, integration test `INT-TC10` sampai `INT-TC17`, uji manual UC01 dan UC03, pengukuran KNF01, KNF02, dan KNF06, serta potongan HIUPL (PR #121) | 6 | Done | - |
+| 20-11-2026 | Rivan Cahyadi | Unit test C22 dan C24 serta integration test `INT-TC20` sampai `INT-TC28` (PR #122) | 4 | Done | - |
+| 20-11-2026 | Matthew Evan Kurniawan | Me-review dan menggabungkan PR #117, #118, #120, #121, dan #122, lalu menambahkan unit test C03, C09, dan C27 agar seluruh kelas Mendalam mencapai *coverage* minimal 70% | 2 | Done | *Coverage* C03 dan C09 masih di bawah 70% setelah seluruh PR anggota digabung. |
+| 20-11-2026 | Matthew Evan Kurniawan | Mengerjakan dokumen Milestone 10: menggabungkan potongan HIUPL anggota, menulis BAB 1 sampai BAB 3 dan BAB 5, serta merapikan Form Asistensi, Logbook, dan AI-Usage | 4 | Done | - |
 
 ``Gunakan format penulisan Logbook yang sama untuk setiap Milestone dan pastikan pembuatan Daftar Isi juga sudah sesuai sebelum Logbook dikumpulkan. ``
