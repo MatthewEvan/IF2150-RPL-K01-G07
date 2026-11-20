@@ -1,0 +1,28 @@
+2026-11-20T15:32:36.535Z login berhasil kurator1@pahamhukum.test: http://localhost:3000/panel/kurator/konten
+2026-11-20T15:32:38.919Z screenshot UC07-TC01-daftar-konten.png
+2026-11-20T15:32:38.979Z UC07-TC01 37 konten; status: Diajukan, Disetujui, Draft, Perlu Revisi
+2026-11-20T15:32:38.979Z UC07-TC01 butir Perlu Revisi: {"judul":"Diberhentikan tanpa pesangonDraft → Diajukan → Perlu Revisi","status":"Perlu Revisi","catatan":"Lengkapi langkah pelaporan ke platform uji UC08."}
+2026-11-20T15:32:38.979Z UC07-TC01 butir Perlu Revisi: {"judul":"Diberhentikan tanpa pesangonDiajukan → Perlu Revisi","status":"Perlu Revisi","catatan":"Lengkapi langkah pelaporan."}
+2026-11-20T15:32:38.979Z UC07-TC01 butir Perlu Revisi: {"judul":"Diberhentikan tanpa pesangonDiajukan → Perlu Revisi","status":"Perlu Revisi","catatan":"Lengkapi langkah pelaporan."}
+2026-11-20T15:32:38.979Z menggunakan draf UC08-TC01-setujui yang sudah ada id=37
+2026-11-20T15:32:38.979Z menggunakan draf UC08-TC03-alasan-kosong yang sudah ada id=38
+2026-11-20T15:32:38.979Z menggunakan draf UC08-TC02-kembalikan yang sudah ada id=39
+2026-11-20T15:32:41.945Z login berhasil admin@pahamhukum.test: http://localhost:3000/panel/admin/moderasi
+2026-11-20T15:32:43.616Z screenshot UC08-TC01-antrean.png
+2026-11-20T15:32:43.647Z UC08-TC01 antrean 11 butir; 3 pertama: [{"href":"/panel/admin/moderasi?konten=4","teks":"Diberhentikan tanpa pesangonDiajukanOleh Kurator Satu · KetenagakerjaanDiajukan 1 Nov 2026 · Menunggu 19 hari"},{"href":"/panel/admin/moderasi?konten=8","teks":"Diberhentikan tanpa pesangonDiajukanOleh Kurator Satu · KetenagakerjaanDiajukan 19 Nov 2026 · Menunggu 1 hari"},{"href":"/panel/admin/moderasi?konten=11","teks":"Gaji tidak dibayar tepat waktuDiajukanOleh Tanpa nama · KetenagakerjaanDiajukan 19 Nov 2026 · Menunggu hari ini"}]
+2026-11-20T15:32:43.647Z UC08-TC01 draf uji pada antrean: false, true, false
+2026-11-20T15:32:43.810Z UC08-TC01 urutan id menurut waktu Diajukan (API): 1,2,3,5,4,7,8,9,10,11,12,14,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39
+2026-11-20T15:32:45.256Z UC08-TC03 alasan kosong ditolak; URL masih http://localhost:3000/panel/admin/moderasi?konten=38
+2026-11-20T15:32:45.427Z screenshot UC08-TC03-alasan-kosong.png
+2026-11-20T15:32:46.835Z UC08-TC01 konten 37 sudah Disetujui pada menjalankan ulang; aksi dilewati
+2026-11-20T15:32:48.214Z UC08-TC02 konten 39 sudah Perlu Revisi pada menjalankan ulang; aksi dilewati
+2026-11-20T15:32:48.250Z UC08-TC01 DB id=37 status=Disetujui catatan=null riwayat=[{"status":"Draft","waktu":"2026-11-20T15:03:47.756029+00:00","id_pelaku":"b0000000-0000-4000-8000-000000000001"},{"status":"Diajukan","waktu":"2026-11-20T15:04:15.263744+00:00","id_pelaku":"b0000000-0000-4000-8000-000000000001"},{"status":"Disetujui","waktu":"2026-11-20T15:24:32.216323+00:00","id_pelaku":"a0000000-0000-4000-8000-000000000001"}]
+2026-11-20T15:32:48.287Z UC08-TC02 DB id=39 status=Perlu Revisi catatan="Lengkapi langkah pelaporan ke platform uji UC08." riwayat=[{"status":"Draft","waktu":"2026-11-20T15:04:23.521504+00:00","id_pelaku":"b0000000-0000-4000-8000-000000000001"},{"status":"Diajukan","waktu":"2026-11-20T15:04:25.894369+00:00","id_pelaku":"b0000000-0000-4000-8000-000000000001"},{"status":"Perlu Revisi","waktu":"2026-11-20T15:24:35.494586+00:00","id_pelaku":"a0000000-0000-4000-8000-000000000001"}]
+2026-11-20T15:32:48.343Z UC08-TC03 DB id=38 status=Diajukan catatan=null riwayat=[{"status":"Draft","waktu":"2026-11-20T15:04:18.016729+00:00","id_pelaku":"b0000000-0000-4000-8000-000000000001"},{"status":"Diajukan","waktu":"2026-11-20T15:04:21.170598+00:00","id_pelaku":"b0000000-0000-4000-8000-000000000001"}]
+2026-11-20T15:32:48.396Z UC08-TC01 tampilan anonim: [{"id_rangkuman":37,"status":"Disetujui"}]
+2026-11-20T15:32:48.396Z UC08-TC02 tampilan anonim: []
+2026-11-20T15:32:50.200Z UC07-TC02 butir revisi: {"judul":"Diberhentikan tanpa pesangonDraft → Diajukan → Perlu Revisi","status":"Perlu Revisi","catatan":"Lengkapi langkah pelaporan ke platform uji UC08."}
+2026-11-20T15:32:50.703Z screenshot UC07-TC02-catatan-revisi.png
+2026-11-20T15:32:51.929Z UC07-TC02 menu penyuntingan http://localhost:3000/panel/kurator/konten/39, isian terisi: Uji UC08-TC02-kembalikan: pekerja diberhentikan tanpa pesangon.
+2026-11-20T15:32:52.210Z screenshot UC07-TC02-menu-penyuntingan.png
+2026-11-20T15:32:52.210Z SELESAI: seluruh skenario UC07 dan UC08 berhasil dijalankan
